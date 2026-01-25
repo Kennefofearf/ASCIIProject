@@ -1,6 +1,7 @@
 import curses
-import time
 from curses import wrapper
+import player_module
+from player_module import Player
 
 
 def gamestart(stdscr):
@@ -11,12 +12,13 @@ def gamestart(stdscr):
 
     stdscr.clear()
 
-    playery, playerx = 20, 55
+    player = Player("Koe", "@", 50, 10, 3)
+    player.position = [20, 55]
 
     while True:
         stdscr.clear()
         stdscr.border("#", "#", "#", "#", "O", "O", "O", "O")
-        player = stdscr.addch(playery, playerx, "@")
+        stdscr.addch(player.position[0], player.position[1], player.icon)
         stdscr.refresh()
 
         key = stdscr.getch()
@@ -24,12 +26,12 @@ def gamestart(stdscr):
         if key == ord("q"):
             break
         elif key == ord("a"):
-            playerx -= 1
+            player.move(0, 1)
         elif key == ord("d"):
-            playerx += 1
+            player.move(0, -1)
         elif key == ord("w"):
-            playery -= 1
+            player.move(-1, 0)
         elif key == ord("s"):
-            playery += 1
+            player.move(1, 0)
 
 wrapper(gamestart)
