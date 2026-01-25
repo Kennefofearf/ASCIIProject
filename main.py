@@ -8,12 +8,14 @@ def gamestart(stdscr):
     curses.noecho()
     curses.curs_set(0)
     stdscr.keypad(True)
+
     stdscr.clear()
 
-    playery, playerx = 10, 10
+    playery, playerx = 20, 55
 
     while True:
         stdscr.clear()
+        stdscr.border("#", "#", "#", "#", "O", "O", "O", "O")
         player = stdscr.addch(playery, playerx, "@")
         stdscr.refresh()
 
