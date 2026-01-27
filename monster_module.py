@@ -10,9 +10,8 @@ class GiantAnt:
         self.df = df
         self.position = [0, 0]
 
-    def move(self, py, px, movetimer):
+    def move(self, py, px):
         self.position[0] += py
         self.position[1] -= px
-        time.sleep(movetimer)
 
 
