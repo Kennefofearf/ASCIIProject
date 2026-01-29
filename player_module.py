@@ -1,4 +1,6 @@
 import curses
+import monster_module
+
 
 class Player:
     def __init__(self, name, icon, hp, st, df):
@@ -13,3 +15,5 @@ class Player:
         self.position[0] += py
         self.position[1] -= px
 
+    def future_position(self, py, px):
+        return (self.position[0] + py, self.position[1] - px)

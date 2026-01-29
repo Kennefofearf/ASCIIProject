@@ -37,32 +37,41 @@ def gamestart(stdscr):
         # Monster movement
         anty, antx = 0, 0
 
-        if random_movement <= 5:
-            anty = random_direction
-            giant_ant.move(anty, antx)
-            anty = 0
-        elif random_movement > 5:
-            antx = random_direction
-            giant_ant.move(anty, antx)
-            antx = 0
+        # if random_movement <= 5:
+        #     anty = random_direction
+        #     giant_ant.move(anty, antx)
+        #     anty = 0
+        # elif random_movement > 5:
+        #     antx = random_direction
+        #     giant_ant.move(anty, antx)
+        #     antx = 0
 
         stdscr.refresh()
         key = stdscr.getch()
 
+        px = 0
+        py = px
+
         if key == ord("q"):
             break
         elif key == ord("a"):
-            player.move(0, 1)
+            px = 1
         elif key == ord("d"):
-            player.move(0, -1)
+            px = -1
         elif key == ord("w"):
-            player.move(-1, 0)
+            py = -1
         elif key == ord("s"):
-            player.move(1, 0)
+            py = 1
         elif key == "":
             stdscr.refresh()
             continue
 
+        ny, nx = player.future_position(py, px)
+
+        if ny == giant_ant.position[0] and nx == giant_ant.position[1]:
+            break
+
+        player.move(py, px)
         random_movement = random.randint(1, 10)
         stdscr.refresh()
 
