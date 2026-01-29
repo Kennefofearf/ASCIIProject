@@ -1,5 +1,6 @@
 import curses
 import random
+import time
 from curses import wrapper
 import player_module
 from player_module import Player
@@ -33,8 +34,6 @@ def gamestart(stdscr):
         stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
         stdscr.refresh()
 
-        #key = stdscr.getch()
-
         # Monster movement
         anty, antx = 0, 0
 
@@ -60,18 +59,11 @@ def gamestart(stdscr):
             player.move(-1, 0)
         elif key == ord("s"):
             player.move(1, 0)
+        elif key == "":
+            stdscr.refresh()
+            continue
 
         random_movement = random.randint(1, 10)
         stdscr.refresh()
-
-    # # Monster movement
-    # anty, antx = 0, 0
-    #
-    # if random_movement <= 5:
-    #     anty = random_direction
-    #     giant_ant.move(anty, antx)
-    # elif random_movement > 5:
-    #     antx = random_direction
-    #     giant_ant.move(anty, antx)
 
 wrapper(gamestart)
