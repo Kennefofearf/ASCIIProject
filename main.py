@@ -39,6 +39,16 @@ def gamestart(stdscr):
 
         px = 0
         py = px
+        ex = 0
+        ey = ex
+
+        if random_movement <= 4:
+            ey = random_direction
+        if 4 < random_movement <= 8:
+            ex = random_direction
+        if 8 < random_movement <= 10:
+            ex = 0
+            ey = 0
 
         if key == ord("q"):
             break
@@ -55,12 +65,18 @@ def gamestart(stdscr):
             continue
 
         ny, nx = player.future_position(py, px)
+        ney, nex = giant_ant.future_position(ey, ex)
 
         if ny == giant_ant.position[0] and nx == giant_ant.position[1]:
             px = 0
             py = 0
+        elif ney == player.position[0] and nex == player.position[1]:
+            ey = 0
+            ex = 0
 
         player.move(py, px)
+        giant_ant.move(ey, ex)
+        random_direction = random.randint(-1, 1)
         random_movement = random.randint(1, 10)
         stdscr.refresh()
 
