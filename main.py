@@ -12,6 +12,7 @@ def gamestart(stdscr):
     curses.cbreak()
     curses.noecho()
     curses.curs_set(0)
+    terminal_h, terminal_w = stdscr.getmaxyx()
     stdscr.keypad(True)
 
     stdscr.clear()
@@ -27,20 +28,24 @@ def gamestart(stdscr):
     giant_ant = GiantAnt("Giant Ant", "A", 12, 5, 1)
     giant_ant.position = [random_inty, random_intx]
 
+    targetwin_h, targetwin_w = terminal_h - 5, terminal_w - 100
+    target_window = curses.newwin(targetwin_h, targetwin_w, 2, 2)
+
     while True:
         stdscr.clear()
-        stdscr.border("#", "#", "#", "#", "O", "O", "O", "O")
+        stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
+        target_window.box()
         stdscr.addch(player.position[0], player.position[1], player.icon)
         stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
-        stdscr.refresh()
 
         stdscr.refresh()
+        target_window.refresh()
         key = stdscr.getch()
 
         px = 0
-        py = px
+        py = 0
         ex = 0
-        ey = ex
+        ey = 0
 
         if random_movement <= 4:
             ey = random_direction
@@ -71,8 +76,8 @@ def gamestart(stdscr):
             px = 0
             py = 0
         elif ney == player.position[0] and nex == player.position[1]:
-            ey = 0
             ex = 0
+            ey = 0
 
         player.move(py, px)
         giant_ant.move(ey, ex)
