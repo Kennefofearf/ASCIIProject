@@ -7,7 +7,6 @@ from player_module import Player
 import monster_module
 from monster_module import GiantAnt
 
-
 def gamestart(stdscr):
     curses.cbreak()
     curses.noecho()
@@ -40,6 +39,13 @@ def gamestart(stdscr):
 
         stdscr.refresh()
         target_window.refresh()
+        dbg = curses.newwin(8, 30, 0, 89)
+        dbg.box()
+        dbg.addstr(1, 1, f"Player: {player.position}")
+        dbg.addstr(2, 1, f"Enemy : {giant_ant.position}")
+        dbg.addstr(3, 1, f"Rand  : {random_movement}")
+        dbg.addstr(4, 1, f"tarw : {targetwin_h, targetwin_w}")
+        dbg.refresh()
         key = stdscr.getch()
 
         px = 0
