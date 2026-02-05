@@ -27,8 +27,8 @@ def gamestart(stdscr):
     giant_ant = GiantAnt("Giant Ant", "A", 12, 5, 1)
     giant_ant.position = [random_inty, random_intx]
 
-    targetwin_h, targetwin_w = terminal_h - 5, terminal_w - 100
-    target_window = curses.newwin(targetwin_h, targetwin_w, 2, 2)
+    targetwin_h, targetwin_w = 10, 20
+    target_window = curses.newwin(targetwin_h, targetwin_w, 29, 99)
 
     while True:
         stdscr.clear()
@@ -38,6 +38,10 @@ def gamestart(stdscr):
         stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
 
         stdscr.refresh()
+        target_window.addstr(1, 1, f"   {giant_ant.name}")
+        target_window.addstr(3, 1, f" HP:   {giant_ant.hp}")
+        target_window.addstr(5, 1, f"STR:   {giant_ant.st}")
+        target_window.addstr(7, 1, f"DEF:   {giant_ant.df}")
         target_window.refresh()
         dbg = curses.newwin(8, 30, 0, 89)
         dbg.box()
