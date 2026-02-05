@@ -13,6 +13,8 @@ def gamestart(stdscr):
     curses.curs_set(0)
     terminal_h, terminal_w = stdscr.getmaxyx()
     stdscr.keypad(True)
+    curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
+    curses.mouseinterval(200)
 
     stdscr.clear()
 
@@ -26,9 +28,13 @@ def gamestart(stdscr):
 
     giant_ant = GiantAnt("Giant Ant", "A", 12, 5, 1)
     giant_ant.position = [random_inty, random_intx]
+    epy, epx = giant_ant.position
+    my, mx = int, int
 
     targetwin_h, targetwin_w = 10, 20
     target_window = curses.newwin(targetwin_h, targetwin_w, 29, 99)
+
+    show_target = False
 
     while True:
         stdscr.clear()
@@ -38,18 +44,31 @@ def gamestart(stdscr):
         stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
 
         stdscr.refresh()
-        target_window.addstr(1, 1, f"   {giant_ant.name}")
-        target_window.addstr(3, 1, f" HP:   {giant_ant.hp}")
-        target_window.addstr(5, 1, f"STR:   {giant_ant.st}")
-        target_window.addstr(7, 1, f"DEF:   {giant_ant.df}")
-        target_window.refresh()
-        dbg = curses.newwin(8, 30, 0, 89)
+        if show_target:
+            target_window.addstr(1, 1, f"   {giant_ant.name}")
+            target_window.addstr(3, 1, f" HP:   {giant_ant.hp}")
+            target_window.addstr(5, 1, f"STR:   {giant_ant.st}")
+            target_window.addstr(7, 1, f"DEF:   {giant_ant.df}")
+            target_window.refresh()
+        else:
+            target_window.erase()
+            target_window.box()
+            target_window.refresh()
+
+        dbg = curses.newwin(12, 30, 0, 89)
         dbg.box()
         dbg.addstr(1, 1, f"Player: {player.position}")
         dbg.addstr(2, 1, f"Enemy : {giant_ant.position}")
-        dbg.addstr(3, 1, f"Rand  : {random_movement}")
-        dbg.addstr(4, 1, f"tarw : {targetwin_h, targetwin_w}")
+        dbg.addstr(3, 1, f"tarw  : {targetwin_h, targetwin_w}")
+        dbg.addstr(4, 1, f"epy   : {epy}")
+        dbg.addstr(5, 1, f"epx   : {epx}")
+        dbg.addstr(6, 1, f"mx    : {mx}")
+        dbg.addstr(7, 1, f"my    : {my}")
+        dbg.addstr(8, 1, f"Mouse: {curses.getmouse()}")
+        dbg.addstr(9, 1, f"Button1: {curses.BUTTON1_PRESSED}")
+        dbg.addstr(10, 1, f"Show_target: {show_target}")
         dbg.refresh()
+
         key = stdscr.getch()
 
         px = 0
@@ -59,8 +78,10 @@ def gamestart(stdscr):
 
         if random_movement <= 4:
             ey = random_direction
+            epy, epx = giant_ant.position
         if 4 < random_movement <= 8:
             ex = random_direction
+            epy, epx = giant_ant.position
         if 8 < random_movement <= 10:
             ex = 0
             ey = 0
@@ -77,6 +98,14 @@ def gamestart(stdscr):
             py = 1
         elif key == "":
             stdscr.refresh()
+            continue
+        elif key == curses.KEY_MOUSE:
+            _, mx, my, _, bstate = curses.getmouse()
+            if bstate & curses.BUTTON1_PRESSED:
+                if (my, mx) == (epy, epx):
+                    show_target = True
+                elif (my, mx) != (epy, epx):
+                    show_target = False
             continue
 
         ny, nx = player.future_position(py, px)
