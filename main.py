@@ -32,7 +32,9 @@ def gamestart(stdscr):
     my, mx = int, int
 
     targetwin_h, targetwin_w = 10, 20
+    playerwin_h, playerwin_w = 10, 20
     target_window = curses.newwin(targetwin_h, targetwin_w, 29, 99)
+    player_window = curses.newwin(playerwin_h, playerwin_w, 29, 0)
 
     show_target = False
 
@@ -40,6 +42,7 @@ def gamestart(stdscr):
         stdscr.clear()
         stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
         target_window.box()
+        player_window.box()
         stdscr.addch(player.position[0], player.position[1], player.icon)
         stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
 
@@ -54,6 +57,12 @@ def gamestart(stdscr):
             target_window.erase()
             target_window.box()
             target_window.refresh()
+
+        player_window.addstr(1, 1, f"       {player.name}")
+        player_window.addstr(3, 1, f" HP:   {player.hp}")
+        player_window.addstr(5, 1, f"STR:   {player.st}")
+        player_window.addstr(7, 1, f"DEF:   {player.df}")
+        player_window.refresh()
 
         dbg = curses.newwin(12, 30, 0, 89)
         dbg.box()
