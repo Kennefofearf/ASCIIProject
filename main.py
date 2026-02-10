@@ -95,6 +95,12 @@ def gamestart(stdscr):
             ex = 0
             ey = 0
 
+        ney, nex = giant_ant.future_position(ey, ex)
+
+        if ney == player.position[0] and nex == player.position[1]:
+            ex = 0
+            ey = 0
+
         if key == ord("q"):
             break
         elif key == ord("a"):
@@ -118,14 +124,13 @@ def gamestart(stdscr):
             continue
 
         ny, nx = player.future_position(py, px)
-        ney, nex = giant_ant.future_position(ey, ex)
 
         if ny == giant_ant.position[0] and nx == giant_ant.position[1]:
             px = 0
             py = 0
-        elif ney == player.position[0] and nex == player.position[1]:
-            ex = 0
-            ey = 0
+        elif ny == ney and nx == nex:
+            px = 0
+            py = 0
 
         player.move(py, px)
         giant_ant.move(ey, ex)
