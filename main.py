@@ -100,6 +100,9 @@ def gamestart(stdscr):
         if ney == player.position[0] and nex == player.position[1]:
             ex = 0
             ey = 0
+            player.hp = player.hp - (giant_ant.st - player.df)
+            player_window.erase()
+            player_window.refresh()
 
         if key == ord("q"):
             break
@@ -128,6 +131,9 @@ def gamestart(stdscr):
         if ny == giant_ant.position[0] and nx == giant_ant.position[1]:
             px = 0
             py = 0
+            giant_ant.hp = giant_ant.hp - (player.st - giant_ant.df)
+            target_window.erase()
+            target_window.refresh()
         elif ny == ney and nx == nex:
             px = 0
             py = 0
