@@ -11,15 +11,14 @@ def gamestart(stdscr):
     curses.cbreak()
     curses.noecho()
     curses.curs_set(0)
-    terminal_h, terminal_w = stdscr.getmaxyx()
     stdscr.keypad(True)
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
     curses.mouseinterval(200)
+    stdscr.timeout(300)
 
     stdscr.clear()
 
     random_inty, random_intx = random.randint(1, 20), random.randint(1, 100)
-    random_timer = random.randint(3, 5)
     random_movement = random.randint(1, 10)
     random_direction = random.randint(-1, 1)
 
