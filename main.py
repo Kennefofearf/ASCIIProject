@@ -19,8 +19,8 @@ def gamestart(stdscr):
     stdscr.clear()
 
     random_inty, random_intx = random.randint(1, 20), random.randint(1, 100)
-    random_movement = random.randint(1, 10)
-    random_direction = random.randint(-1, 1)
+    # random_movement = random.randint(1, 10)
+    # random_direction = random.randint(-1, 1)
 
     player = Player("Koe", "@", 50, 10, 3)
     player.position = [20, 55]
@@ -79,20 +79,20 @@ def gamestart(stdscr):
 
         key = stdscr.getch()
 
-        px = 0
-        py = 0
-        ex = 0
-        ey = 0
+        # px = 0
+        # py = 0
+        # ex = 0
+        # ey = 0
 
-        if random_movement <= 4:
-            ey = random_direction
-            epy, epx = giant_ant.position
-        if 4 < random_movement <= 8:
-            ex = random_direction
-            epy, epx = giant_ant.position
-        if 8 < random_movement <= 10:
-            ex = 0
-            ey = 0
+        # if random_movement <= 4:
+        #     ey = random_direction
+        #     epy, epx = giant_ant.position
+        # if 4 < random_movement <= 8:
+        #     ex = random_direction
+        #     epy, epx = giant_ant.position
+        # if 8 < random_movement <= 10:
+        #     ex = 0
+        #     ey = 0
 
         ney, nex = giant_ant.future_position(ey, ex)
 
@@ -100,23 +100,22 @@ def gamestart(stdscr):
             ex = 0
             ey = 0
             player.take_dmg(ant_dmg)
-            #player.hp = player.hp - (giant_ant.st - player.df)
             player_window.erase()
             player_window.refresh()
 
         if key == ord("q"):
             break
-        elif key == ord("a"):
-            px = 1
-        elif key == ord("d"):
-            px = -1
-        elif key == ord("w"):
-            py = -1
-        elif key == ord("s"):
-            py = 1
-        elif key == "":
-            stdscr.refresh()
-            continue
+        # elif key == ord("a"):
+        #     px = 1
+        # elif key == ord("d"):
+        #     px = -1
+        # elif key == ord("w"):
+        #     py = -1
+        # elif key == ord("s"):
+        #     py = 1
+        # elif key == "":
+        #     stdscr.refresh()
+        #     continue
         elif key == curses.KEY_MOUSE:
             _, mx, my, _, bstate = curses.getmouse()
             if bstate & curses.BUTTON1_PRESSED:
@@ -132,7 +131,6 @@ def gamestart(stdscr):
             px = 0
             py = 0
             giant_ant.take_dmg(player_dmg)
-            #giant_ant.hp = giant_ant.hp - (player.st - giant_ant.df)
             target_window.erase()
             target_window.refresh()
         elif ny == ney and nx == nex:

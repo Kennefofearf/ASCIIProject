@@ -20,3 +20,17 @@ class Player:
 
     def take_dmg(self, dmg):
         self.hp -= dmg
+
+    def input_action(self, key):
+        py, px = 0, 0
+        if key == ord("a"):
+            px = 1
+        elif key == ord("d"):
+            px = -1
+        elif key == ord("w"):
+            py = -1
+        elif key == ord("s"):
+            py = 1
+        elif key == "":
+            py, px = 0, 0
+        return py, px
