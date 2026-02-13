@@ -14,7 +14,7 @@ def gamestart(stdscr):
     stdscr.keypad(True)
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
     curses.mouseinterval(200)
-    stdscr.timeout(300)
+    stdscr.timeout(17)
 
     stdscr.clear()
 
@@ -36,6 +36,9 @@ def gamestart(stdscr):
     player_window = curses.newwin(playerwin_h, playerwin_w, 29, 0)
 
     show_target = False
+
+    ant_dmg = player.st - giant_ant.df
+    player_dmg = giant_ant.st - player.df
 
     while True:
         stdscr.clear()
@@ -72,9 +75,6 @@ def gamestart(stdscr):
         dbg.addstr(5, 1, f"epx   : {epx}")
         dbg.addstr(6, 1, f"mx    : {mx}")
         dbg.addstr(7, 1, f"my    : {my}")
-        dbg.addstr(8, 1, f"Mouse: {curses.getmouse()}")
-        dbg.addstr(9, 1, f"Button1: {curses.BUTTON1_PRESSED}")
-        dbg.addstr(10, 1, f"Show_target: {show_target}")
         dbg.refresh()
 
         key = stdscr.getch()
@@ -99,7 +99,8 @@ def gamestart(stdscr):
         if ney == player.position[0] and nex == player.position[1]:
             ex = 0
             ey = 0
-            player.hp = player.hp - (giant_ant.st - player.df)
+            player.take_dmg(ant_dmg)
+            #player.hp = player.hp - (giant_ant.st - player.df)
             player_window.erase()
             player_window.refresh()
 
@@ -130,7 +131,8 @@ def gamestart(stdscr):
         if ny == giant_ant.position[0] and nx == giant_ant.position[1]:
             px = 0
             py = 0
-            giant_ant.hp = giant_ant.hp - (player.st - giant_ant.df)
+            giant_ant.take_dmg(player_dmg)
+            #giant_ant.hp = giant_ant.hp - (player.st - giant_ant.df)
             target_window.erase()
             target_window.refresh()
         elif ny == ney and nx == nex:

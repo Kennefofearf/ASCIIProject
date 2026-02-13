@@ -17,3 +17,6 @@ class Player:
 
     def future_position(self, py, px):
         return (self.position[0] + py, self.position[1] - px)
+
+    def take_dmg(self, dmg):
+        self.hp -= dmg
