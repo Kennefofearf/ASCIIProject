@@ -14,6 +14,27 @@ def mouse_actions(ant, mx, my, player, bstate, show_target):
         else:
             show_target = False
 
+def world_event_logic(player, ant, py, px, ey, ex):
+    ny, nx = player.future_position(py, px)
+    ney, nex = ant.future_position(ey, ex)
+
+    if (ney, nex) == tuple(player.position):
+        ey = 0
+        ex = 0
+        player.take_dmg(max(0, ant.st - player.df))
+
+    if (ny, nx) == tuple(ant.position):
+        py = 0
+        px = 0
+        ant.take_dmg(max(0, player.st - ant.df))
+    elif (ny, nx) == (ney, nex):
+        py = 0
+        px = 0
+
+    player.move(py, px)
+    ant.move(ey, ex)
+
+
 def gamestart(stdscr):
     curses.cbreak()
     curses.noecho()
@@ -101,14 +122,14 @@ def gamestart(stdscr):
         #     ex = 0
         #     ey = 0
 
-        ney, nex = giant_ant.future_position(ey, ex)
+        #ney, nex = giant_ant.future_position(ey, ex)
 
-        if ney == player.position[0] and nex == player.position[1]:
-            ex = 0
-            ey = 0
-            player.take_dmg(ant_dmg)
-            player_window.erase()
-            player_window.refresh()
+        # if ney == player.position[0] and nex == player.position[1]:
+        #     ex = 0
+        #     ey = 0
+        #     player.take_dmg(ant_dmg)
+        #     player_window.erase()
+        #     player_window.refresh()
 
         if key == ord("q"):
             break
@@ -132,22 +153,22 @@ def gamestart(stdscr):
         #             show_target = False
         #     continue
 
-        ny, nx = player.future_position(py, px)
+        #ny, nx = player.future_position(py, px)
 
-        if ny == giant_ant.position[0] and nx == giant_ant.position[1]:
-            px = 0
-            py = 0
-            giant_ant.take_dmg(player_dmg)
-            target_window.erase()
-            target_window.refresh()
-        elif ny == ney and nx == nex:
-            px = 0
-            py = 0
+        # if ny == giant_ant.position[0] and nx == giant_ant.position[1]:
+        #     px = 0
+        #     py = 0
+        #     giant_ant.take_dmg(player_dmg)
+        #     target_window.erase()
+        #     target_window.refresh()
+        # elif ny == ney and nx == nex:
+        #     px = 0
+        #     py = 0
 
-        player.move(py, px)
-        giant_ant.move(ey, ex)
-        random_direction = random.randint(-1, 1)
-        random_movement = random.randint(1, 10)
+        # player.move(py, px)
+        # giant_ant.move(ey, ex)
+        # random_direction = random.randint(-1, 1)
+        # random_movement = random.randint(1, 10)
         stdscr.refresh()
 
 wrapper(gamestart)
