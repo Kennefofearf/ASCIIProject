@@ -7,6 +7,13 @@ from player_module import Player
 import monster_module
 from monster_module import GiantAnt
 
+def mouse_actions(ant, mx, my, player, bstate, show_target):
+    if bstate & curses.BUTTON1_PRESSED:
+        if (my, mx) == tuple(ant.position):
+            show_target = True
+        else:
+            show_target = False
+
 def gamestart(stdscr):
     curses.cbreak()
     curses.noecho()
@@ -116,14 +123,14 @@ def gamestart(stdscr):
         # elif key == "":
         #     stdscr.refresh()
         #     continue
-        elif key == curses.KEY_MOUSE:
-            _, mx, my, _, bstate = curses.getmouse()
-            if bstate & curses.BUTTON1_PRESSED:
-                if (my, mx) == (epy, epx):
-                    show_target = True
-                elif (my, mx) != (epy, epx):
-                    show_target = False
-            continue
+        # elif key == curses.KEY_MOUSE:
+        #     _, mx, my, _, bstate = curses.getmouse()
+        #     if bstate & curses.BUTTON1_PRESSED:
+        #         if (my, mx) == (epy, epx):
+        #             show_target = True
+        #         elif (my, mx) != (epy, epx):
+        #             show_target = False
+        #     continue
 
         ny, nx = player.future_position(py, px)
 
