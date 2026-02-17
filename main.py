@@ -13,6 +13,7 @@ def mouse_actions(ant, mx, my, player, bstate, show_target):
             show_target = True
         else:
             show_target = False
+    return show_target
 
 def world_event_logic(player, ant, py, px, ey, ex):
     ny, nx = player.future_position(py, px)
@@ -133,6 +134,9 @@ def gamestart(stdscr):
 
         if key == ord("q"):
             break
+        elif key == curses.KEY_MOUSE:
+            _, mx, my, _, bstate, = curses.getmouse()
+            show_target = mouse_actions(giant_ant, mx, my, player, bstate, show_target)
         # elif key == ord("a"):
         #     px = 1
         # elif key == ord("d"):
@@ -169,6 +173,10 @@ def gamestart(stdscr):
         # giant_ant.move(ey, ex)
         # random_direction = random.randint(-1, 1)
         # random_movement = random.randint(1, 10)
+        py, px = player.input_action(key)
+        ey, ex = giant_ant.enemy_movement()
+
+        world_event_logic(player, giant_ant, py, px, ey, ex)
         stdscr.refresh()
 
 wrapper(gamestart)
