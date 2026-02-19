@@ -15,7 +15,7 @@ def mouse_actions(ant, mx, my, player, bstate, show_target):
             show_target = False
     return show_target
 
-def world_event_logic(player, ant, py, px, ey, ex):
+def world_event_logic(player, ant, py, px, ey, ex, player_window, target_window):
     ny, nx = player.future_position(py, px)
     ney, nex = ant.future_position(ey, ex)
 
@@ -23,11 +23,15 @@ def world_event_logic(player, ant, py, px, ey, ex):
         ey = 0
         ex = 0
         player.take_dmg(max(0, ant.st - player.df))
+        player_window.erase()
+        player_window.refresh()
 
     if (ny, nx) == tuple(ant.position):
         py = 0
         px = 0
         ant.take_dmg(max(0, player.st - ant.df))
+        target_window.erase()
+        target_window.refresh()
     elif (ny, nx) == (ney, nex):
         py = 0
         px = 0
@@ -100,10 +104,7 @@ def gamestart(stdscr):
         dbg.addstr(1, 1, f"Player: {player.position}")
         dbg.addstr(2, 1, f"Enemy : {giant_ant.position}")
         dbg.addstr(3, 1, f"tarw  : {targetwin_h, targetwin_w}")
-        dbg.addstr(4, 1, f"epy   : {epy}")
-        dbg.addstr(5, 1, f"epx   : {epx}")
-        dbg.addstr(6, 1, f"mx    : {mx}")
-        dbg.addstr(7, 1, f"my    : {my}")
+        dbg.addstr(4, 1, f"Dmg   : {ant_dmg}")
         dbg.refresh()
 
         key = stdscr.getch()
@@ -176,7 +177,7 @@ def gamestart(stdscr):
         py, px = player.input_action(key)
         ey, ex = giant_ant.enemy_movement()
 
-        world_event_logic(player, giant_ant, py, px, ey, ex)
+        world_event_logic(player, giant_ant, py, px, ey, ex, player_window, target_window)
         stdscr.refresh()
 
 wrapper(gamestart)

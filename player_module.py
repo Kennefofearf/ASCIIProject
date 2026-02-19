@@ -20,6 +20,8 @@ class Player:
 
     def take_dmg(self, dmg):
         self.hp -= dmg
+        if self.hp <= 0:
+            self.hp = 0
 
     def input_action(self, key):
         py, px = 0, 0
