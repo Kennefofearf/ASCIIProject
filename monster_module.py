@@ -11,6 +11,7 @@ class GiantAnt:
         self.st = st
         self.df = df
         self.position = [0, 0]
+        self.alive = True
 
         self.random_movement = random.randint(1, 10)
         self.random_direction = random.randint(-1, 1)
@@ -54,6 +55,8 @@ class GiantAnt:
         self.hp -= dmg
         if self.hp <= 0:
             self.hp = 0
+            self.alive = False
+
 
     def input_action(self, key):
         py, px = 0, 0
