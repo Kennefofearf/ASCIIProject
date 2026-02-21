@@ -7,8 +7,6 @@ from player_module import Player
 import monster_module
 from monster_module import GiantAnt
 
-alive = True
-
 def mouse_actions(ant, mx, my, player, bstate, show_target):
     if bstate & curses.BUTTON1_PRESSED:
         if (my, mx) == tuple(ant.position):
@@ -68,24 +66,42 @@ def gamestart(stdscr):
     epy, epx = giant_ant.position
     my, mx = int, int
 
+    field_enemies = [giant_ant, giant_ant, giant_ant]
+
+    # clear → draw UI → draw entities → refresh
+
+    stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
+    stdscr.refresh()
     targetwin_h, targetwin_w = 10, 20
     playerwin_h, playerwin_w = 10, 20
     target_window = curses.newwin(targetwin_h, targetwin_w, 29, 99)
     player_window = curses.newwin(playerwin_h, playerwin_w, 29, 0)
+    dbg = curses.newwin(12, 30, 1, 89)
 
     show_target = False
+    prev_positions = []
 
     ant_dmg = player.st - giant_ant.df
     player_dmg = giant_ant.st - player.df
 
     while True:
-        stdscr.clear()
-        stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
+        #stdscr.clear()
+        for y, x in prev_positions:
+            stdscr.addch(y, x, ord(" "))
+
+        prev_positions = []
+
         target_window.box()
         player_window.box()
+        dbg.box()
         stdscr.addch(player.position[0], player.position[1], player.icon)
+        prev_positions.append(tuple(player.position))
+        # for enemy in field_enemies:
+        #     enemy.position[0], enemy.position[1] = random.randint(1, 20), random.randint(1, 100)
         if giant_ant.alive:
             stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
+            prev_positions.append(tuple(giant_ant.position))
+
 
         stdscr.refresh()
         if show_target:
@@ -105,12 +121,8 @@ def gamestart(stdscr):
         player_window.addstr(7, 1, f"DEF:   {player.df}")
         player_window.refresh()
 
-        dbg = curses.newwin(12, 30, 0, 89)
-        dbg.box()
         dbg.addstr(1, 1, f"Player: {player.position}")
-        dbg.addstr(2, 1, f"Enemy : {giant_ant.position}")
-        dbg.addstr(3, 1, f"tarw  : {targetwin_h, targetwin_w}")
-        dbg.addstr(4, 1, f"Dmg   : {ant_dmg}")
+        dbg.addstr(2, 1, f"EnemyArray : {field_enemies.count(giant_ant)}")
         dbg.refresh()
 
         key = stdscr.getch()
