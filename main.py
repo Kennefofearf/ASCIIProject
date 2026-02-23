@@ -17,7 +17,13 @@ def mouse_actions(ant, mx, my, player, bstate, show_target):
 
 def world_event_logic(player, ant, py, px, ey, ex, player_window, target_window, stdscr, random_inty, random_intx):
     ny, nx = player.future_position(py, px)
+    if not movement_area(stdscr, ny, nx):
+        py = 0
+        px = 0
     ney, nex = ant.future_position(ey, ex)
+    if ant.alive and not movement_area(stdscr, ney, nex):
+        ey = 0
+        ex = 0
 
     if ant.alive and (ney, nex) == tuple(player.position):
         ey = 0
@@ -42,6 +48,9 @@ def world_event_logic(player, ant, py, px, ey, ex, player_window, target_window,
         ant.move(ey, ex)
         stdscr.addch(ant.position[0], ant.position[1], ant.icon)
 
+def movement_area(win, y, x):
+    h, w = win.getmaxyx()
+    return 1 <= y <= h - 2 and 1 <= x <= w - 2
 
 def gamestart(stdscr):
     curses.cbreak()
@@ -65,8 +74,6 @@ def gamestart(stdscr):
     giant_ant.position = [random_inty, random_intx]
     epy, epx = giant_ant.position
     my, mx = int, int
-
-    field_enemies = [giant_ant, giant_ant, giant_ant]
 
     # clear → draw UI → draw entities → refresh
 
@@ -96,8 +103,6 @@ def gamestart(stdscr):
         dbg.box()
         stdscr.addch(player.position[0], player.position[1], player.icon)
         prev_positions.append(tuple(player.position))
-        # for enemy in field_enemies:
-        #     enemy.position[0], enemy.position[1] = random.randint(1, 20), random.randint(1, 100)
         if giant_ant.alive:
             stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
             prev_positions.append(tuple(giant_ant.position))
@@ -122,7 +127,6 @@ def gamestart(stdscr):
         player_window.refresh()
 
         dbg.addstr(1, 1, f"Player: {player.position}")
-        dbg.addstr(2, 1, f"EnemyArray : {field_enemies.count(giant_ant)}")
         dbg.refresh()
 
         key = stdscr.getch()
