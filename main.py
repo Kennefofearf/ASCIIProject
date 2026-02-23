@@ -104,6 +104,7 @@ def gamestart(stdscr):
         stdscr.addch(player.position[0], player.position[1], player.icon)
         prev_positions.append(tuple(player.position))
         if giant_ant.alive:
+            movement_area(stdscr, giant_ant.position[0], giant_ant.position[1])
             stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
             prev_positions.append(tuple(giant_ant.position))
 
