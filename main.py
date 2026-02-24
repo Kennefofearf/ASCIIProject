@@ -7,46 +7,55 @@ from player_module import Player
 import monster_module
 from monster_module import GiantAnt
 
-def mouse_actions(ant, mx, my, player, bstate, show_target):
+enemies = []
+
+for enemy in range(3):
+    enemy = GiantAnt()
+    enemy.position = [random.randint(2,19), random.randint(2, 99)]
+    enemies.append(enemy)
+
+def mouse_actions(enemy, mx, my, player, bstate, show_target):
     if bstate & curses.BUTTON1_PRESSED:
-        if (my, mx) == tuple(ant.position):
+        if (my, mx) == tuple(enemy.position):
             show_target = True
         else:
             show_target = False
     return show_target
 
-def world_event_logic(player, ant, py, px, ey, ex, player_window, target_window, stdscr, random_inty, random_intx):
+def world_event_logic(player, enemy, py, px, ey, ex, player_window, target_window, stdscr, random_inty, random_intx):
     ny, nx = player.future_position(py, px)
     if not movement_area(stdscr, ny, nx):
         py = 0
         px = 0
-    ney, nex = ant.future_position(ey, ex)
-    if ant.alive and not movement_area(stdscr, ney, nex):
+    ney, nex = enemy.future_position(ey, ex)
+    if enemy.alive and not movement_area(stdscr, ney, nex):
         ey = 0
         ex = 0
 
-    if ant.alive and (ney, nex) == tuple(player.position):
+    if enemy.alive and (ney, nex) == tuple(player.position):
         ey = 0
         ex = 0
-        player.take_dmg(max(0, ant.st - player.df))
+        player.take_dmg(max(0, enemy.st - player.df))
+        enemy.take_dmg(max(0, player.st - enemy.df))
         player_window.erase()
         player_window.refresh()
 
-    if ant.alive and (ny, nx) == tuple(ant.position):
+    if enemy.alive and (ny, nx) == tuple(enemy.position):
         py = 0
         px = 0
-        ant.take_dmg(max(0, player.st - ant.df))
+        enemy.take_dmg(max(0, player.st - enemy.df))
+        player.take_dmg(max(0, enemy.st - player.df))
         target_window.erase()
         target_window.refresh()
 
-    elif ant.alive and (ny, nx) == (ney, nex):
+    elif enemy.alive and (ny, nx) == (ney, nex):
         py = 0
         px = 0
 
     player.move(py, px)
-    if ant.alive:
-        ant.move(ey, ex)
-        stdscr.addch(ant.position[0], ant.position[1], ant.icon)
+    if enemy.alive:
+        enemy.move(ey, ex)
+        stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
 
 def movement_area(win, y, x):
     h, w = win.getmaxyx()

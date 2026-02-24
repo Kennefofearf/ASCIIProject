@@ -2,11 +2,11 @@ import curses
 import time
 import random
 
-class GiantAnt:
+class Monster:
 
     def __init__(self, name, icon, hp, st, df):
-        self.name = "Giant Ant"
-        self.icon = "A"
+        self.name = name
+        self.icon = icon
         self.hp = hp
         self.st = st
         self.df = df
@@ -25,16 +25,8 @@ class GiantAnt:
 
         ey, ex = 0, 0
 
-        rmove = self.random_movement
-        rdirect = self.random_direction
-
-        if rmove <= 4:
-            ey = rdirect
-        elif rmove <= 8:
-            ex = rdirect
-        else:
-            ey = 0
-            ex = 0
+        ey = random.choice([-1, 0, 1])
+        ex = random.choice([-1, 0, 1])
 
         self.random_movement = random.randint(1, 10)
         self.random_direction = random.randint(-1, 1)
@@ -57,7 +49,6 @@ class GiantAnt:
             self.hp = 0
             self.alive = False
 
-
-    def input_action(self, key):
-        py, px = 0, 0
-
+class GiantAnt(Monster):
+    def __init__(self, name="Giant Ant", icon="A", hp=12, st=5, df=1):
+        super().__init__(name, icon, hp, st, df)
