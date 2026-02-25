@@ -1,18 +1,15 @@
 import curses
 import random
-import time
 from curses import wrapper
-import player_module
 from player_module import Player
-import monster_module
 from monster_module import GiantAnt
 
 enemies = []
 
 for enemy in range(3):
-    enemy = GiantAnt()
-    enemy.position = [random.randint(2,19), random.randint(2, 99)]
-    enemies.append(enemy)
+    e = GiantAnt()
+    e.position = [random.randint(2, 19), random.randint(2, 99)]
+    enemies.append(e)
 
 def mouse_actions(enemy, mx, my, player, bstate, show_target):
     if bstate & curses.BUTTON1_PRESSED:
@@ -24,33 +21,35 @@ def mouse_actions(enemy, mx, my, player, bstate, show_target):
 
 def world_event_logic(player, enemy, py, px, ey, ex, player_window, target_window, stdscr, random_inty, random_intx):
     ny, nx = player.future_position(py, px)
+    ney, nex = enemy.future_position(ey, ex)
     if not movement_area(stdscr, ny, nx):
         py = 0
         px = 0
-    ney, nex = enemy.future_position(ey, ex)
-    if enemy.alive and not movement_area(stdscr, ney, nex):
-        ey = 0
-        ex = 0
 
-    if enemy.alive and (ney, nex) == tuple(player.position):
-        ey = 0
-        ex = 0
-        player.take_dmg(max(0, enemy.st - player.df))
-        enemy.take_dmg(max(0, player.st - enemy.df))
-        player_window.erase()
-        player_window.refresh()
+    if enemy.alive:
+        if not movement_area(stdscr, ney, nex):
+            ey = 0
+            ex = 0
 
-    if enemy.alive and (ny, nx) == tuple(enemy.position):
-        py = 0
-        px = 0
-        enemy.take_dmg(max(0, player.st - enemy.df))
-        player.take_dmg(max(0, enemy.st - player.df))
-        target_window.erase()
-        target_window.refresh()
+        elif (ney, nex) == tuple(player.position):
+            ey = 0
+            ex = 0
+            player.take_dmg(max(0, enemy.st - player.df))
+            enemy.take_dmg(max(0, player.st - enemy.df))
+            player_window.erase()
+            player_window.refresh()
 
-    elif enemy.alive and (ny, nx) == (ney, nex):
-        py = 0
-        px = 0
+        elif (ny, nx) == tuple(enemy.position):
+            py = 0
+            px = 0
+            enemy.take_dmg(max(0, player.st - enemy.df))
+            player.take_dmg(max(0, enemy.st - player.df))
+            target_window.erase()
+            target_window.refresh()
+
+        elif (ny, nx) == (ney, nex):
+            py = 0
+            px = 0
 
     player.move(py, px)
     if enemy.alive:
@@ -137,6 +136,9 @@ def gamestart(stdscr):
         player_window.refresh()
 
         dbg.addstr(1, 1, f"Player: {player.position}")
+        dbg.addstr(2, 1, f"eCords: {enemies[0].position}")
+        dbg.addstr(3, 1, f"eCords: {giant_ant.position}")
+        # dbg.addstr(4, 1, f"eCords: {enemies[2].position}")
         dbg.refresh()
 
         key = stdscr.getch()
