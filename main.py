@@ -60,6 +60,17 @@ def movement_area(win, y, x):
     h, w = win.getmaxyx()
     return 1 <= y <= h - 2 and 1 <= x <= w - 2
 
+def player_spawn(stdscr, prev_positions, player):
+    stdscr.addch(player.position[0], player.position[1], player.icon)
+    prev_positions.append(tuple(player.position))
+
+def monster_spawner(stdscr, prev_positions, enemy):
+    if enemy.alive:
+        movement_area(stdscr, enemy.position[0], enemy.position[1])
+        stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
+        prev_positions.append(tuple(enemy.position))
+
+
 def gamestart(stdscr):
     curses.cbreak()
     curses.noecho()
@@ -109,20 +120,22 @@ def gamestart(stdscr):
         target_window.box()
         player_window.box()
         dbg.box()
-        stdscr.addch(player.position[0], player.position[1], player.icon)
-        prev_positions.append(tuple(player.position))
-        if giant_ant.alive:
-            movement_area(stdscr, giant_ant.position[0], giant_ant.position[1])
-            stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
-            prev_positions.append(tuple(giant_ant.position))
+        # stdscr.addch(player.position[0], player.position[1], player.icon)
+        # prev_positions.append(tuple(player.position))
+        player_spawn(stdscr, prev_positions, player)
+        monster_spawner(stdscr, prev_positions, e)
+        # if giant_ant.alive:
+        #     movement_area(stdscr, giant_ant.position[0], giant_ant.position[1])
+        #     stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
+        #     prev_positions.append(tuple(giant_ant.position))
 
 
         stdscr.refresh()
         if show_target:
-            target_window.addstr(1, 1, f"   {giant_ant.name}")
-            target_window.addstr(3, 1, f" HP:   {giant_ant.hp}")
-            target_window.addstr(5, 1, f"STR:   {giant_ant.st}")
-            target_window.addstr(7, 1, f"DEF:   {giant_ant.df}")
+            target_window.addstr(1, 1, f"   {e.name}")
+            target_window.addstr(3, 1, f" HP:   {e.hp}")
+            target_window.addstr(5, 1, f"STR:   {e.st}")
+            target_window.addstr(7, 1, f"DEF:   {e.df}")
             target_window.refresh()
         else:
             target_window.erase()
@@ -137,7 +150,7 @@ def gamestart(stdscr):
 
         dbg.addstr(1, 1, f"Player: {player.position}")
         dbg.addstr(2, 1, f"eCords: {enemies[0].position}")
-        dbg.addstr(3, 1, f"eCords: {giant_ant.position}")
+        dbg.addstr(3, 1, f"eCords: {e.position}")
         # dbg.addstr(4, 1, f"eCords: {enemies[2].position}")
         dbg.refresh()
 
@@ -171,7 +184,7 @@ def gamestart(stdscr):
             break
         elif key == curses.KEY_MOUSE:
             _, mx, my, _, bstate, = curses.getmouse()
-            show_target = mouse_actions(giant_ant, mx, my, player, bstate, show_target)
+            show_target = mouse_actions(e, mx, my, player, bstate, show_target)
         # elif key == ord("a"):
         #     px = 1
         # elif key == ord("d"):
@@ -211,7 +224,7 @@ def gamestart(stdscr):
         py, px = player.input_action(key)
         ey, ex = giant_ant.enemy_movement()
 
-        world_event_logic(player, giant_ant, py, px, ey, ex, player_window, target_window, stdscr, random_inty,
+        world_event_logic(player, e, py, px, ey, ex, player_window, target_window, stdscr, random_inty,
                           random_intx)
         stdscr.refresh()
 
