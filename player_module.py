@@ -36,3 +36,7 @@ class Player:
         elif key == "":
             py, px = 0, 0
         return py, px
+
+    def player_spawn(self, stdscr, prev_positions, player):
+        stdscr.addch(player.position[0], player.position[1], player.icon)
+        prev_positions.append(tuple(player.position))

@@ -49,6 +49,12 @@ class Monster:
             self.hp = 0
             self.alive = False
 
+    def monster_spawner(self, stdscr, prev_positions, enemy):
+        if enemy.alive:
+            # movement_area(stdscr, enemy.position[0], enemy.position[1])
+            stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
+            prev_positions.append(tuple(enemy.position))
+
 class GiantAnt(Monster):
     def __init__(self, name="Giant Ant", icon="A", hp=12, st=5, df=1):
         super().__init__(name, icon, hp, st, df)

@@ -1,5 +1,7 @@
 import curses
 import random
+import monster_module
+import player_module
 from curses import wrapper
 from player_module import Player
 from monster_module import GiantAnt
@@ -60,15 +62,15 @@ def movement_area(win, y, x):
     h, w = win.getmaxyx()
     return 1 <= y <= h - 2 and 1 <= x <= w - 2
 
-def player_spawn(stdscr, prev_positions, player):
-    stdscr.addch(player.position[0], player.position[1], player.icon)
-    prev_positions.append(tuple(player.position))
+# def player_spawn(stdscr, prev_positions, player):
+#     stdscr.addch(player.position[0], player.position[1], player.icon)
+#     prev_positions.append(tuple(player.position))
 
-def monster_spawner(stdscr, prev_positions, enemy):
-    if enemy.alive:
-        movement_area(stdscr, enemy.position[0], enemy.position[1])
-        stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
-        prev_positions.append(tuple(enemy.position))
+# def monster_spawner(stdscr, prev_positions, enemy):
+#     if enemy.alive:
+#         movement_area(stdscr, enemy.position[0], enemy.position[1])
+#         stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
+#         prev_positions.append(tuple(enemy.position))
 
 
 def gamestart(stdscr):
@@ -122,8 +124,8 @@ def gamestart(stdscr):
         dbg.box()
         # stdscr.addch(player.position[0], player.position[1], player.icon)
         # prev_positions.append(tuple(player.position))
-        player_spawn(stdscr, prev_positions, player)
-        monster_spawner(stdscr, prev_positions, e)
+        player.player_spawn(stdscr, prev_positions, player)
+        giant_ant.monster_spawner(stdscr, prev_positions, e)
         # if giant_ant.alive:
         #     movement_area(stdscr, giant_ant.position[0], giant_ant.position[1])
         #     stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
