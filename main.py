@@ -125,7 +125,8 @@ def gamestart(stdscr):
         # stdscr.addch(player.position[0], player.position[1], player.icon)
         # prev_positions.append(tuple(player.position))
         player.player_spawn(stdscr, prev_positions, player)
-        giant_ant.monster_spawner(stdscr, prev_positions, e)
+        if movement_area(stdscr, e.position[0], e.position[1]):
+            e.monster_spawner(stdscr, prev_positions, e)
         # if giant_ant.alive:
         #     movement_area(stdscr, giant_ant.position[0], giant_ant.position[1])
         #     stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
