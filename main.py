@@ -42,6 +42,8 @@ def world_event_logic(player, py, px, player_window, target_window, stdscr):
             ex = 0
             player.take_dmg(max(0, e.st - player.df))
             e.take_dmg(max(0, player.st - e.df))
+            if not e.alive:
+                player.xp_gain(e.xp)
             player_window.erase()
             player_window.refresh()
 
@@ -89,7 +91,7 @@ def gamestart(stdscr):
     # random_movement = random.randint(1, 10)
     # random_direction = random.randint(-1, 1)
 
-    player = Player("Koe", "@", 50, 10, 3)
+    player = Player("Koe", "@", 50, 10, 3, 4, 1)
     player.position = [20, 55]
 
     # giant_ant = GiantAnt("Giant Ant", "A", 12, 5, 1)
@@ -149,9 +151,11 @@ def gamestart(stdscr):
             target_window.refresh()
 
         player_window.addstr(1, 1, f"       {player.name}")
+        player_window.addstr(2, 1, f"Lvl:   {player.lvl}")
         player_window.addstr(3, 1, f" HP:   {player.hp}")
-        player_window.addstr(5, 1, f"STR:   {player.st}")
-        player_window.addstr(7, 1, f"DEF:   {player.df}")
+        player_window.addstr(4, 1, f"STR:   {player.st}")
+        player_window.addstr(5, 1, f"DEF:   {player.df}")
+        player_window.addstr(6, 1, f"Nxt:   {player.req_xp}")
         player_window.refresh()
 
         dbg.addstr(1, 1, f"Player: {player.position}")

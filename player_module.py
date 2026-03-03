@@ -3,13 +3,15 @@ import monster_module
 
 
 class Player:
-    def __init__(self, name, icon, hp, st, df):
+    def __init__(self, name, icon, hp, st, df, req_xp, lvl):
         self.name = name
         self.icon = "@"
         self.hp = hp
         self.st = st
         self.df = df
         self.position = [0, 0]
+        self.req_xp = req_xp
+        self.lvl = lvl
 
     def move(self, py, px):
         self.position[0] += py
@@ -22,6 +24,14 @@ class Player:
         self.hp -= dmg
         if self.hp <= 0:
             self.hp = 0
+
+    def xp_gain(self, xp):
+        last_req_xp = self.req_xp
+        self.req_xp -= xp
+        if self.req_xp <= 0:
+            self.req_xp = last_req_xp * 2
+            self.lvl += 1
+
 
     def input_action(self, key):
         py, px = 0, 0

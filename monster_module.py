@@ -4,7 +4,7 @@ import random
 
 class Monster:
 
-    def __init__(self, name, icon, hp, st, df):
+    def __init__(self, name, icon, hp, st, df, xp):
         self.name = name
         self.icon = icon
         self.hp = hp
@@ -12,6 +12,7 @@ class Monster:
         self.df = df
         self.position = [random.randint(2, 19), random.randint(2, 99)]
         self.alive = True
+        self.xp = xp
 
         self.ey = 0
         self.ex = 0
@@ -47,6 +48,7 @@ class Monster:
             self.hp = 0
             self.alive = False
 
+
     # def monster_spawner(self, stdscr, prev_positions, enemies):
     #     for enemy in enemies:
     #         if enemy.alive:
@@ -54,5 +56,5 @@ class Monster:
     #             prev_positions.append(tuple(enemy.position))
 
 class GiantAnt(Monster):
-    def __init__(self, name="Giant Ant", icon="A", hp=12, st=5, df=1):
-        super().__init__(name, icon, hp, st, df)
+    def __init__(self, name="Giant Ant", icon="A", hp=12, st=5, df=1, xp=2):
+        super().__init__(name, icon, hp, st, df, xp)
