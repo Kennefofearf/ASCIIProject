@@ -1,7 +1,5 @@
 import curses
 import random
-import monster_module
-import player_module
 from curses import wrapper
 from player_module import Player
 from monster_module import GiantAnt
@@ -10,25 +8,31 @@ enemies = []
 
 for enemy in range(3):
     e = GiantAnt()
-    e.position = [random.randint(2, 19), random.randint(2, 99)]
     enemies.append(e)
 
-def mouse_actions(enemy, mx, my, player, bstate, show_target):
-    if bstate & curses.BUTTON1_PRESSED:
-        if (my, mx) == tuple(enemy.position):
-            show_target = True
-        else:
-            show_target = False
-    return show_target
+def mouse_actions(mx, my, bstate):
+    if bstate & curses.BUTTON1_CLICKED:
+        for selected in enemies:
+            if (my, mx) == tuple(selected.position) and selected.alive:
+                return True, selected
+        return True, None
+    return False, None
 
-def world_event_logic(player, enemy, py, px, ey, ex, player_window, target_window, stdscr, random_inty, random_intx):
+def world_event_logic(player, py, px, player_window, target_window, stdscr):
     ny, nx = player.future_position(py, px)
-    ney, nex = enemy.future_position(ey, ex)
     if not movement_area(stdscr, ny, nx):
         py = 0
         px = 0
 
-    if enemy.alive:
+    player.move(py, px)
+
+    for e in enemies:
+        if e.alive == False:
+            continue
+
+        ey, ex = e.enemy_random_movement()
+        ney, nex = e.future_position(ey, ex)
+
         if not movement_area(stdscr, ney, nex):
             ey = 0
             ex = 0
@@ -36,16 +40,16 @@ def world_event_logic(player, enemy, py, px, ey, ex, player_window, target_windo
         elif (ney, nex) == tuple(player.position):
             ey = 0
             ex = 0
-            player.take_dmg(max(0, enemy.st - player.df))
-            enemy.take_dmg(max(0, player.st - enemy.df))
+            player.take_dmg(max(0, e.st - player.df))
+            e.take_dmg(max(0, player.st - e.df))
             player_window.erase()
             player_window.refresh()
 
-        elif (ny, nx) == tuple(enemy.position):
+        elif (ny, nx) == tuple(e.position):
             py = 0
             px = 0
-            enemy.take_dmg(max(0, player.st - enemy.df))
-            player.take_dmg(max(0, enemy.st - player.df))
+            e.take_dmg(max(0, player.st - e.df))
+            player.take_dmg(max(0, e.st - player.df))
             target_window.erase()
             target_window.refresh()
 
@@ -53,10 +57,8 @@ def world_event_logic(player, enemy, py, px, ey, ex, player_window, target_windo
             py = 0
             px = 0
 
-    player.move(py, px)
-    if enemy.alive:
-        enemy.move(ey, ex)
-        stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
+        e.move(ey, ex)
+        stdscr.addch(e.position[0], e.position[1], e.icon)
 
 def movement_area(win, y, x):
     h, w = win.getmaxyx()
@@ -84,17 +86,16 @@ def gamestart(stdscr):
 
     stdscr.clear()
 
-    random_inty, random_intx = random.randint(1, 20), random.randint(1, 100)
     # random_movement = random.randint(1, 10)
     # random_direction = random.randint(-1, 1)
 
     player = Player("Koe", "@", 50, 10, 3)
     player.position = [20, 55]
 
-    giant_ant = GiantAnt("Giant Ant", "A", 12, 5, 1)
-    giant_ant.position = [random_inty, random_intx]
-    epy, epx = giant_ant.position
-    my, mx = int, int
+    # giant_ant = GiantAnt("Giant Ant", "A", 12, 5, 1)
+    # giant_ant.position = [random_inty, random_intx]
+    # epy, epx = e.position
+    # my, mx = int, int
 
     # clear → draw UI → draw entities → refresh
 
@@ -105,12 +106,12 @@ def gamestart(stdscr):
     target_window = curses.newwin(targetwin_h, targetwin_w, 29, 99)
     player_window = curses.newwin(playerwin_h, playerwin_w, 29, 0)
     dbg = curses.newwin(12, 30, 1, 89)
+    selected = None
 
-    show_target = False
     prev_positions = []
 
-    ant_dmg = player.st - giant_ant.df
-    player_dmg = giant_ant.st - player.df
+    # ant_dmg = player.st - giant_ant.df
+    # player_dmg = giant_ant.st - player.df
 
     while True:
         #stdscr.clear()
@@ -125,20 +126,22 @@ def gamestart(stdscr):
         # stdscr.addch(player.position[0], player.position[1], player.icon)
         # prev_positions.append(tuple(player.position))
         player.player_spawn(stdscr, prev_positions, player)
-        if movement_area(stdscr, e.position[0], e.position[1]):
-            e.monster_spawner(stdscr, prev_positions, e)
+        for enemy in enemies:
+            if enemy.alive:
+                stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
+                prev_positions.append(tuple(enemy.position))
         # if giant_ant.alive:
         #     movement_area(stdscr, giant_ant.position[0], giant_ant.position[1])
         #     stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
         #     prev_positions.append(tuple(giant_ant.position))
 
-
         stdscr.refresh()
-        if show_target:
-            target_window.addstr(1, 1, f"   {e.name}")
-            target_window.addstr(3, 1, f" HP:   {e.hp}")
-            target_window.addstr(5, 1, f"STR:   {e.st}")
-            target_window.addstr(7, 1, f"DEF:   {e.df}")
+
+        if selected and selected.alive:
+            target_window.addstr(1, 1, f"   {selected.name}")
+            target_window.addstr(3, 1, f" HP:   {selected.hp}")
+            target_window.addstr(5, 1, f"STR:   {selected.st}")
+            target_window.addstr(7, 1, f"DEF:   {selected.df}")
             target_window.refresh()
         else:
             target_window.erase()
@@ -154,7 +157,6 @@ def gamestart(stdscr):
         dbg.addstr(1, 1, f"Player: {player.position}")
         dbg.addstr(2, 1, f"eCords: {enemies[0].position}")
         dbg.addstr(3, 1, f"eCords: {e.position}")
-        # dbg.addstr(4, 1, f"eCords: {enemies[2].position}")
         dbg.refresh()
 
         key = stdscr.getch()
@@ -187,7 +189,9 @@ def gamestart(stdscr):
             break
         elif key == curses.KEY_MOUSE:
             _, mx, my, _, bstate, = curses.getmouse()
-            show_target = mouse_actions(e, mx, my, player, bstate, show_target)
+            clicked, picked = mouse_actions(mx, my, bstate)
+            if clicked:
+                selected = picked
         # elif key == ord("a"):
         #     px = 1
         # elif key == ord("d"):
@@ -225,10 +229,8 @@ def gamestart(stdscr):
         # random_direction = random.randint(-1, 1)
         # random_movement = random.randint(1, 10)
         py, px = player.input_action(key)
-        ey, ex = giant_ant.enemy_movement()
 
-        world_event_logic(player, e, py, px, ey, ex, player_window, target_window, stdscr, random_inty,
-                          random_intx)
+        world_event_logic(player, py, px, player_window, target_window, stdscr)
         stdscr.refresh()
 
 wrapper(gamestart)
