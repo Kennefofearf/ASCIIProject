@@ -1,18 +1,21 @@
 import curses
 import time
 import random
+import pdb
 
 class Monster:
 
-    def __init__(self, name, icon, hp, st, df, xp):
+    def __init__(self, name, icon, max_hp, hp, st, df, xp, respawn_delay):
         self.name = name
         self.icon = icon
+        self.max_hp = max_hp
         self.hp = hp
         self.st = st
         self.df = df
         self.position = [random.randint(2, 19), random.randint(2, 99)]
         self.alive = True
         self.xp = xp
+        self.respawn_delay = respawn_delay
 
         self.ey = 0
         self.ex = 0
@@ -46,15 +49,18 @@ class Monster:
         self.hp -= dmg
         if self.hp <= 0:
             self.hp = 0
+            self.respawn_delay = time.monotonic() + 3
             self.alive = False
 
+    def respawn_timer(self, player):
+        if not self.alive and self.respawn_delay is not None and time.monotonic() >= self.respawn_delay:
+            self.alive = True
+            self.hp = self.max_hp
+            self.respawn_delay = None
+            if self.position == player.position:
+                self.position = [random.randint(2, 19), random.randint(2, 99)]
 
-    # def monster_spawner(self, stdscr, prev_positions, enemies):
-    #     for enemy in enemies:
-    #         if enemy.alive:
-    #             stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
-    #             prev_positions.append(tuple(enemy.position))
 
 class GiantAnt(Monster):
-    def __init__(self, name="Giant Ant", icon="A", hp=12, st=5, df=1, xp=2):
-        super().__init__(name, icon, hp, st, df, xp)
+    def __init__(self, name="Giant Ant", icon="A", max_hp=20, hp=20, st=5, df=1, xp=2):
+        super().__init__(name, icon, max_hp, hp, st, df, xp, respawn_delay=None)

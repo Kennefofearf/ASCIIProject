@@ -1,5 +1,6 @@
 import curses
 import monster_module
+import random
 
 
 class Player:
@@ -26,11 +27,15 @@ class Player:
             self.hp = 0
 
     def xp_gain(self, xp):
-        last_req_xp = self.req_xp
         self.req_xp -= xp
         if self.req_xp <= 0:
-            self.req_xp = last_req_xp * 2
+            xp_overflow = -self.req_xp
             self.lvl += 1
+            self.hp += random.choice([5, 7, 7, 7, 10, 20])
+            self.st += random.choice([1, 1, 0, 2])
+            self.df += random.choice([1, 1, 1, 0])
+            self.req_xp += 4 + self.lvl * 5
+            self.req_xp -= xp_overflow
 
 
     def input_action(self, key):

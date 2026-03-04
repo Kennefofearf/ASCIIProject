@@ -1,5 +1,4 @@
 import curses
-import random
 from curses import wrapper
 from player_module import Player
 from monster_module import GiantAnt
@@ -24,9 +23,8 @@ def world_event_logic(player, py, px, player_window, target_window, stdscr):
         py = 0
         px = 0
 
-    player.move(py, px)
-
     for e in enemies:
+        e.respawn_timer(player)
         if e.alive == False:
             continue
 
@@ -42,8 +40,6 @@ def world_event_logic(player, py, px, player_window, target_window, stdscr):
             ex = 0
             player.take_dmg(max(0, e.st - player.df))
             e.take_dmg(max(0, player.st - e.df))
-            if not e.alive:
-                player.xp_gain(e.xp)
             player_window.erase()
             player_window.refresh()
 
@@ -59,8 +55,15 @@ def world_event_logic(player, py, px, player_window, target_window, stdscr):
             py = 0
             px = 0
 
+        if not e.alive:
+            player.xp_gain(e.xp)
+            player_window.erase()
+            player_window.refresh()
+
         e.move(ey, ex)
         stdscr.addch(e.position[0], e.position[1], e.icon)
+
+    player.move(py, px)
 
 def movement_area(win, y, x):
     h, w = win.getmaxyx()
