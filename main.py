@@ -9,7 +9,7 @@ for enemy in range(3):
     e = GiantAnt()
     enemies.append(e)
 
-def mouse_actions(mx, my, bstate):
+def mouse_actions(mx, my, bstate, stdscr):
     if bstate & curses.BUTTON1_CLICKED:
         for selected in enemies:
             if (my, mx) == tuple(selected.position) and selected.alive:
@@ -69,19 +69,12 @@ def movement_area(win, y, x):
     h, w = win.getmaxyx()
     return 1 <= y <= h - 2 and 1 <= x <= w - 2
 
-# def player_spawn(stdscr, prev_positions, player):
-#     stdscr.addch(player.position[0], player.position[1], player.icon)
-#     prev_positions.append(tuple(player.position))
-
-# def monster_spawner(stdscr, prev_positions, enemy):
-#     if enemy.alive:
-#         movement_area(stdscr, enemy.position[0], enemy.position[1])
-#         stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
-#         prev_positions.append(tuple(enemy.position))
-
-
 def gamestart(stdscr):
     curses.cbreak()
+
+    curses.start_color()
+    curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
+
     curses.noecho()
     curses.curs_set(0)
     stdscr.keypad(True)
@@ -91,18 +84,8 @@ def gamestart(stdscr):
 
     stdscr.clear()
 
-    # random_movement = random.randint(1, 10)
-    # random_direction = random.randint(-1, 1)
-
-    player = Player("Koe", "@", 50, 10, 3, 4, 1)
+    player = Player("Koe", "@", 50, 50, 10, 3, 4, 1)
     player.position = [20, 55]
-
-    # giant_ant = GiantAnt("Giant Ant", "A", 12, 5, 1)
-    # giant_ant.position = [random_inty, random_intx]
-    # epy, epx = e.position
-    # my, mx = int, int
-
-    # clear → draw UI → draw entities → refresh
 
     stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
     stdscr.refresh()
@@ -115,11 +98,7 @@ def gamestart(stdscr):
 
     prev_positions = []
 
-    # ant_dmg = player.st - giant_ant.df
-    # player_dmg = giant_ant.st - player.df
-
     while True:
-        #stdscr.clear()
         for y, x in prev_positions:
             stdscr.addch(y, x, ord(" "))
 
@@ -128,23 +107,18 @@ def gamestart(stdscr):
         target_window.box()
         player_window.box()
         dbg.box()
-        # stdscr.addch(player.position[0], player.position[1], player.icon)
-        # prev_positions.append(tuple(player.position))
+
         player.player_spawn(stdscr, prev_positions, player)
         for enemy in enemies:
             if enemy.alive:
                 stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
                 prev_positions.append(tuple(enemy.position))
-        # if giant_ant.alive:
-        #     movement_area(stdscr, giant_ant.position[0], giant_ant.position[1])
-        #     stdscr.addch(giant_ant.position[0], giant_ant.position[1], giant_ant.icon)
-        #     prev_positions.append(tuple(giant_ant.position))
 
         stdscr.refresh()
 
         if selected and selected.alive:
             target_window.addstr(1, 1, f"   {selected.name}")
-            target_window.addstr(3, 1, f" HP:   {selected.hp}")
+            target_window.addstr(3, 1, f" HP:   {selected.max_hp} / {selected.hp}")
             target_window.addstr(5, 1, f"STR:   {selected.st}")
             target_window.addstr(7, 1, f"DEF:   {selected.df}")
             target_window.refresh()
@@ -155,7 +129,7 @@ def gamestart(stdscr):
 
         player_window.addstr(1, 1, f"       {player.name}")
         player_window.addstr(2, 1, f"Lvl:   {player.lvl}")
-        player_window.addstr(3, 1, f" HP:   {player.hp}")
+        player_window.addstr(3, 1, f" HP:   {player.max_hp} / {player.hp}")
         player_window.addstr(4, 1, f"STR:   {player.st}")
         player_window.addstr(5, 1, f"DEF:   {player.df}")
         player_window.addstr(6, 1, f"Nxt:   {player.req_xp}")
@@ -168,73 +142,14 @@ def gamestart(stdscr):
 
         key = stdscr.getch()
 
-        # px = 0
-        # py = 0
-        # ex = 0
-        # ey = 0
-
-        # if random_movement <= 4:
-        #     ey = random_direction
-        #     epy, epx = giant_ant.position
-        # if 4 < random_movement <= 8:
-        #     ex = random_direction
-        #     epy, epx = giant_ant.position
-        # if 8 < random_movement <= 10:
-        #     ex = 0
-        #     ey = 0
-
-        #ney, nex = giant_ant.future_position(ey, ex)
-
-        # if ney == player.position[0] and nex == player.position[1]:
-        #     ex = 0
-        #     ey = 0
-        #     player.take_dmg(ant_dmg)
-        #     player_window.erase()
-        #     player_window.refresh()
-
         if key == ord("q"):
             break
         elif key == curses.KEY_MOUSE:
             _, mx, my, _, bstate, = curses.getmouse()
-            clicked, picked = mouse_actions(mx, my, bstate)
+            clicked, picked = mouse_actions(mx, my, bstate, stdscr)
             if clicked:
                 selected = picked
-        # elif key == ord("a"):
-        #     px = 1
-        # elif key == ord("d"):
-        #     px = -1
-        # elif key == ord("w"):
-        #     py = -1
-        # elif key == ord("s"):
-        #     py = 1
-        # elif key == "":
-        #     stdscr.refresh()
-        #     continue
-        # elif key == curses.KEY_MOUSE:
-        #     _, mx, my, _, bstate = curses.getmouse()
-        #     if bstate & curses.BUTTON1_PRESSED:
-        #         if (my, mx) == (epy, epx):
-        #             show_target = True
-        #         elif (my, mx) != (epy, epx):
-        #             show_target = False
-        #     continue
 
-        #ny, nx = player.future_position(py, px)
-
-        # if ny == giant_ant.position[0] and nx == giant_ant.position[1]:
-        #     px = 0
-        #     py = 0
-        #     giant_ant.take_dmg(player_dmg)
-        #     target_window.erase()
-        #     target_window.refresh()
-        # elif ny == ney and nx == nex:
-        #     px = 0
-        #     py = 0
-
-        # player.move(py, px)
-        # giant_ant.move(ey, ex)
-        # random_direction = random.randint(-1, 1)
-        # random_movement = random.randint(1, 10)
         py, px = player.input_action(key)
 
         world_event_logic(player, py, px, player_window, target_window, stdscr)

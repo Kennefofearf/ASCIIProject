@@ -4,9 +4,10 @@ import random
 
 
 class Player:
-    def __init__(self, name, icon, hp, st, df, req_xp, lvl):
+    def __init__(self, name, icon, max_hp, hp, st, df, req_xp, lvl):
         self.name = name
         self.icon = "@"
+        self.max_hp = max_hp
         self.hp = hp
         self.st = st
         self.df = df
@@ -31,7 +32,9 @@ class Player:
         if self.req_xp <= 0:
             xp_overflow = -self.req_xp
             self.lvl += 1
-            self.hp += random.choice([5, 7, 7, 7, 10, 20])
+            hp_gain = random.choice([5, 7, 7, 7, 10, 20])
+            self.max_hp += hp_gain
+            self.hp += hp_gain
             self.st += random.choice([1, 1, 0, 2])
             self.df += random.choice([1, 1, 1, 0])
             self.req_xp += 4 + self.lvl * 5
