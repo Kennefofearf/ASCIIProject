@@ -1,4 +1,5 @@
 import curses
+import time
 from curses import wrapper
 from player_module import Player
 from monster_module import GiantAnt
@@ -9,13 +10,24 @@ for enemy in range(3):
     e = GiantAnt()
     enemies.append(e)
 
-def mouse_actions(mx, my, bstate, stdscr):
+def mouse_actions(mx, my, bstate, stdscr, dbg):
     if bstate & curses.BUTTON1_CLICKED:
         for selected in enemies:
             if (my, mx) == tuple(selected.position) and selected.alive:
                 return True, selected
         return True, None
     return False, None
+
+def highlight_target(stdscr, enemies, selected, prev_positions, dbg):
+    for e in enemies:
+        if not e.alive:
+            continue
+
+        y, x = e.position
+
+        attr = curses.color_pair(1) if selected == e else curses.A_NORMAL
+        stdscr.addch(y, x, e.icon, attr)
+        prev_positions.append((y, x))
 
 def world_event_logic(player, py, px, player_window, target_window, stdscr):
     ny, nx = player.future_position(py, px)
@@ -99,6 +111,8 @@ def gamestart(stdscr):
     prev_positions = []
 
     while True:
+        #time.sleep(0.5)
+        #time.sleep(2)
         for y, x in prev_positions:
             stdscr.addch(y, x, ord(" "))
 
@@ -109,6 +123,7 @@ def gamestart(stdscr):
         dbg.box()
 
         player.player_spawn(stdscr, prev_positions, player)
+        highlight_target(stdscr, enemies, selected, prev_positions, dbg)
         for enemy in enemies:
             if enemy.alive:
                 stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
@@ -118,7 +133,7 @@ def gamestart(stdscr):
 
         if selected and selected.alive:
             target_window.addstr(1, 1, f"   {selected.name}")
-            target_window.addstr(3, 1, f" HP:   {selected.max_hp} / {selected.hp}")
+            target_window.addstr(3, 1, f" HP:   {selected.hp} / {selected.max_hp}")
             target_window.addstr(5, 1, f"STR:   {selected.st}")
             target_window.addstr(7, 1, f"DEF:   {selected.df}")
             target_window.refresh()
@@ -129,15 +144,14 @@ def gamestart(stdscr):
 
         player_window.addstr(1, 1, f"       {player.name}")
         player_window.addstr(2, 1, f"Lvl:   {player.lvl}")
-        player_window.addstr(3, 1, f" HP:   {player.max_hp} / {player.hp}")
+        player_window.addstr(3, 1, f" HP:   {player.hp} / {player.max_hp}")
         player_window.addstr(4, 1, f"STR:   {player.st}")
         player_window.addstr(5, 1, f"DEF:   {player.df}")
         player_window.addstr(6, 1, f"Nxt:   {player.req_xp}")
         player_window.refresh()
 
-        dbg.addstr(1, 1, f"Player: {player.position}")
-        dbg.addstr(2, 1, f"eCords: {enemies[0].position}")
-        dbg.addstr(3, 1, f"eCords: {e.position}")
+        dbg.addstr(1, 1, f"selected: {selected.name if selected else None}")
+        dbg.addstr(2, 1, f"{e.name}: {selected is e}")
         dbg.refresh()
 
         key = stdscr.getch()
@@ -146,7 +160,7 @@ def gamestart(stdscr):
             break
         elif key == curses.KEY_MOUSE:
             _, mx, my, _, bstate, = curses.getmouse()
-            clicked, picked = mouse_actions(mx, my, bstate, stdscr)
+            clicked, picked = mouse_actions(mx, my, bstate, stdscr, dbg)
             if clicked:
                 selected = picked
 
