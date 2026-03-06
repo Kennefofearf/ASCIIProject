@@ -12,21 +12,20 @@ for enemy in range(3):
 
 def mouse_actions(mx, my, bstate, stdscr, dbg):
     if bstate & curses.BUTTON1_CLICKED:
-        for selected in enemies:
-            if (my, mx) == tuple(selected.position) and selected.alive:
-                return True, selected
+        for enemy in enemies:
+            if (my, mx) == tuple(enemy.position) and enemy.alive:
+                return True, enemy
         return True, None
     return False, None
 
-def highlight_target(stdscr, enemies, selected, prev_positions, dbg):
-    for e in enemies:
-        if not e.alive:
+def draw_enemies(stdscr, enemies, selected, prev_positions, dbg):
+    for enemy in enemies:
+        if not enemy.alive:
             continue
 
-        y, x = e.position
-
-        attr = curses.color_pair(1) if selected == e else curses.A_NORMAL
-        stdscr.addch(y, x, e.icon, attr)
+        y, x = enemy.position
+        attr = curses.color_pair(1) if selected is enemy else curses.A_NORMAL
+        stdscr.addch(y, x, enemy.icon, attr)
         prev_positions.append((y, x))
 
 def world_event_logic(player, py, px, player_window, target_window, stdscr):
@@ -73,7 +72,6 @@ def world_event_logic(player, py, px, player_window, target_window, stdscr):
             player_window.refresh()
 
         e.move(ey, ex)
-        stdscr.addch(e.position[0], e.position[1], e.icon)
 
     player.move(py, px)
 
@@ -93,6 +91,7 @@ def gamestart(stdscr):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
     curses.mouseinterval(200)
     stdscr.timeout(17)
+    selected = None
 
     stdscr.clear()
 
@@ -106,7 +105,6 @@ def gamestart(stdscr):
     target_window = curses.newwin(targetwin_h, targetwin_w, 29, 99)
     player_window = curses.newwin(playerwin_h, playerwin_w, 29, 0)
     dbg = curses.newwin(12, 30, 1, 89)
-    selected = None
 
     prev_positions = []
 
@@ -123,11 +121,11 @@ def gamestart(stdscr):
         dbg.box()
 
         player.player_spawn(stdscr, prev_positions, player)
-        highlight_target(stdscr, enemies, selected, prev_positions, dbg)
-        for enemy in enemies:
-            if enemy.alive:
-                stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
-                prev_positions.append(tuple(enemy.position))
+        draw_enemies(stdscr, enemies, selected, prev_positions, dbg)
+        # for enemy in enemies:
+        #     if enemy.alive:
+        #         stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
+        #         prev_positions.append(tuple(enemy.position))
 
         stdscr.refresh()
 
@@ -151,7 +149,6 @@ def gamestart(stdscr):
         player_window.refresh()
 
         dbg.addstr(1, 1, f"selected: {selected.name if selected else None}")
-        dbg.addstr(2, 1, f"{e.name}: {selected is e}")
         dbg.refresh()
 
         key = stdscr.getch()
