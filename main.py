@@ -1,5 +1,4 @@
 import curses
-import time
 from curses import wrapper
 from player_module import Player
 from monster_module import GiantAnt
@@ -10,7 +9,7 @@ for enemy in range(3):
     e = GiantAnt()
     enemies.append(e)
 
-def mouse_actions(mx, my, bstate, stdscr, dbg):
+def mouse_actions(mx, my, bstate):
     if bstate & curses.BUTTON1_CLICKED:
         for enemy in enemies:
             if (my, mx) == tuple(enemy.position) and enemy.alive:
@@ -130,10 +129,6 @@ def gamestart(stdscr):
 
         player.player_spawn(stdscr, prev_positions, player)
         draw_enemies(stdscr, enemies, selected, prev_positions, hovered)
-        # for enemy in enemies:
-        #     if enemy.alive:
-        #         stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
-        #         prev_positions.append(tuple(enemy.position))
 
         stdscr.refresh()
 
