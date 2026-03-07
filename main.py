@@ -18,13 +18,20 @@ def mouse_actions(mx, my, bstate, stdscr, dbg):
         return True, None
     return False, None
 
-def draw_enemies(stdscr, enemies, selected, prev_positions, dbg):
+def draw_enemies(stdscr, enemies, selected, prev_positions, hovered):
     for enemy in enemies:
         if not enemy.alive:
             continue
 
         y, x = enemy.position
-        attr = curses.color_pair(1) if selected is enemy else curses.A_NORMAL
+
+        if enemy == selected:
+            attr = curses.color_pair(1)
+        elif enemy == hovered:
+            attr = curses.A_REVERSE
+        else:
+            attr = curses.A_NORMAL
+
         stdscr.addch(y, x, enemy.icon, attr)
         prev_positions.append((y, x))
 
@@ -83,7 +90,7 @@ def gamestart(stdscr):
     curses.cbreak()
 
     curses.start_color()
-    curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
+    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
 
     curses.noecho()
     curses.curs_set(0)
@@ -92,6 +99,7 @@ def gamestart(stdscr):
     curses.mouseinterval(200)
     stdscr.timeout(17)
     selected = None
+    hovered = None
 
     stdscr.clear()
 
@@ -121,7 +129,7 @@ def gamestart(stdscr):
         dbg.box()
 
         player.player_spawn(stdscr, prev_positions, player)
-        draw_enemies(stdscr, enemies, selected, prev_positions, dbg)
+        draw_enemies(stdscr, enemies, selected, prev_positions, hovered)
         # for enemy in enemies:
         #     if enemy.alive:
         #         stdscr.addch(enemy.position[0], enemy.position[1], enemy.icon)
@@ -157,6 +165,12 @@ def gamestart(stdscr):
             break
         elif key == curses.KEY_MOUSE:
             _, mx, my, _, bstate, = curses.getmouse()
+            hovered = None
+            for enemy in enemies:
+                if enemy.alive and (my, mx) == tuple(enemy.position):
+                    hovered = enemy
+                    break
+
             clicked, picked = mouse_actions(mx, my, bstate, stdscr, dbg)
             if clicked:
                 selected = picked
