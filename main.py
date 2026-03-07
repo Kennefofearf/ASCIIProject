@@ -166,7 +166,7 @@ def gamestart(stdscr):
                     hovered = enemy
                     break
 
-            clicked, picked = mouse_actions(mx, my, bstate, stdscr, dbg)
+            clicked, picked = mouse_actions(mx, my, bstate)
             if clicked:
                 selected = picked
 
