@@ -4,26 +4,13 @@ from player_module import Player
 
 class Weapons:
 
-    def __init__(self, name, st, df, max_hp, min_dmg, max_dmg, xp, common_skills, lvl):
+    def __init__(self, name, min_dmg, max_dmg, xp, skills, lvl, capstone_skill, skill_slots):
         self.name = name
-        self.st = st
-        self.df = df
-        self.max_hp = max_hp
         self.min_dmg = min_dmg
         self.max_dmg = max_dmg
         self.xp = xp
-        self.common_skills = common_skills
+        self.skills = skills
+        self.capstone_skill = capstone_skill
+        self.skill_slots = skill_slots
         self.lvl = lvl
-
-    def of_balance(self):
-        self.name = "of Balance"
-        Player.max_hp += 5
-        Player.st += 5
-        Player.df += 5
-        self.min_dmg += random.choice[0, 1, 2]
-        self.max_dmg += random.choice[0, 1, 2]
-        tier_1_common_skills = []
-        row_1 = []
-        row_2 = []
-        row_3 = []
 
