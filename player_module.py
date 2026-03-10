@@ -15,6 +15,18 @@ class Player:
         self.req_xp = req_xp
         self.lvl = lvl
 
+    @property
+    def hp(self):
+        return self.max_hp + (self.weapon.total_bonus("max_hp") if self.weapon else 0)
+
+    @property
+    def st(self):
+        return self.st + (self.weapon.total_bonus("st") if self.weapon else 0)
+
+    @property
+    def df(self):
+        return self.df + (self.weapon.total_bonus("df") if self.weapon else 0)
+
     def move(self, py, px):
         self.position[0] += py
         self.position[1] -= px
