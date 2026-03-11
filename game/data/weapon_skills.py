@@ -1,6 +1,3 @@
-import random
-from player_module import Player
-
 class Skill:
 
     def __init__(self, name, tooltip, max_points, points_spent, gains_per_point, effect, stats):

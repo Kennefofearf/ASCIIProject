@@ -1,7 +1,3 @@
-import curses
-import random
-from player_module import Player
-
 class Weapons:
 
     def __init__(self, name, min_dmg, max_dmg, xp, skill_tree, lvl, max_lvl, base_stats, affix, affix_stats):

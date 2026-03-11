@@ -1,5 +1,5 @@
 import random
-from player_module import Player
+
 
 class Affixes:
 
