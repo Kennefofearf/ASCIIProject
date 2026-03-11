@@ -3,29 +3,43 @@ import monster_module
 import random
 
 
+
 class Player:
     def __init__(self, name, icon, max_hp, hp, st, df, req_xp, lvl):
         self.name = name
         self.icon = "@"
         self.max_hp = max_hp
-        self.hp = hp
-        self.st = st
-        self.df = df
+        self._hp = hp
+        self._st = st
+        self._df = df
         self.position = [0, 0]
         self.req_xp = req_xp
         self.lvl = lvl
+        self.weapon = None
 
     @property
     def hp(self):
         return self.max_hp + (self.weapon.total_bonus("max_hp") if self.weapon else 0)
 
+    @hp.setter
+    def hp(self, value):
+        self._hp = max(0, min(value, self.max_hp))
+
     @property
     def st(self):
         return self.st + (self.weapon.total_bonus("st") if self.weapon else 0)
 
+    @st.setter
+    def st(self, value):
+        self._st = max(0, value)
+
     @property
     def df(self):
         return self.df + (self.weapon.total_bonus("df") if self.weapon else 0)
+
+    @df.setter
+    def st(self, value):
+        self._df = max(0, value)
 
     def move(self, py, px):
         self.position[0] += py
@@ -35,9 +49,9 @@ class Player:
         return (self.position[0] + py, self.position[1] - px)
 
     def take_dmg(self, dmg):
-        self.hp -= dmg
-        if self.hp <= 0:
-            self.hp = 0
+        self._hp -= dmg
+        if self._hp <= 0:
+            self._hp = 0
 
     def xp_gain(self, xp):
         self.req_xp -= xp
@@ -46,9 +60,9 @@ class Player:
             self.lvl += 1
             hp_gain = random.choice([5, 7, 7, 7, 10, 20])
             self.max_hp += hp_gain
-            self.hp += hp_gain
-            self.st += random.choice([1, 1, 0, 2])
-            self.df += random.choice([1, 1, 1, 0])
+            self._hp += hp_gain
+            self._st += random.choice([1, 1, 0, 2])
+            self._df += random.choice([1, 1, 1, 0])
             self.req_xp += 4 + self.lvl * 5
             self.req_xp -= xp_overflow
 

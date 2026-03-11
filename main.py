@@ -55,16 +55,16 @@ def world_event_logic(player, py, px, player_window, target_window, stdscr):
         elif (ney, nex) == tuple(player.position):
             ey = 0
             ex = 0
-            player.take_dmg(max(0, e.st - player.df))
-            e.take_dmg(max(0, player.st - e.df))
+            player.take_dmg(max(0, e.st - player._df))
+            e.take_dmg(max(0, player._st - e.df))
             player_window.erase()
             player_window.refresh()
 
         elif (ny, nx) == tuple(e.position):
             py = 0
             px = 0
-            e.take_dmg(max(0, player.st - e.df))
-            player.take_dmg(max(0, e.st - player.df))
+            e.take_dmg(max(0, player._st - e.df))
+            player.take_dmg(max(0, e.st - player._df))
             target_window.erase()
             target_window.refresh()
 
@@ -145,9 +145,9 @@ def gamestart(stdscr):
 
         player_window.addstr(1, 1, f"       {player.name}")
         player_window.addstr(2, 1, f"Lvl:   {player.lvl}")
-        player_window.addstr(3, 1, f" HP:   {player.hp} / {player.max_hp}")
-        player_window.addstr(4, 1, f"STR:   {player.st}")
-        player_window.addstr(5, 1, f"DEF:   {player.df}")
+        player_window.addstr(3, 1, f" HP:   {player._hp} / {player.max_hp}")
+        player_window.addstr(4, 1, f"STR:   {player._st}")
+        player_window.addstr(5, 1, f"DEF:   {player._df}")
         player_window.addstr(6, 1, f"Nxt:   {player.req_xp}")
         player_window.refresh()
 
