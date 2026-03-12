@@ -1,4 +1,5 @@
 import curses
+import time
 from curses import wrapper
 from player_module import Player
 from monster_module import GiantAnt
@@ -9,10 +10,11 @@ for enemy in range(3):
     e = GiantAnt()
     enemies.append(e)
 
-def mouse_actions(mx, my, bstate):
+def mouse_actions(mx, my, bstate, player):
     if bstate & curses.BUTTON1_CLICKED:
         for enemy in enemies:
             if (my, mx) == tuple(enemy.position) and enemy.alive:
+                player.target = enemy
                 return True, enemy
         return True, None
     return False, None
@@ -26,19 +28,65 @@ def draw_enemies(stdscr, enemies, selected, prev_positions, hovered):
 
         if enemy == selected:
             attr = curses.color_pair(1)
-        elif enemy == hovered:
-            attr = curses.A_REVERSE
+        # elif enemy == hovered:
+        #     attr = curses.A_REVERSE
         else:
             attr = curses.A_NORMAL
 
         stdscr.addch(y, x, enemy.icon, attr)
         prev_positions.append((y, x))
 
+def is_adjacant(p1, p2):
+    y1, x1 = p1
+    y2, x2 = p2
+    return abs(y1 - y2) + abs(x1 - x2) == 1
+
+def player_auto_attack_logic(player, target_window, player_window):
+    target = player.target
+
+    if target is None:
+        return
+
+    if not target.alive:
+        player.target = None
+        return
+
+    if is_adjacant(player.position, target.position):
+        now = time.time()
+        if now - player.last_attack_time >= player.attack_cooldown:
+            target.take_dmg(max(0, player._st - target.df))
+            target_window.erase()
+            target_window.refresh()
+            player.last_attack_time = now
+
+        if not target.alive:
+            player.xp_gain(target.xp)
+            player.target = None
+            player_window.erase()
+            player_window.refresh()
+
+
+def e_auto_attack_logic(e, player, player_window):
+
+    for e in enemies:
+        if not e.alive:
+            continue
+
+        if is_adjacant(e.position, player.position):
+            now = time.time()
+            if now - e.last_attack_time >= e.attack_cooldown:
+                player.take_dmg(max(0, e.st - player._df))
+                player_window.erase()
+                player_window.refresh()
+                e.last_attack_time = now
+
 def world_event_logic(player, py, px, player_window, target_window, stdscr):
     ny, nx = player.future_position(py, px)
     if not movement_area(stdscr, ny, nx):
         py = 0
         px = 0
+
+    player_auto_attack_logic(player, target_window, player_window)
 
     for e in enemies:
         e.respawn_timer(player)
@@ -48,6 +96,8 @@ def world_event_logic(player, py, px, player_window, target_window, stdscr):
         ey, ex = e.enemy_random_movement()
         ney, nex = e.future_position(ey, ex)
 
+        e_auto_attack_logic(e, player, player_window)
+
         if not movement_area(stdscr, ney, nex):
             ey = 0
             ex = 0
@@ -55,27 +105,14 @@ def world_event_logic(player, py, px, player_window, target_window, stdscr):
         elif (ney, nex) == tuple(player.position):
             ey = 0
             ex = 0
-            player.take_dmg(max(0, e.st - player._df))
-            e.take_dmg(max(0, player._st - e.df))
-            player_window.erase()
-            player_window.refresh()
 
         elif (ny, nx) == tuple(e.position):
             py = 0
             px = 0
-            e.take_dmg(max(0, player._st - e.df))
-            player.take_dmg(max(0, e.st - player._df))
-            target_window.erase()
-            target_window.refresh()
 
         elif (ny, nx) == (ney, nex):
             py = 0
             px = 0
-
-        if not e.alive:
-            player.xp_gain(e.xp)
-            player_window.erase()
-            player_window.refresh()
 
         e.move(ey, ex)
 
@@ -151,7 +188,8 @@ def gamestart(stdscr):
         player_window.addstr(6, 1, f"Nxt:   {player.req_xp}")
         player_window.refresh()
 
-        dbg.addstr(1, 1, f"selected: {selected.name if selected else None}")
+        dbg.addstr(1, 1, f"{player.target}")
+        dbg.addstr(2, 1, f"{selected}")
         dbg.refresh()
 
         key = stdscr.getch()
@@ -166,13 +204,18 @@ def gamestart(stdscr):
                     hovered = enemy
                     break
 
-            clicked, picked = mouse_actions(mx, my, bstate)
+            clicked, picked = mouse_actions(mx, my, bstate, player)
             if clicked:
                 selected = picked
+                player.target = picked
 
         py, px = player.input_action(key)
 
         world_event_logic(player, py, px, player_window, target_window, stdscr)
+
+        if selected and not selected.alive:
+            selected = None
+
         stdscr.refresh()
 
 wrapper(gamestart)

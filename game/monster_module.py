@@ -5,7 +5,7 @@ import pdb
 
 class Monster:
 
-    def __init__(self, name, icon, max_hp, hp, st, df, xp, respawn_delay):
+    def __init__(self, name, icon, max_hp, hp, st, df, xp, respawn_delay, attack_cooldown):
         self.name = name
         self.icon = icon
         self.max_hp = max_hp
@@ -16,6 +16,8 @@ class Monster:
         self.alive = True
         self.xp = xp
         self.respawn_delay = respawn_delay
+        self.attack_cooldown = attack_cooldown
+        self.last_attack_time = 0
 
         self.ey = 0
         self.ex = 0
@@ -63,4 +65,4 @@ class Monster:
 
 class GiantAnt(Monster):
     def __init__(self, name="Giant Ant", icon="A", max_hp=20, hp=20, st=5, df=1, xp=2):
-        super().__init__(name, icon, max_hp, hp, st, df, xp, respawn_delay=None)
+        super().__init__(name, icon, max_hp, hp, st, df, xp, respawn_delay=None, attack_cooldown=2.0)

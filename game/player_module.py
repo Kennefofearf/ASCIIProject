@@ -1,6 +1,7 @@
 import curses
 import monster_module
 import random
+import time
 
 
 
@@ -16,6 +17,9 @@ class Player:
         self.req_xp = req_xp
         self.lvl = lvl
         self.weapon = None
+        self.target = None
+        self.attack_cooldown = 1.0
+        self.last_attack_time = 0
 
     @property
     def hp(self):
