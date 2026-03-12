@@ -7,5 +7,26 @@ UNCOMMON_AFFIXES = {
             "min_dmg": random.choice([0, 1, 2]),
             "max_dmg": random.choice([0, 1, 2]),
             "slots": 7
+        },
+        "of Minor Constitution": {
+            "name": "of Minor Constitution",
+            "affix_stats": {"max_hp": 15, "st": 0, "df": 0},
+            "min_dmg": random.choice([0, 1, 2]),
+            "max_dmg": random.choice([0, 1, 2]),
+            "slots": 7
+        },
+        "of Perseverance": {
+            "name": "of Perseverance",
+            "affix_stats": {"max_hp": 9, "st": 0, "df": 7},
+            "min_dmg": random.choice([0, 1, 2]),
+            "max_dmg": random.choice([0, 1, 2]),
+            "slots": 7
+        },
+        "of the Rotund Fool": {
+            "name": "of the Rotund Fool",
+            "affix_stats": {"max_hp": 20, "st": -10, "df": -7},
+            "min_dmg": random.choice([0, 1, 2]),
+            "max_dmg": random.choice([0, 1, 2]),
+            "slots": 7
         }
     }
