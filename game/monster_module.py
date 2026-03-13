@@ -18,6 +18,7 @@ class Monster:
         self.respawn_delay = respawn_delay
         self.attack_cooldown = attack_cooldown
         self.last_attack_time = 0
+        self.is_attacking = False
 
         self.ey = 0
         self.ex = 0
@@ -27,22 +28,29 @@ class Monster:
         self.idle = 0.0
 
     def enemy_random_movement(self):
-        now = time.monotonic()
-        if now < self.idle:
-            return 0, 0
+        ey, ex = 0, 0
+        if not self.is_attacking:
+            ey = 0
+            ex = 0
+            now = time.monotonic()
+            if now < self.idle:
+                return 0, 0
 
-        ey = random.choice([-1, 0, 1])
-        ex = random.choice([-1, 0, 1])
+            ey = random.choice([-1, 0, 1])
+            ex = random.choice([-1, 0, 1])
 
-        if random.randint(1, 3) == 1:
-            self.idle = now + random.uniform(2, 4)
+            if random.randint(1, 3) == 1:
+                self.idle = now + random.uniform(2, 4)
 
+            return ey, ex
         return ey, ex
 
     def move(self, ey, ex):
-        if self.alive:
-            self.position[0] += ey
-            self.position[1] -= ex
+        if not self.is_attacking:
+            if self.alive:
+                self.position[0] += ey
+                self.position[1] -= ex
+        return
 
     def future_position(self, ey, ex):
         return (self.position[0] + ey, self.position[1] - ex)

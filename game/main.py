@@ -73,12 +73,16 @@ def e_auto_attack_logic(e, player, player_window):
             continue
 
         if is_adjacant(e.position, player.position):
+            e.is_attacking = True
             now = time.time()
             if now - e.last_attack_time >= e.attack_cooldown:
                 player.take_dmg(max(0, e.st - player._df))
                 player_window.erase()
                 player_window.refresh()
                 e.last_attack_time = now
+
+        else:
+            e.is_attacking = False
 
 def world_event_logic(player, py, px, player_window, target_window, stdscr):
     ny, nx = player.future_position(py, px)
@@ -139,7 +143,7 @@ def gamestart(stdscr):
 
     stdscr.clear()
 
-    player = Player("Koe", "@", 50, 50, 10, 3, 4, 1)
+    player = Player("Koe", "@", 50, 50, 3, 3, 4, 1)
     player.position = [20, 55]
 
     stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
