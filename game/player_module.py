@@ -18,6 +18,7 @@ class Player:
         self.lvl = lvl
         self.weapon = None
         self.target = None
+        self.damaged = False
         self.attack_cooldown = 1.0
         self.last_attack_time = 0
 
@@ -54,8 +55,10 @@ class Player:
 
     def take_dmg(self, dmg):
         self._hp -= dmg
+        self.damaged = True
         if self._hp <= 0:
             self._hp = 0
+
 
     def xp_gain(self, xp):
         self.req_xp -= xp

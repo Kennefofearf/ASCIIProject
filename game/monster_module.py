@@ -19,7 +19,7 @@ class Monster:
         self.attack_cooldown = attack_cooldown
         self.last_attack_time = 0
         self.is_attacking = False
-
+        self.damaged = False
         self.ey = 0
         self.ex = 0
         self.random_movement = random.randint(1, 10)
@@ -57,6 +57,7 @@ class Monster:
 
     def take_dmg(self, dmg):
         self.hp -= dmg
+        self.damaged = True
         if self.hp <= 0:
             self.hp = 0
             self.respawn_delay = time.monotonic() + 3

@@ -131,6 +131,7 @@ def gamestart(stdscr):
 
     curses.start_color()
     curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
+    curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK)
 
     curses.noecho()
     curses.curs_set(0)
@@ -146,12 +147,16 @@ def gamestart(stdscr):
     player = Player("Koe", "@", 50, 50, 3, 3, 4, 1)
     player.position = [20, 55]
 
+    # Window rendering
+
     stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
     stdscr.refresh()
     targetwin_h, targetwin_w = 10, 20
     playerwin_h, playerwin_w = 10, 20
+    logwin_h, logwin_w = 10, 77
     target_window = curses.newwin(targetwin_h, targetwin_w, 29, 99)
     player_window = curses.newwin(playerwin_h, playerwin_w, 29, 0)
+    log_window = curses.newwin(logwin_h, logwin_w, 29, 21)
     dbg = curses.newwin(12, 30, 1, 89)
 
     prev_positions = []
@@ -164,9 +169,11 @@ def gamestart(stdscr):
 
         prev_positions = []
 
+        log_window.box()
         target_window.box()
         player_window.box()
         dbg.box()
+        log_window.refresh()
 
         player.player_spawn(stdscr, prev_positions, player)
         draw_enemies(stdscr, enemies, selected, prev_positions, hovered)
@@ -191,6 +198,35 @@ def gamestart(stdscr):
         player_window.addstr(5, 1, f"DEF:   {player._df}")
         player_window.addstr(6, 1, f"Nxt:   {player.req_xp}")
         player_window.refresh()
+
+        p_dmg = player._st - e.df
+        e_dmg = e.st - player._df
+
+        player_dmg_yellow = f"{p_dmg}"
+        e_dmg_red = f"{e_dmg}"
+
+        if player.damaged and not e.damaged:
+            log_window.addstr(f"    {player.name} ", curses.color_pair(2))
+            log_window.addstr("gets hit for ")
+            log_window.addstr(f"{e_dmg_red}", curses.color_pair(1))
+            log_window.addstr("!\n")
+            player.damaged = False
+            log_window.refresh()
+        elif e.damaged and player.damaged:
+            log_window.addstr(f"    {e.name} ", curses.color_pair(1))
+            log_window.addstr("gets hit for ")
+            log_window.addstr(f"{player_dmg_yellow}")
+            log_window.addstr("!\n")
+            log_window.refresh()
+            log_window.addstr(f"    {player.name} ", curses.color_pair(2))
+            log_window.addstr("gets hit for ")
+            log_window.addstr(f"{e_dmg_red}", curses.color_pair(1))
+            log_window.addstr("!\n")
+            log_window.refresh()
+            e.damaged = False
+            player.damaged = False
+            log_window.refresh()
+
 
         dbg.addstr(1, 1, f"{player.target}")
         dbg.addstr(2, 1, f"{selected}")
