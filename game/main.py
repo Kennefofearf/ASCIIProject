@@ -19,7 +19,7 @@ def mouse_actions(mx, my, bstate, player):
         return True, None
     return False, None
 
-def draw_enemies(stdscr, enemies, selected, prev_positions, hovered):
+def draw_enemies(stdscr, enemies, selected, prev_positions):
     for enemy in enemies:
         if not enemy.alive:
             continue
@@ -28,8 +28,6 @@ def draw_enemies(stdscr, enemies, selected, prev_positions, hovered):
 
         if enemy == selected:
             attr = curses.color_pair(1)
-        # elif enemy == hovered:
-        #     attr = curses.A_REVERSE
         else:
             attr = curses.A_NORMAL
 
@@ -41,7 +39,7 @@ def is_adjacant(p1, p2):
     y2, x2 = p2
     return abs(y1 - y2) + abs(x1 - x2) == 1
 
-def player_auto_attack_logic(player, target_window, player_window):
+def player_auto_attack_logic(player, target_window, player_window, combat_messages, p_dmg, inner, scroll_offset):
     target = player.target
 
     if target is None:
@@ -55,6 +53,9 @@ def player_auto_attack_logic(player, target_window, player_window):
         now = time.time()
         if now - player.last_attack_time >= player.attack_cooldown:
             target.take_dmg(max(0, player._st - target.df))
+            add_log_messages(combat_messages, [(f"{player.name} ", 1), ("is hit for ", 0), (f"{p_dmg}", 2),
+                                               ("!", 0)])
+            draw_log(inner, combat_messages, scroll_offset)
             target_window.erase()
             target_window.refresh()
             player.last_attack_time = now
@@ -66,7 +67,7 @@ def player_auto_attack_logic(player, target_window, player_window):
             player_window.refresh()
 
 
-def e_auto_attack_logic(e, player, player_window):
+def e_auto_attack_logic(e, player, player_window, combat_messages, selected_dmg, inner, scroll_offset):
 
     for e in enemies:
         if not e.alive:
@@ -77,20 +78,22 @@ def e_auto_attack_logic(e, player, player_window):
             now = time.time()
             if now - e.last_attack_time >= e.attack_cooldown:
                 player.take_dmg(max(0, e.st - player._df))
+                add_log_messages(combat_messages,
+                                 [(f"{e.name} ", 2), ("is hit for ", 0), (f"{selected_dmg}", 1), ("!", 0)])
+                draw_log(inner, combat_messages, scroll_offset)
                 player_window.erase()
                 player_window.refresh()
                 e.last_attack_time = now
-
         else:
             e.is_attacking = False
 
-def world_event_logic(player, py, px, player_window, target_window, stdscr):
+def world_event_logic(player, py, px, player_window, target_window, stdscr, combat_messages, selected_dmg, p_dmg, inner, scroll_offset):
     ny, nx = player.future_position(py, px)
     if not movement_area(stdscr, ny, nx):
         py = 0
         px = 0
 
-    player_auto_attack_logic(player, target_window, player_window)
+    player_auto_attack_logic(player, target_window, player_window, combat_messages, selected_dmg, inner, scroll_offset)
 
     for e in enemies:
         e.respawn_timer(player)
@@ -100,7 +103,7 @@ def world_event_logic(player, py, px, player_window, target_window, stdscr):
         ey, ex = e.enemy_random_movement()
         ney, nex = e.future_position(ey, ex)
 
-        e_auto_attack_logic(e, player, player_window)
+        e_auto_attack_logic(e, player, player_window, combat_messages, p_dmg, inner, scroll_offset)
 
         if not movement_area(stdscr, ney, nex):
             ey = 0
@@ -126,6 +129,46 @@ def movement_area(win, y, x):
     h, w = win.getmaxyx()
     return 1 <= y <= h - 2 and 1 <= x <= w - 2
 
+def create_combat_log_windows(stdscr):
+    logwin_h, logwin_w, y, x = 10, 77, 29, 21
+    outer_log_window = curses.newwin(logwin_h, logwin_w, y, x)
+    outer_log_window.box()
+    outer_log_window.refresh()
+
+    inner_log_window = curses.newwin(logwin_h - 2, logwin_w - 2, y + 1, x + 1)
+    inner_log_window.scrollok(True)
+    inner_log_window.idlok(True)
+    inner_log_window.refresh()
+
+    return outer_log_window, inner_log_window
+
+def add_log_messages(combat_messages, message_pair):
+    if len(combat_messages) > 200:
+        combat_messages.pop(0)
+
+    combat_messages.append(message_pair)
+
+def draw_log(log_win, combat_messages, scroll_offset):
+    h, w = log_win.getmaxyx()
+    log_win.erase()
+
+    start = max(0, len(combat_messages) - h - scroll_offset)
+    visible = combat_messages[start:start + h]
+
+    for row, message_pair in enumerate(visible):
+        col = 0
+        for text, color_pair in message_pair:
+            text = str(text)
+
+            if color_pair == 0:
+                log_win.addstr(row, col, text[:w-col])
+            else:
+                log_win.addstr(row, col, text[:w-col], curses.color_pair(color_pair))
+
+            col += len(text)
+
+    log_win.refresh()
+
 def gamestart(stdscr):
     curses.cbreak()
 
@@ -140,7 +183,6 @@ def gamestart(stdscr):
     curses.mouseinterval(200)
     stdscr.timeout(17)
     selected = None
-    hovered = None
 
     stdscr.clear()
 
@@ -153,13 +195,16 @@ def gamestart(stdscr):
     stdscr.refresh()
     targetwin_h, targetwin_w = 10, 20
     playerwin_h, playerwin_w = 10, 20
-    logwin_h, logwin_w = 10, 77
     target_window = curses.newwin(targetwin_h, targetwin_w, 29, 99)
     player_window = curses.newwin(playerwin_h, playerwin_w, 29, 0)
-    log_window = curses.newwin(logwin_h, logwin_w, 29, 21)
-    dbg = curses.newwin(12, 30, 1, 89)
+    dbg = curses.newwin(15, 30, 1, 89)
 
     prev_positions = []
+
+    outer, inner = create_combat_log_windows(stdscr)
+    combat_messages = []
+    log_height = inner.getmaxyx()[0]
+    scroll_offset = 0
 
     while True:
         #time.sleep(0.5)
@@ -169,14 +214,12 @@ def gamestart(stdscr):
 
         prev_positions = []
 
-        log_window.box()
         target_window.box()
         player_window.box()
         dbg.box()
-        log_window.refresh()
 
         player.player_spawn(stdscr, prev_positions, player)
-        draw_enemies(stdscr, enemies, selected, prev_positions, hovered)
+        draw_enemies(stdscr, enemies, selected, prev_positions)
 
         stdscr.refresh()
 
@@ -185,6 +228,7 @@ def gamestart(stdscr):
             target_window.addstr(3, 1, f" HP:   {selected.hp} / {selected.max_hp}")
             target_window.addstr(5, 1, f"STR:   {selected.st}")
             target_window.addstr(7, 1, f"DEF:   {selected.df}")
+            dbg.addstr(1, 1, f"{selected.name}")
             target_window.refresh()
         else:
             target_window.erase()
@@ -200,58 +244,53 @@ def gamestart(stdscr):
         player_window.refresh()
 
         p_dmg = player._st - e.df
-        e_dmg = e.st - player._df
+        selected_dmg = e.st - player._df
 
-        player_dmg_yellow = f"{p_dmg}"
-        e_dmg_red = f"{e_dmg}"
+        # if player.damaged:
+        #     add_log_messages(combat_messages, [(f"{player.name} ", 2), ("is hit for ", 0), (f"{selected_dmg}", 1),
+        #                                        ("!", 0)])
+        #     draw_log(inner, combat_messages, scroll_offset)
+        #     player.damaged = False
+        # elif e.damaged:
+        #     add_log_messages(combat_messages, [(f"{selected.name} ", 1), ("is hit for ", 0), (f"{p_dmg}", 2), ("!", 0)])
+        #     draw_log(inner, combat_messages, scroll_offset)
+        #     e.damaged = False
+        # inner.refresh()
 
-        if player.damaged and not e.damaged:
-            log_window.addstr(f"    {player.name} ", curses.color_pair(2))
-            log_window.addstr("gets hit for ")
-            log_window.addstr(f"{e_dmg_red}", curses.color_pair(1))
-            log_window.addstr("!\n")
-            player.damaged = False
-            log_window.refresh()
-        elif e.damaged and player.damaged:
-            log_window.addstr(f"    {e.name} ", curses.color_pair(1))
-            log_window.addstr("gets hit for ")
-            log_window.addstr(f"{player_dmg_yellow}")
-            log_window.addstr("!\n")
-            log_window.refresh()
-            log_window.addstr(f"    {player.name} ", curses.color_pair(2))
-            log_window.addstr("gets hit for ")
-            log_window.addstr(f"{e_dmg_red}", curses.color_pair(1))
-            log_window.addstr("!\n")
-            log_window.refresh()
-            e.damaged = False
-            player.damaged = False
-            log_window.refresh()
-
-
-        dbg.addstr(1, 1, f"{player.target}")
-        dbg.addstr(2, 1, f"{selected}")
+        dbg.addstr(2, 1, f"N/A")
         dbg.refresh()
 
         key = stdscr.getch()
+        my = 0
+        mx = 0
 
         if key == ord("q"):
             break
         elif key == curses.KEY_MOUSE:
             _, mx, my, _, bstate, = curses.getmouse()
-            hovered = None
-            for enemy in enemies:
-                if enemy.alive and (my, mx) == tuple(enemy.position):
-                    hovered = enemy
-                    break
 
             clicked, picked = mouse_actions(mx, my, bstate, player)
-            if clicked:
-                selected = picked
-                player.target = picked
+            selected = picked
+            player.target = picked
+
+        scroll_log_y, scroll_log_x = inner.getbegyx()
+        scroll_log_h, scroll_log_w = inner.getmaxyx()
+
+        if scroll_log_y <= my < scroll_log_y + scroll_log_h and scroll_log_x <= mx < scroll_log_x + scroll_log_w:
+
+            if bstate & curses.BUTTON4_PRESSED:
+                scroll_offset += 1
+            elif bstate & curses.BUTTON5_PRESSED:
+                scroll_offset = max(0, scroll_offset - 1)
+
+            max_scroll = max(0, len(combat_messages) - log_height)
+            scroll_offset = min(scroll_offset, max_scroll)
+
+        draw_log(inner, combat_messages, scroll_offset)
 
         py, px = player.input_action(key)
 
-        world_event_logic(player, py, px, player_window, target_window, stdscr)
+        world_event_logic(player, py, px, player_window, target_window, stdscr, combat_messages, selected_dmg, p_dmg, inner, scroll_offset)
 
         if selected and not selected.alive:
             selected = None
