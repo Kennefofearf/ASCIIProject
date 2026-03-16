@@ -246,17 +246,6 @@ def gamestart(stdscr):
         p_dmg = player._st - e.df
         selected_dmg = e.st - player._df
 
-        # if player.damaged:
-        #     add_log_messages(combat_messages, [(f"{player.name} ", 2), ("is hit for ", 0), (f"{selected_dmg}", 1),
-        #                                        ("!", 0)])
-        #     draw_log(inner, combat_messages, scroll_offset)
-        #     player.damaged = False
-        # elif e.damaged:
-        #     add_log_messages(combat_messages, [(f"{selected.name} ", 1), ("is hit for ", 0), (f"{p_dmg}", 2), ("!", 0)])
-        #     draw_log(inner, combat_messages, scroll_offset)
-        #     e.damaged = False
-        # inner.refresh()
-
         dbg.addstr(2, 1, f"N/A")
         dbg.refresh()
 
