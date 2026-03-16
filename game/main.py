@@ -53,7 +53,7 @@ def player_auto_attack_logic(player, target_window, player_window, combat_messag
         now = time.time()
         if now - player.last_attack_time >= player.attack_cooldown:
             target.take_dmg(max(0, player._st - target.df))
-            add_log_messages(combat_messages, [(f"{player.name} ", 1), ("is hit for ", 0), (f"{p_dmg}", 2),
+            add_log_messages(combat_messages, [(f"{e.name} ", 1), ("is hit for ", 0), (f"{player._st - target.df}", 2),
                                                ("!", 0)])
             draw_log(inner, combat_messages, scroll_offset)
             target_window.erase()
@@ -79,7 +79,7 @@ def e_auto_attack_logic(e, player, player_window, combat_messages, selected_dmg,
             if now - e.last_attack_time >= e.attack_cooldown:
                 player.take_dmg(max(0, e.st - player._df))
                 add_log_messages(combat_messages,
-                                 [(f"{e.name} ", 2), ("is hit for ", 0), (f"{selected_dmg}", 1), ("!", 0)])
+                                 [(f"{player.name} ", 2), ("is hit for ", 0), (f"{e.st - player._df}", 1), ("!", 0)])
                 draw_log(inner, combat_messages, scroll_offset)
                 player_window.erase()
                 player_window.refresh()
@@ -186,7 +186,8 @@ def gamestart(stdscr):
 
     stdscr.clear()
 
-    player = Player("Koe", "@", 50, 50, 3, 3, 4, 1)
+    y, x = stdscr.getmaxyx()
+    player = Player("Koe", "@", 50, 50, 2, 3, 4, 1)
     player.position = [20, 55]
 
     # Window rendering
@@ -195,9 +196,10 @@ def gamestart(stdscr):
     stdscr.refresh()
     targetwin_h, targetwin_w = 10, 20
     playerwin_h, playerwin_w = 10, 20
-    target_window = curses.newwin(targetwin_h, targetwin_w, 29, 99)
-    player_window = curses.newwin(playerwin_h, playerwin_w, 29, 0)
-    dbg = curses.newwin(15, 30, 1, 89)
+    target_window = curses.newwin(targetwin_h, targetwin_w, int(y * 0.73), int(x * 0.83))
+    player_window = curses.newwin(playerwin_h, playerwin_w, int(y * 0.73), int(x * 0.01))
+    dbg_h, dbg_w = 15, 30
+    dbg = curses.newwin(dbg_h, dbg_w, y - (y - 1), x - (x - 89))
 
     prev_positions = []
 
@@ -246,7 +248,8 @@ def gamestart(stdscr):
         p_dmg = player._st - e.df
         selected_dmg = e.st - player._df
 
-        dbg.addstr(2, 1, f"N/A")
+        dbg.addstr(1, 1, f"Max_x: {x}")
+        dbg.addstr(2, 1, f"Max_y: {y}")
         dbg.refresh()
 
         key = stdscr.getch()
