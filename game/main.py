@@ -140,7 +140,7 @@ def create_combat_log_windows(stdscr):
     inner_log_window.idlok(True)
     inner_log_window.refresh()
 
-    return outer_log_window, inner_log_window
+    return outer_log_window, inner_log_window, logwin_h, logwin_w
 
 def add_log_messages(combat_messages, message_pair):
     if len(combat_messages) > 200:
@@ -203,7 +203,7 @@ def gamestart(stdscr):
 
     prev_positions = []
 
-    outer, inner = create_combat_log_windows(stdscr)
+    outer, inner, outer_h, outer_w = create_combat_log_windows(stdscr)
     combat_messages = []
     log_height = inner.getmaxyx()[0]
     scroll_offset = 0
@@ -258,6 +258,20 @@ def gamestart(stdscr):
 
         if key == ord("q"):
             break
+        elif key == curses.KEY_RESIZE:
+            stdscr.clear()
+            stdscr_y, stdscr_x = stdscr.getmaxyx()
+            target_window = curses.newwin(targetwin_h, targetwin_w, int((stdscr_y - 10) * 0.99), int((stdscr_x - 20) *
+                                                                                                     0.99))
+            player_window = curses.newwin(playerwin_h, playerwin_w, int((stdscr_y - 10) * 0.99), int(stdscr_x * 0.01))
+            # outer h & w = 10, 77
+            outer = curses.newwin(outer_h, outer_w, int((stdscr_y - 10) * 0.99), int(stdscr_x * 0.01) + 21)
+            inner = curses.newwin(outer_h - 2, outer_w - 2, int((stdscr_y - 9) * 0.99), int(stdscr_x * 0.01) + 22)
+            outer.box()
+            outer.refresh()
+            inner.box()
+            inner.refresh()
+            stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
         elif key == curses.KEY_MOUSE:
             _, mx, my, _, bstate, = curses.getmouse()
 
