@@ -132,7 +132,6 @@ def movement_area(win, y, x):
 def create_combat_log_windows(stdscr):
     logwin_h, logwin_w, y, x = 10, 77, 29, 21
     outer_log_window = curses.newwin(logwin_h, logwin_w, y, x)
-    outer_log_window.box()
     outer_log_window.refresh()
 
     inner_log_window = curses.newwin(logwin_h - 2, logwin_w - 2, y + 1, x + 1)
@@ -261,12 +260,15 @@ def gamestart(stdscr):
         elif key == curses.KEY_RESIZE:
             stdscr.clear()
             stdscr_y, stdscr_x = stdscr.getmaxyx()
+            resize_x = stdscr_x
             target_window = curses.newwin(targetwin_h, targetwin_w, int((stdscr_y - 10) * 0.99), int((stdscr_x - 20) *
                                                                                                      0.99))
             player_window = curses.newwin(playerwin_h, playerwin_w, int((stdscr_y - 10) * 0.99), int(stdscr_x * 0.01))
             # outer h & w = 10, 77
-            outer = curses.newwin(outer_h, outer_w, int((stdscr_y - 10) * 0.99), int(stdscr_x * 0.01) + 21)
-            inner = curses.newwin(outer_h - 2, outer_w - 2, int((stdscr_y - 9) * 0.99), int(stdscr_x * 0.01) + 22)
+            # if stdscr_x > resize_x:
+            #     outer_w += 1
+            outer = curses.newwin(outer_h, outer_w, int((stdscr_y - 10) * 0.99), int((stdscr_x * 0.01) + 21))
+            inner = curses.newwin(outer_h - 2, outer_w - 2, int((stdscr_y - 9) * 0.99), int((stdscr_x * 0.01) + 23))
             outer.box()
             outer.refresh()
             inner.box()
