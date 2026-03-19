@@ -263,6 +263,7 @@ def gamestart(stdscr):
             resize_x = stdscr_x
             target_window = curses.newwin(targetwin_h, targetwin_w, int((stdscr_y - 10) * 0.99), int((stdscr_x - 20) *
                                                                                                      0.99))
+            dbg = curses.newwin(dbg_h, dbg_w, int(stdscr_y * 0.03), int(stdscr_x * 0.99) - 30)
             player_window = curses.newwin(playerwin_h, playerwin_w, int((stdscr_y - 10) * 0.99), int(stdscr_x * 0.01))
             # outer h & w = 10, 77
             # if stdscr_x > resize_x:
