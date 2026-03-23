@@ -1,7 +1,3 @@
-import time
-
-now = time.time()
-
 COMMON_WEAPON_ABILITIES = {
         "Gash": {
         "name": "Gash",
@@ -18,5 +14,14 @@ COMMON_WEAPON_ABILITIES = {
                 "interval": 1
                 }
         ]
-    }
+    },
+        "Bash": {
+                "name": "Bash",
+                "tooltip": "Hit the target with the hilt of your weapon for X damage.",
+                "cooldown": 10,
+                "buff": None,
+                "debuff": None,
+                "damage": 10,
+                "effect": None
+            }
 }
