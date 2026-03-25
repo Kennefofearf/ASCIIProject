@@ -13,5 +13,15 @@ class Weapon_Abilities:
         self.gains_per_point = gains_per_point
         self.last_tick_time = 0
 
-        def bonus(self):
-            return self.points_spent * self.gains_per_point
+    @property
+    def name(self):
+        return f"{self.name}"
+
+    def tooltip(self):
+        return f"{self.name}"
+
+    def damage(self):
+        return self.damage
+
+    def bonus(self):
+        return self.points_spent * self.gains_per_point
