@@ -5,7 +5,6 @@ from player_module import Player
 from monster_module import GiantAnt
 from data.weapons import Weapons
 from data.weapon_skills import Skill
-from data.weapon_abilities import Weapon_Abilities
 
 enemies = []
 
