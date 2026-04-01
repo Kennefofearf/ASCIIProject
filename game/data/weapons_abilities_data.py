@@ -6,6 +6,8 @@ COMMON_WEAPON_ABILITIES = {
         "buff": None,
         "debuff": None,
         "damage": 3,
+        "range": 1,
+        "target": "enemy",
         "effect": [
             {
                 "type": "bleed",
@@ -22,6 +24,8 @@ COMMON_WEAPON_ABILITIES = {
         "buff": None,
         "debuff": None,
         "damage": 10,
+        "range": 1,
+        "target": "enemy",
         "effect": None
     }
 }
