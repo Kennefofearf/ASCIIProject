@@ -10,10 +10,9 @@ COMMON_WEAPON_ABILITIES = {
         "target": "enemy",
         "effect": [
             {
-                "type": "bleed",
-                "damage": 2,
+                "EFFECT": "bleed",
                 "duration": 5,
-                "interval": 1
+                "value": 2
             }
         ]
     },
