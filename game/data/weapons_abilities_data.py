@@ -1,5 +1,5 @@
 COMMON_WEAPON_ABILITIES = {
-    "Gash": {
+    "gash": {
         "name": "Gash",
         "tooltip": "Give the target a deep cut that inflicts 10 damage over 5 seconds.",
         "cooldown": 8,
@@ -16,7 +16,7 @@ COMMON_WEAPON_ABILITIES = {
             }
         ]
     },
-    "Bash": {
+    "bash": {
         "name": "Bash",
         "tooltip": "Hit the target with the hilt of your weapon for X damage.",
         "cooldown": 10,
