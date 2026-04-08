@@ -1,0 +1,1 @@
+#def apply_effect(target, effect_data, now):
