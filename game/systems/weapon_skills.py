@@ -1,1 +1,2 @@
 from game.data.weapon_skills_data import COMMON_SKILLS
+from game.systems.ability_logic import rebuild_abilities
