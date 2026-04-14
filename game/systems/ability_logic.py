@@ -1,4 +1,5 @@
 from game.data.weapons_abilities_data import COMMON_WEAPON_ABILITIES
+from game.systems.effect_logic import apply_effect
 
 def rebuild_abilities(unit):
     usable = set()
@@ -12,8 +13,11 @@ def rebuild_abilities(unit):
 
     unit.abilities = list(usable)
 
-def use_ability(user, target, ability):
-    damage = int(user.st * ability["damage"])
-    target.take_dmg(max(0, damage - target.df))
-    # if "dot" in ability:
-    #     apply_dot(target, ability["dot"])
+def can_use_ability(user, ability_id, now):
+    if ability_id not in user.abilities:
+        return False, "Ability no longer equipped..."
+
+    if ability_id in user.cooldowns and now < user.cooldowns[ability_id]:
+        return False, "That ability is on cooldown."
+
+    return True, ""
