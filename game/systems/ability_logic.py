@@ -21,3 +21,9 @@ def can_use_ability(user, ability_id, now):
         return False, "That ability is on cooldown."
 
     return True, ""
+
+def in_range(user, target, ability_data):
+    uy, ux = user.position
+    ty, tx = target.position
+    dist = abs(uy - ty) + abs(ux - tx)
+    return dist <= ability_data["range"]
