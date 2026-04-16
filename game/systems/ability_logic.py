@@ -27,3 +27,15 @@ def in_range(user, target, ability_data):
     ty, tx = target.position
     dist = abs(uy - ty) + abs(ux - tx)
     return dist <= ability_data["range"]
+
+def calculate_ability_damage(user, target, ability_data):
+    stat_name = ability_data.get("scaling_stat", "st")
+    power = ability_data.get("power", 1.0)
+
+    attack_value = getattr(user, stat_name, 0)
+    raw = int(attack_value * power)
+
+    if ability_data.get("damage_type") == "physical":
+        return max(0, raw - target.df)
+
+    return raw
