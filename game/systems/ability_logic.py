@@ -39,3 +39,32 @@ def calculate_ability_damage(user, target, ability_data):
         return max(0, raw - target.df)
 
     return raw
+
+def use_ability(user, target, ability_id, now, combat_log=None):
+    ability = COMMON_WEAPON_ABILITIES[ability_id]
+
+    ok, reason = can_use_ability(user, ability_id, now)
+    if not ok:
+        return False, reason
+
+    if ability["target_type"] == "enemy":
+        if target is None or not target.alive:
+            return False, "Invalid target."
+
+        if not in_range(user, target, ability):
+            return False, "Target out of range."
+
+    if ability["kind"] == "attack":
+        dmg = calculate_ability_damage(user, target, ability)
+        target.take_dmg(dmg)
+
+        if combat_log is not None:
+            combat_log.append(f"{user.name} uses {ability['name']} on {target.name} for {dmg} damage.")
+
+        for effect in ability.get("on_hit_effects", []):
+            apply_effect(target, effect, now)
+            if combat_log is not None:
+                combat_log.append(f"{target.name} is afflicted with {effect['effect_id']}")
+
+    user.cooldowns[ability_id] = now + ability["cooldown"]
+    return True, "ok"
