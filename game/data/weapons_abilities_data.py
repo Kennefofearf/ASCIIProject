@@ -1,11 +1,14 @@
 COMMON_WEAPON_ABILITIES = {
     "gash": {
         "name": "Gash",
+        "class": "attack",
         "tooltip": "Give the target a deep cut that inflicts 10 damage over 5 seconds.",
         "cooldown": 8,
         "buff": None,
         "debuff": None,
         "damage": 3,
+        "damage_type": "physical",
+        "on_hit_effects": "bleed",
         "range": 1,
         "target": "enemy",
         "effect": [
@@ -14,7 +17,8 @@ COMMON_WEAPON_ABILITIES = {
                 "duration": 5,
                 "value": 2
             }
-        ]
+        ],
+        "scaling_stat": "st"
     },
     "bash": {
         "name": "Bash",

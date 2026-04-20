@@ -47,14 +47,14 @@ def use_ability(user, target, ability_id, now, combat_log=None):
     if not ok:
         return False, reason
 
-    if ability["target_type"] == "enemy":
+    if ability["target"] == "enemy":
         if target is None or not target.alive:
             return False, "Invalid target."
 
         if not in_range(user, target, ability):
             return False, "Target out of range."
 
-    if ability["kind"] == "attack":
+    if ability["class"] == "attack":
         dmg = calculate_ability_damage(user, target, ability)
         target.take_dmg(dmg)
 
