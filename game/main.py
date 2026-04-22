@@ -34,12 +34,12 @@ def draw_enemies(stdscr, enemies, selected, prev_positions):
         stdscr.addch(y, x, enemy.icon, attr)
         prev_positions.append((y, x))
 
-def is_adjacant(p1, p2):
+def is_adjacent(p1, p2):
     y1, x1 = p1
     y2, x2 = p2
     return abs(y1 - y2) + abs(x1 - x2) == 1
 
-def player_auto_attack_logic(player, target_window, player_window, combat_messages, p_dmg, inner, scroll_offset):
+def player_auto_attack_logic(player, target_window, player_window, combat_messages, inner, scroll_offset):
     target = player.target
 
     if target is None:
@@ -49,7 +49,7 @@ def player_auto_attack_logic(player, target_window, player_window, combat_messag
         player.target = None
         return
 
-    if is_adjacant(player.position, target.position):
+    if is_adjacent(player.position, target.position):
         now = time.time()
         if now - player.last_attack_time >= player.attack_cooldown:
             target.take_dmg(max(0, player._st - target.df))
@@ -67,13 +67,13 @@ def player_auto_attack_logic(player, target_window, player_window, combat_messag
             player_window.refresh()
 
 
-def e_auto_attack_logic(e, player, player_window, combat_messages, selected_dmg, inner, scroll_offset):
+def e_auto_attack_logic(e, player, player_window, combat_messages, inner, scroll_offset):
 
     for e in enemies:
         if not e.alive:
             continue
 
-        if is_adjacant(e.position, player.position):
+        if is_adjacent(e.position, player.position):
             e.is_attacking = True
             now = time.time()
             if now - e.last_attack_time >= e.attack_cooldown:
