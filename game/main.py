@@ -53,7 +53,7 @@ def player_auto_attack_logic(player, target_window, player_window, combat_messag
         now = time.time()
         if now - player.last_attack_time >= player.attack_cooldown:
             target.take_dmg(max(0, player._st - target.df))
-            add_log_messages(combat_messages, [(f"{e.name} ", 1), ("is hit for ", 0), (f"{player._st - target.df}", 2),
+            add_log_messages(combat_messages, [(f"{target.name} ", 1), ("is hit for ", 0), (f"{player._st - target.df}", 2),
                                                ("!", 0)])
             draw_log(inner, combat_messages, scroll_offset)
             target_window.erase()
@@ -93,7 +93,7 @@ def world_event_logic(player, py, px, player_window, target_window, stdscr, comb
         py = 0
         px = 0
 
-    player_auto_attack_logic(player, target_window, player_window, combat_messages, selected_dmg, inner, scroll_offset)
+    player_auto_attack_logic(player, target_window, player_window, combat_messages, inner, scroll_offset)
 
     for e in enemies:
         e.respawn_timer(player)
@@ -103,7 +103,7 @@ def world_event_logic(player, py, px, player_window, target_window, stdscr, comb
         ey, ex = e.enemy_random_movement()
         ney, nex = e.future_position(ey, ex)
 
-        e_auto_attack_logic(e, player, player_window, combat_messages, p_dmg, inner, scroll_offset)
+        e_auto_attack_logic(e, player, player_window, combat_messages, inner, scroll_offset)
 
         if not movement_area(stdscr, ney, nex):
             ey = 0
