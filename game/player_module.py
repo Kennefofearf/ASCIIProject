@@ -1,6 +1,7 @@
 import curses
 import monster_module
 import random
+from data.weapon_skills_data import COMMON_SKILLS
 import time
 
 
@@ -18,7 +19,9 @@ class Player:
         self.lvl = lvl
         self.weapon = None
         self.target = None
+        self.skill_tree = {}
         self.damaged = False
+        self.active_effects = []
         self.attack_cooldown = 1.0
         self.last_attack_time = 0
 
@@ -32,7 +35,26 @@ class Player:
 
     @property
     def st(self):
-        return self.st + (self.weapon.total_bonus("st") if self.weapon else 0)
+        bonus = 0
+
+        if self.weapon:
+            bonus += self.weapon.get("base_stats", {}).get("st", 0)
+
+        if self.skill_tree is not None:
+            for skill_id, skill_state in self.skill_tree.items():
+                points = skill_state.get("points", 0)
+
+                if points <= 0:
+                    continue
+
+                skill_data = COMMON_SKILLS.get(skill_id, {})
+                bonus += skill_data.get("stats", {}).get("st", 0) * points
+
+        for effect in self.active_effects:
+            if effect["effect_id"] == "st_up":
+                bonus += effect["value"]
+
+        return self._st + bonus
 
     @st.setter
     def st(self, value):
@@ -40,10 +62,29 @@ class Player:
 
     @property
     def df(self):
-        return self.df + (self.weapon.total_bonus("df") if self.weapon else 0)
+        bonus = 0
+
+        if self.weapon:
+            bonus += self.weapon.get("base_stats", {}).get("df", 0)
+
+        if self.skill_tree is not None:
+            for skill_id, skill_state in self.skill_tree.items():
+                points = skill_state.get("points", 0)
+
+                if points <= 0:
+                    continue
+
+                skill_data = COMMON_SKILLS.get(skill_id, {})
+                bonus += skill_data.get("stats", {}).get("df", 0) * points
+
+        for effect in self.active_effects:
+            if effect["effect_id"] == "df_up":
+                bonus += effect["value"]
+
+        return self._df + bonus
 
     @df.setter
-    def st(self, value):
+    def df(self, value):
         self._df = max(0, value)
 
     def move(self, py, px):

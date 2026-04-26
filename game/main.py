@@ -52,8 +52,8 @@ def player_auto_attack_logic(player, target_window, player_window, combat_messag
     if is_adjacent(player.position, target.position):
         now = time.time()
         if now - player.last_attack_time >= player.attack_cooldown:
-            target.take_dmg(max(0, player._st - target.df))
-            add_log_messages(combat_messages, [(f"{target.name} ", 1), ("is hit for ", 0), (f"{player._st - target.df}", 2),
+            target.take_dmg(max(0, player.st - target.df))
+            add_log_messages(combat_messages, [(f"{target.name} ", 1), ("is hit for ", 0), (f"{player.st - target.df}", 2),
                                                ("!", 0)])
             draw_log(inner, combat_messages, scroll_offset)
             target_window.erase()
@@ -67,7 +67,7 @@ def player_auto_attack_logic(player, target_window, player_window, combat_messag
             player_window.refresh()
 
 
-def e_auto_attack_logic(e, player, player_window, combat_messages, inner, scroll_offset):
+def e_auto_attack_logic(player, player_window, combat_messages, inner, scroll_offset):
 
     for e in enemies:
         if not e.alive:
@@ -77,9 +77,9 @@ def e_auto_attack_logic(e, player, player_window, combat_messages, inner, scroll
             e.is_attacking = True
             now = time.time()
             if now - e.last_attack_time >= e.attack_cooldown:
-                player.take_dmg(max(0, e.st - player._df))
+                player.take_dmg(max(0, e.st - player.df))
                 add_log_messages(combat_messages,
-                                 [(f"{player.name} ", 2), ("is hit for ", 0), (f"{e.st - player._df}", 1), ("!", 0)])
+                                 [(f"{player.name} ", 2), ("is hit for ", 0), (f"{e.st - player.df}", 1), ("!", 0)])
                 draw_log(inner, combat_messages, scroll_offset)
                 player_window.erase()
                 player_window.refresh()
@@ -87,7 +87,7 @@ def e_auto_attack_logic(e, player, player_window, combat_messages, inner, scroll
         else:
             e.is_attacking = False
 
-def world_event_logic(player, py, px, player_window, target_window, stdscr, combat_messages, selected_dmg, p_dmg, inner, scroll_offset):
+def world_event_logic(player, py, px, player_window, target_window, stdscr, combat_messages, inner, scroll_offset):
     ny, nx = player.future_position(py, px)
     if not movement_area(stdscr, ny, nx):
         py = 0
@@ -103,7 +103,7 @@ def world_event_logic(player, py, px, player_window, target_window, stdscr, comb
         ey, ex = e.enemy_random_movement()
         ney, nex = e.future_position(ey, ex)
 
-        e_auto_attack_logic(e, player, player_window, combat_messages, inner, scroll_offset)
+        e_auto_attack_logic(player, player_window, combat_messages, inner, scroll_offset)
 
         if not movement_area(stdscr, ney, nex):
             ey = 0
@@ -301,7 +301,7 @@ def gamestart(stdscr):
 
         py, px = player.input_action(key)
 
-        world_event_logic(player, py, px, player_window, target_window, stdscr, combat_messages, selected_dmg, p_dmg, inner, scroll_offset)
+        world_event_logic(player, py, px, player_window, target_window, stdscr, combat_messages, inner, scroll_offset)
 
         if selected and not selected.alive:
             selected = None
