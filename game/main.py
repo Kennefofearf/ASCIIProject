@@ -1,6 +1,6 @@
 import curses
-import time
 from curses import wrapper
+from systems.combat import player_auto_attack_logic, enemy_auto_attack_logic
 from player_module import Player
 from monster_module import GiantAnt
 
@@ -34,66 +34,18 @@ def draw_enemies(stdscr, enemies, selected, prev_positions):
         stdscr.addch(y, x, enemy.icon, attr)
         prev_positions.append((y, x))
 
-def is_adjacent(p1, p2):
-    y1, x1 = p1
-    y2, x2 = p2
-    return abs(y1 - y2) + abs(x1 - x2) == 1
 
-def player_auto_attack_logic(player, target_window, player_window, combat_messages, inner, scroll_offset):
-    target = player.target
-
-    if target is None:
-        return
-
-    if not target.alive:
-        player.target = None
-        return
-
-    if is_adjacent(player.position, target.position):
-        now = time.time()
-        if now - player.last_attack_time >= player.attack_cooldown:
-            target.take_dmg(max(0, player.st - target.df))
-            add_log_messages(combat_messages, [(f"{target.name} ", 1), ("is hit for ", 0), (f"{player.st - target.df}", 2),
-                                               ("!", 0)])
-            draw_log(inner, combat_messages, scroll_offset)
-            target_window.erase()
-            target_window.refresh()
-            player.last_attack_time = now
-
-        if not target.alive:
-            player.xp_gain(target.xp)
-            player.target = None
-            player_window.erase()
-            player_window.refresh()
-
-
-def e_auto_attack_logic(player, player_window, combat_messages, inner, scroll_offset):
-
-    for e in enemies:
-        if not e.alive:
-            continue
-
-        if is_adjacent(e.position, player.position):
-            e.is_attacking = True
-            now = time.time()
-            if now - e.last_attack_time >= e.attack_cooldown:
-                player.take_dmg(max(0, e.st - player.df))
-                add_log_messages(combat_messages,
-                                 [(f"{player.name} ", 2), ("is hit for ", 0), (f"{e.st - player.df}", 1), ("!", 0)])
-                draw_log(inner, combat_messages, scroll_offset)
-                player_window.erase()
-                player_window.refresh()
-                e.last_attack_time = now
-        else:
-            e.is_attacking = False
-
-def world_event_logic(player, py, px, player_window, target_window, stdscr, combat_messages, inner, scroll_offset):
+def world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_offset):
     ny, nx = player.future_position(py, px)
     if not movement_area(stdscr, ny, nx):
         py = 0
         px = 0
 
-    player_auto_attack_logic(player, target_window, player_window, combat_messages, inner, scroll_offset)
+    player_hit = player_auto_attack_logic(player, add_log_messages, combat_messages)
+    enemy_hit = enemy_auto_attack_logic(enemies, player, add_log_messages, combat_messages)
+
+    if player_hit or enemy_hit:
+        draw_log(inner, combat_messages, scroll_offset)
 
     for e in enemies:
         e.respawn_timer(player)
@@ -102,8 +54,6 @@ def world_event_logic(player, py, px, player_window, target_window, stdscr, comb
 
         ey, ex = e.enemy_random_movement()
         ney, nex = e.future_position(ey, ex)
-
-        e_auto_attack_logic(player, player_window, combat_messages, inner, scroll_offset)
 
         if not movement_area(stdscr, ney, nex):
             ey = 0
@@ -301,7 +251,7 @@ def gamestart(stdscr):
 
         py, px = player.input_action(key)
 
-        world_event_logic(player, py, px, player_window, target_window, stdscr, combat_messages, inner, scroll_offset)
+        world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_offset)
 
         if selected and not selected.alive:
             selected = None
