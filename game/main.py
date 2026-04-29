@@ -215,9 +215,7 @@ def gamestart(stdscr):
                                                                                                      0.99))
             dbg = curses.newwin(dbg_h, dbg_w, int(stdscr_y * 0.03), int(stdscr_x * 0.99) - 30)
             player_window = curses.newwin(playerwin_h, playerwin_w, int((stdscr_y - 10) * 0.99), int(stdscr_x * 0.01))
-            # outer h & w = 10, 77
-            # if stdscr_x > resize_x:
-            #     outer_w += 1
+
             outer = curses.newwin(outer_h, outer_w, int((stdscr_y - 10) * 0.99), int((stdscr_x * 0.01) + 21))
             inner = curses.newwin(outer_h - 2, outer_w - 2, int((stdscr_y - 9) * 0.99), int((stdscr_x * 0.01) + 23))
             outer.box()
@@ -244,8 +242,6 @@ def gamestart(stdscr):
 
             max_scroll = max(0, len(combat_messages) - log_height)
             scroll_offset = min(scroll_offset, max_scroll)
-        #elif key == ord('1'):
-
 
         draw_log(inner, combat_messages, scroll_offset)
 
