@@ -20,6 +20,7 @@ class Player:
         self.weapon = None
         self.target = None
         self.skill_tree = {}
+        self.abilities = []
         self.damaged = False
         self.active_effects = []
         self.attack_cooldown = 1.0

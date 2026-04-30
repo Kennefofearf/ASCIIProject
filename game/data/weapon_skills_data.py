@@ -5,6 +5,7 @@ COMMON_SKILLS = {
                 "points": 0,
                 "max_points": 5,
                 "stats": {"max_hp": 0, "st": 1, "df": 0},
+                "requires": [],
                 "unlocks": []
             },
             "full_body_callus": {
@@ -13,6 +14,7 @@ COMMON_SKILLS = {
                 "points": 0,
                 "max_points": 5,
                 "stats": {"max_hp": 0, "st": 0, "df": 1},
+                "requires": [],
                 "unlocks": []
             },
             "pain_tolerance": {
@@ -21,6 +23,7 @@ COMMON_SKILLS = {
                 "points": 0,
                 "max_points": 5,
                 "stats": {"max_hp": 3, "st": 0, "df": 0},
+                "requires": [],
                 "unlocks": []
             },
             "cautious": {
@@ -29,6 +32,7 @@ COMMON_SKILLS = {
                 "points": 0,
                 "max_points": 5,
                 "stats": {"max_hp": 2, "st": 0, "df": 1},
+                "requires": [],
                 "unlocks": []
             },
             "reckless": {
@@ -37,6 +41,7 @@ COMMON_SKILLS = {
                 "points": 0,
                 "max_points": 3,
                 "stats": {"max_hp": 0, "st": 3, "df": -1},
+                "requires": [],
                 "unlocks": []
             },
             "ability_bash": {
@@ -45,6 +50,7 @@ COMMON_SKILLS = {
                 "points": 0,
                 "max_points": 5,
                 "stats": {},
+                "requires": [],
                 "unlocks": ["bash"]
             },
             "ability_gash": {
@@ -53,6 +59,7 @@ COMMON_SKILLS = {
                 "points": 0,
                 "max_points": 3,
                 "stats": {},
+                "requires": [],
                 "unlocks": ["gash"]
             }
         }
