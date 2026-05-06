@@ -194,9 +194,6 @@ def gamestart(stdscr):
         player_window.addstr(6, 1, f"Nxt:   {player.req_xp}")
         player_window.refresh()
 
-        p_dmg = player._st - e.df
-        selected_dmg = e.st - player._df
-
         dbg.addstr(1, 1, f"Max_x: {x}")
         dbg.addstr(2, 1, f"Max_y: {y}")
         dbg.refresh()
