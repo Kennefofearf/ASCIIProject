@@ -19,7 +19,14 @@ from game.data.rarities_data import RARITIES
 #         rolled[stat_name] = max(0, int(rolled_value * stat_multi))
 #
 #     return rolled
+def choose_affixes(count):
+    if count <= 0:
+        return []
 
+    possible_affixes = list(UNCOMMON_AFFIXES.keys())
+    count = min(count, len(possible_affixes))
+
+    return random.sample(possible_affixes, count)
 
 def generate_item(base_id):
     base = WEAPONS[base_id]
@@ -33,7 +40,6 @@ def generate_item(base_id):
     item["rarity"] = base["rarity"]
     item["item_level"] = base["item_level"]
     item["rolled_stats"] = base["rolled_stats"]
-    item["base_stats"] = base["base_stats"]
     item["abilities"] = base["abilities"]
     item["affixes"] = base["affixes"]
     item["tags"] = base["tags"]

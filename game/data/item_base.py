@@ -7,7 +7,6 @@ def create_item_base():
         "base": None,
         "rarity": None,
         "item_lvl": 1,
-        "rolled_stats": {},
         "base_stats": {},
         "abilities": [],
         "affixes": [],
