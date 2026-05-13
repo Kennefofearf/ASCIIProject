@@ -28,18 +28,62 @@ def choose_affixes(count):
 
     return random.sample(possible_affixes, count)
 
-def generate_item(base_id):
+def apply_affix_stats(item, affix_id):
+    affix = UNCOMMON_AFFIXES[affix_id]
+
+    for stat_name, value in affix.get("stats", {}).items():
+        item["stats"][stat_name] = item["stats"].get(stat_name, 0)
+
+def build_item_name(base_name, affix_ids):
+    prefixes = []
+    suffixes = []
+
+    for affix_id in affix_ids:
+        affix = UNCOMMON_AFFIXES[affix_id]
+
+        if affix.get("type") == "prefix":
+            prefixes.append(affix["name"])
+
+        elif affix.get("type") == "suffix":
+            suffixes.append(affix["name"])
+
+    name_parts = []
+
+    if prefixes:
+        name_parts.extend(prefixes)
+
+    name_parts.append(base_name)
+
+    if suffixes:
+        name_parts.extend(suffixes)
+
+    return " ".join(name_parts)
+
+def generate_item(base_id, rarity_id="common", item_lvl=1):
     base = WEAPONS[base_id]
+    rarity = RARITIES[rarity_id]
+
     item = create_item_base()
 
-    item["id"] = base_id
+    item["id"] = f"{rarity_id}_{base_id}_{random.randint(1000, 9999)}"
     item["name"] = base["name"]
     item["type"] = base["type"]
     item["slot"] = base["slot"]
     item["base"] = base["base"]
-    item["rarity"] = base["rarity"]
-    item["item_level"] = base["item_level"]
-    item["rolled_stats"] = base["rolled_stats"]
-    item["abilities"] = base["abilities"]
-    item["affixes"] = base["affixes"]
-    item["tags"] = base["tags"]
+    item["rarity"] = rarity_id
+    item["item_level"] = item_lvl
+
+    item["base_stats"] = base.get("base_stats", {})
+    item["abilities"] = base.get("abilities", [])
+
+    affix_count = rarity.get("affix_count", 0)
+    item["affixes"] = choose_affixes(affix_count)
+
+    for affix_id in item["affixes"]:
+        apply_affix_stats(item, affix_id)
+
+    item["tags"] = list(base.get("tags", []))
+
+    item["name"] = build_item_name(base["name"], item["affixes"])
+
+    return item
