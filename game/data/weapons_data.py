@@ -1,6 +1,7 @@
 WEAPONS = {
             "Dagger": {
                 "name": "Dagger",
+                "type": "weapon",
                 "min_dmg": 2,
                 "max_dmg": 6,
                 "max_hp": 0,
@@ -11,6 +12,7 @@ WEAPONS = {
             },
             "Short Sword": {
                 "name": "Short Sword",
+                "type": "weapon",
                 "min_dmg": 4,
                 "max_dmg": 8,
                 "max_hp": 0,
@@ -21,6 +23,7 @@ WEAPONS = {
             },
             "Wooden Spear": {
                 "name": "Wooden Spear",
+                "type": "weapon",
                 "min_dmg": 3,
                 "max_dmg": 4,
                 "max_hp": 0,
@@ -31,6 +34,7 @@ WEAPONS = {
             },
             "Hand Axe": {
                 "name": "Hand Axe",
+                "type": "weapon",
                 "min_dmg": 2,
                 "max_dmg": 12,
                 "max_hp": 0,
