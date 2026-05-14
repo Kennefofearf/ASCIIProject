@@ -1,4 +1,4 @@
-WEAPONS = {
+EQUIPMENT = {
             "Dagger": {
                 "name": "Dagger",
                 "type": "weapon",
@@ -7,6 +7,7 @@ WEAPONS = {
                 "max_hp": 0,
                 "base_stats": {"max_hp": 0, "st": 0, "df": 0},
                 "skill_tree": 7,
+                "item_level": 1,
                 "lvl": 1,
                 "max_lvl": 10
             },
@@ -18,6 +19,7 @@ WEAPONS = {
                 "max_hp": 0,
                 "base_stats": {"max_hp": 0, "st": 0, "df": 0},
                 "skill_tree": 7,
+                "item_level": 1,
                 "lvl": 1,
                 "max_lvl": 10
             },
@@ -29,6 +31,7 @@ WEAPONS = {
                 "max_hp": 0,
                 "base_stats": {"max_hp": 0, "st": 0, "df": 0},
                 "skill_tree": 7,
+                "item_level": 1,
                 "lvl": 1,
                 "max_lvl": 10
             },
@@ -40,6 +43,7 @@ WEAPONS = {
                 "max_hp": 0,
                 "base_stats": {"max_hp": 0, "st": 0, "df": 0},
                 "skill_tree": 7,
+                "item_level": 1,
                 "lvl": 1,
                 "max_lvl": 10
             }

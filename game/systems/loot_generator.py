@@ -1,6 +1,6 @@
 import random
 
-from game.data.weapons_data import WEAPONS
+from game.data.weapons_data import EQUIPMENT
 from game.data.item_base import create_item_base
 from game.data.affix_data import UNCOMMON_AFFIXES
 from game.data.rarities_data import RARITIES
@@ -19,11 +19,32 @@ from game.data.rarities_data import RARITIES
 #         rolled[stat_name] = max(0, int(rolled_value * stat_multi))
 #
 #     return rolled
-def choose_affixes(count):
+
+def create_affix_pool(item_level):
+    pools = []
+
+    if item_level >= 5:
+        pools.append(UNCOMMON_AFFIXES)
+
+    return pools
+
+def merge_affix_pools(pools):
+    merged = {}
+
+    for pool in pools:
+        merged.update(pool)
+
+    return merged
+
+def choose_affixes(count, item_level):
+    affix_pools = create_affix_pool(item_level)
+    available_affixes = merge_affix_pools(affix_pools)
+
+    possible_affixes = list(available_affixes.keys())
+
     if count <= 0:
         return []
 
-    possible_affixes = list(UNCOMMON_AFFIXES.keys())
     count = min(count, len(possible_affixes))
 
     return random.sample(possible_affixes, count)
@@ -60,7 +81,7 @@ def build_item_name(base_name, affix_ids):
     return " ".join(name_parts)
 
 def generate_item(base_id, rarity_id="common", item_lvl=1):
-    base = WEAPONS[base_id]
+    base = EQUIPMENT[base_id]
     rarity = RARITIES[rarity_id]
 
     item = create_item_base()
