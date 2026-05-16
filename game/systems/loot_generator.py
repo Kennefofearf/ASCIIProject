@@ -102,21 +102,25 @@ def generate_item(base_id, rarity_id="common", item_lvl=1):
     item["name"] = base["name"]
     item["type"] = base["type"]
     item["slot"] = base["slot"]
-    item["base"] = base["base"]
+    #item["base"] = base["base"]
     item["rarity"] = rarity_id
     item["item_level"] = item_lvl
 
     item["base_stats"] = base.get("base_stats", {})
     item["abilities"] = base.get("abilities", [])
 
+    pools = create_affix_pool(item_lvl)
+    affix_pool = merge_affix_pools(pools)
+
     affix_count = rarity.get("affix_count", 0)
     item["affixes"] = choose_affixes(affix_count)
 
     for affix_id in item["affixes"]:
-        apply_affix_stats(item, affix_id)
+        affix = affix_pool[affix_id]
+        apply_affix_stats(item, affix.get("affix_stats", {}))
 
     item["tags"] = list(base.get("tags", []))
 
-    item["name"] = build_item_name(base["name"], item["affixes"])
+    item["name"] = build_item_name(base["name"], item["affixes"], affix_pool)
 
     return item

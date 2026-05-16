@@ -14,6 +14,7 @@ class Player:
         self._hp = hp
         self._st = st
         self._df = df
+        self.weapon_dmg = [0, 0]
         self.position = [0, 0]
         self.req_xp = req_xp
         self.lvl = lvl
