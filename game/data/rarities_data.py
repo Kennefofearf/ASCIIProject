@@ -1,26 +1,26 @@
 RARITIES = {
-    "normal": {
-        "name": "Normal",
+    "white": {
+        "name": "White",
         "affix_type": "Uncommon_and_rare",
         "affix_count": 1
     },
-    "uncommon": {
-            "name": "Uncommon",
+    "green": {
+            "name": "Green",
             "affix_type": "Uncommon_and_rare",
             "affix_count": 2
     },
-    "rare": {
-            "name": "Rare",
+    "blue": {
+            "name": "Blue",
             "affix_type": "Rare",
             "affix_count": 1
     },
-    "epic": {
-            "name": "Epic",
+    "yellow": {
+            "name": "Yellow",
             "affix_type": "Epic",
             "affix_count": 1
     },
-    "legendary": {
-                "name": "Legendary",
+    "purple": {
+                "name": "Purple",
                 "affix_type": "Legendary",
                 "affix_count": 1
     }

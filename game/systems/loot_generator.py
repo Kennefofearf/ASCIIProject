@@ -36,9 +36,21 @@ def merge_affix_pools(pools):
 
     return merged
 
-def choose_affixes(count, item_level):
+def filter_affixes_by_item_type(affixes, item_type):
+    filtered = {}
+
+    for affix_id, affix_data in affixes.items():
+        allowed = affix_data.get("allowed_item_types", [])
+
+        if item_type in allowed:
+            filtered[affix_id] = affix_data
+
+    return filtered
+
+def choose_affixes(count, item_level, item_type):
     affix_pools = create_affix_pool(item_level)
     available_affixes = merge_affix_pools(affix_pools)
+    available_affixes = filter_affixes_by_item_type(available_affixes, item_type)
 
     possible_affixes = list(available_affixes.keys())
 
