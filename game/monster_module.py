@@ -5,9 +5,10 @@ import pdb
 
 class Monster:
 
-    def __init__(self, name, icon, max_hp, hp, st, df, xp, respawn_delay, attack_cooldown):
+    def __init__(self, name, icon, level, max_hp, hp, st, df, xp, respawn_delay, attack_cooldown, drop_chance):
         self.name = name
         self.icon = icon
+        self.level = level
         self.max_hp = max_hp
         self.hp = hp
         self.st = st
@@ -24,6 +25,7 @@ class Monster:
         self.ex = 0
         self.random_movement = random.randint(1, 10)
         self.random_direction = random.randint(-1, 1)
+        self.drop_chance = drop_chance
 
         self.idle = 0.0
 
@@ -74,4 +76,5 @@ class Monster:
 
 class GiantAnt(Monster):
     def __init__(self, name="Giant Ant", icon="A", max_hp=20, hp=20, st=5, df=1, xp=2):
-        super().__init__(name, icon, max_hp, hp, st, df, xp, respawn_delay=None, attack_cooldown=2.0)
+        super().__init__(name, icon, level=1, max_hp, hp, st, df, xp, respawn_delay=None, attack_cooldown=2.0,
+                         drop_chance=0.25)

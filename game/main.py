@@ -194,8 +194,7 @@ def gamestart(stdscr):
         player_window.addstr(6, 1, f"Nxt:   {player.req_xp}")
         player_window.refresh()
 
-        dbg.addstr(1, 1, f"Max_x: {x}")
-        dbg.addstr(2, 1, f"Max_y: {y}")
+        dbg.addstr(1, 1, f"Inventory: {player.inventory}")
         dbg.refresh()
 
         key = stdscr.getch()

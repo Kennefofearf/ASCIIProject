@@ -1,3 +1,4 @@
+from game.systems.loot_generator import roll_item_drop
 import time
 
 def is_adjacent(p1, p2):
@@ -29,9 +30,14 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
 
         if not target.alive:
             player.xp_gain(target.xp)
+
+            dropped_item = roll_item_drop(target)
+
+            if dropped_item:
+                player.inventory.append(dropped_item)
+                add_log_messages(combat_messages, [(f"Picked up: {dropped_item['name']}")])
+
             player.target = None
-            # player_window.erase()
-            # player_window.refresh()
 
 
 def enemy_auto_attack_logic(enemies, player, add_log_messages, combat_messages):

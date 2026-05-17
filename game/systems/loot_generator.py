@@ -124,3 +124,15 @@ def generate_item(base_id, rarity_id="common", item_lvl=1):
     item["name"] = build_item_name(base["name"], item["affixes"], affix_pool)
 
     return item
+
+def roll_item_drop(enemy):
+    drop_chance = getattr("drop_chance", 0.25)
+
+    if random.random() > drop_chance:
+        return None
+
+    item_level = getattr(enemy, "level", 1)
+
+    return generate_item("dagger", item_level)
+
+

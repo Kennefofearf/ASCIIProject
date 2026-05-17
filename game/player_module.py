@@ -26,6 +26,7 @@ class Player:
         self.active_effects = []
         self.attack_cooldown = 1.0
         self.last_attack_time = 0
+        self.inventory = []
 
     @property
     def hp(self):
