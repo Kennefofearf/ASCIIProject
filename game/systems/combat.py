@@ -1,4 +1,4 @@
-from game.systems.loot_generator import roll_item_drop
+from systems.loot_generator import roll_item_drop
 import time
 
 def is_adjacent(p1, p2):
@@ -34,8 +34,8 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
             dropped_item = roll_item_drop(target)
 
             if dropped_item:
-                player.inventory.append(dropped_item)
-                add_log_messages(combat_messages, [(f"Picked up: {dropped_item['name']}")])
+                player.inventory.append(dropped_item["name"])
+                add_log_messages(combat_messages, [(f"Picked up: {dropped_item['name']}", 0)])
 
             player.target = None
 

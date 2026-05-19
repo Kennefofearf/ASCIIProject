@@ -1,9 +1,8 @@
 import random
-
-from game.data.weapons_data import EQUIPMENT
-from game.data.item_base import create_item_base
-from game.data.affix_data import UNCOMMON_AFFIXES
-from game.data.rarities_data import RARITIES
+from data.weapons_data import EQUIPMENT
+from data.item_base import create_item_base
+from data.affix_data import UNCOMMON_AFFIXES
+from data.rarities_data import RARITIES
 
 # def roll_value(value):
 #     if isinstance(value, list):
@@ -19,6 +18,11 @@ from game.data.rarities_data import RARITIES
 #         rolled[stat_name] = max(0, int(rolled_value * stat_multi))
 #
 #     return rolled
+def roll_rarity():
+    rarity_ids = list(RARITIES.keys())
+    weights = [RARITIES[rarity_id]["weight"] for rarity_id in rarity_ids]
+
+    return random.choices(rarity_ids, weights=weights, k=1)[0]
 
 def create_affix_pool(item_level):
     pools = []
@@ -92,8 +96,10 @@ def build_item_name(base_name, affix_ids):
 
     return " ".join(name_parts)
 
-def generate_item(base_id, rarity_id="common", item_lvl=1):
+def generate_item(base_id, item_level):
     base = EQUIPMENT[base_id]
+
+    rarity_id = roll_rarity()
     rarity = RARITIES[rarity_id]
 
     item = create_item_base()
@@ -101,19 +107,19 @@ def generate_item(base_id, rarity_id="common", item_lvl=1):
     item["id"] = f"{rarity_id}_{base_id}_{random.randint(1000, 9999)}"
     item["name"] = base["name"]
     item["type"] = base["type"]
-    item["slot"] = base["slot"]
+    #item["slot"] = base["slot"]
     #item["base"] = base["base"]
     item["rarity"] = rarity_id
-    item["item_level"] = item_lvl
+    item["item_level"] = item_level
 
     item["base_stats"] = base.get("base_stats", {})
     item["abilities"] = base.get("abilities", [])
 
-    pools = create_affix_pool(item_lvl)
+    pools = create_affix_pool(item_level)
     affix_pool = merge_affix_pools(pools)
 
     affix_count = rarity.get("affix_count", 0)
-    item["affixes"] = choose_affixes(affix_count)
+    item["affixes"] = choose_affixes(count=affix_count, item_level=item_level, item_type=item["type"])
 
     for affix_id in item["affixes"]:
         affix = affix_pool[affix_id]
@@ -121,18 +127,20 @@ def generate_item(base_id, rarity_id="common", item_lvl=1):
 
     item["tags"] = list(base.get("tags", []))
 
-    item["name"] = build_item_name(base["name"], item["affixes"], affix_pool)
+    item["name"] = build_item_name(base["name"], item["affixes"])
 
     return item
 
 def roll_item_drop(enemy):
-    drop_chance = getattr("drop_chance", 0.25)
+    drop_chance = getattr(enemy, "drop_chance", 0.25)
 
     if random.random() > drop_chance:
         return None
 
     item_level = getattr(enemy, "level", 1)
 
-    return generate_item("dagger", item_level)
+    base_id = random.choice(list(EQUIPMENT.keys()))
+
+    return generate_item(base_id, item_level)
 
 

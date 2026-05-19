@@ -3,7 +3,6 @@ def create_item_base():
         "id": None,
         "name": "",
         "type": "",
-        "slot": "",
         "base": None,
         "rarity": None,
         "item_lvl": 1,
