@@ -104,15 +104,17 @@ def generate_item(base_id, item_level):
 
     item = create_item_base()
 
+    # from weapons_data, EQUIPMENT definition
+
     item["id"] = f"{rarity_id}_{base_id}_{random.randint(1000, 9999)}"
     item["name"] = base["name"]
     item["type"] = base["type"]
-    #item["slot"] = base["slot"]
-    #item["base"] = base["base"]
-    item["rarity"] = rarity_id
+    item["base_stats"] = base.get("base_stats", {})
     item["item_level"] = item_level
 
-    item["base_stats"] = base.get("base_stats", {})
+    # from rarity_data & affix_data
+
+    item["rarity"] = rarity_id
     item["abilities"] = base.get("abilities", [])
 
     pools = create_affix_pool(item_level)
@@ -130,6 +132,16 @@ def generate_item(base_id, item_level):
     item["name"] = build_item_name(base["name"], item["affixes"])
 
     return item
+
+def get_rarity_color(item):
+    rarity = item.get("rarity")
+
+    if rarity == "white":
+        return 0
+    elif rarity == "green":
+        return 3
+
+    return 0
 
 def roll_item_drop(enemy):
     drop_chance = getattr(enemy, "drop_chance", 0.25)

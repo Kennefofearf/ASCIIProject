@@ -3,10 +3,9 @@ def create_item_base():
         "id": None,
         "name": "",
         "type": "",
-        "base": None,
         "rarity": None,
-        "item_lvl": 1,
         "base_stats": {},
+        "item_lvl": 1,
         "abilities": [],
         "affixes": [],
         "tags": []

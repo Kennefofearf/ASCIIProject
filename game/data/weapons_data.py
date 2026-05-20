@@ -1,5 +1,5 @@
 EQUIPMENT = {
-            "Dagger": {
+            "dagger": {
                 "name": "Dagger",
                 "type": "weapon",
                 "min_dmg": 2,
@@ -13,7 +13,7 @@ EQUIPMENT = {
                 "lvl": 1,
                 "max_lvl": 10
             },
-            "Short Sword": {
+            "short sword": {
                 "name": "Short Sword",
                 "type": "weapon",
                 "min_dmg": 4,
@@ -27,7 +27,7 @@ EQUIPMENT = {
                 "lvl": 1,
                 "max_lvl": 10
             },
-            "Wooden Spear": {
+            "wooden spear": {
                 "name": "Wooden Spear",
                 "type": "weapon",
                 "min_dmg": 3,
@@ -41,7 +41,7 @@ EQUIPMENT = {
                 "lvl": 1,
                 "max_lvl": 10
             },
-            "Hand Axe": {
+            "hand axe": {
                 "name": "Hand Axe",
                 "type": "weapon",
                 "min_dmg": 2,
