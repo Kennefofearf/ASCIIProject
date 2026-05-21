@@ -35,7 +35,7 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
             dropped_item = roll_item_drop(target)
 
             if dropped_item:
-                player.inventory.append(dropped_item)
+                player.inventory.append(dropped_item["name"])
 
                 item_color = get_rarity_color(dropped_item)
 

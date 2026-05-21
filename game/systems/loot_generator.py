@@ -111,6 +111,10 @@ def generate_item(base_id, item_level):
     item["type"] = base["type"]
     item["base_stats"] = base.get("base_stats", {})
     item["item_level"] = item_level
+    item["xp"] = base.get("xp", 0)
+    item["max_xp"] = base.get("max_xp", 100)
+    item["lvl"] = base.get("lvl", 1)
+    item["max_lvl"] = base.get("max_lvl", 7)
 
     # from rarity_data & affix_data
 
@@ -135,10 +139,11 @@ def generate_item(base_id, item_level):
 
 def get_rarity_color(item):
     rarity = item.get("rarity")
+    item_level = item.get("item_level")
 
     if rarity == "white":
         return 0
-    elif rarity == "green":
+    elif rarity == "green" and item_level >= 5:
         return 3
 
     return 0
