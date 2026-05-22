@@ -18,11 +18,13 @@ from data.rarities_data import RARITIES
 #         rolled[stat_name] = max(0, int(rolled_value * stat_multi))
 #
 #     return rolled
-def roll_rarity():
-    rarity_ids = list(RARITIES.keys())
-    weights = [RARITIES[rarity_id]["weight"] for rarity_id in rarity_ids]
+import json
 
-    return random.choices(rarity_ids, weights=weights, k=1)[0]
+
+def dbg(data):
+    with open("debug.txt", "a") as f:
+        f.write(json.dumps(data, indent=4))
+        f.write("\n\n")
 
 def create_affix_pool(item_level):
     pools = []
@@ -44,39 +46,66 @@ def filter_affixes_by_item_type(affixes, item_type):
     filtered = {}
 
     for affix_id, affix_data in affixes.items():
-        allowed = affix_data.get("allowed_item_types", [])
+        allowed = affix_data.get("item_type", [])
 
         if item_type in allowed:
             filtered[affix_id] = affix_data
 
     return filtered
 
-def choose_affixes(count, item_level, item_type):
-    affix_pools = create_affix_pool(item_level)
-    available_affixes = merge_affix_pools(affix_pools)
-    available_affixes = filter_affixes_by_item_type(available_affixes, item_type)
+def choose_affixes(item_level, item_type):
+    pools = create_affix_pool(item_level)
+    available_affixes = merge_affix_pools(pools)
 
-    possible_affixes = list(available_affixes.keys())
+    prefixes = []
+    suffixes = []
 
-    if count <= 0:
-        return []
+    for affix_id, affix_data in available_affixes.items():
 
-    count = min(count, len(possible_affixes))
+        allowed = affix_data.get("item_type", [])
 
-    return random.sample(possible_affixes, count)
+        if item_type not in allowed:
+            continue
 
-def apply_affix_stats(item, affix_id):
-    affix = UNCOMMON_AFFIXES[affix_id]
+        if affix_data.get("type") == "prefix":
+            prefixes.append(affix_id)
 
-    for stat_name, value in affix.get("stats", {}).items():
-        item["stats"][stat_name] = item["stats"].get(stat_name, 0)
+        elif affix_data.get("type") == "suffix":
+            suffixes.append(affix_id)
 
-def build_item_name(base_name, affix_ids):
+    rolled_affixes = []
+
+    has_suffix = random.random() <= 0.2
+    has_prefix = random.random() <= 0.2
+
+    if has_prefix and prefixes:
+        rolled_affixes.append(random.choice(prefixes))
+
+    if has_suffix and suffixes:
+        rolled_affixes.append(random.choice(suffixes))
+
+    return rolled_affixes, available_affixes
+
+def calculate_rarity(possible_affixes):
+    affix_count = len(possible_affixes)
+
+    if affix_count <= 0:
+        return "white"
+    elif affix_count == 1:
+        return "green"
+
+    return "rare"
+
+def apply_affix_stats(item, affix_stats):
+    for stat_name, value in affix_stats.get("affix_stats", {}).items():
+        item["base_stats"][stat_name] = item["base_stats"].get(stat_name, 0) + value
+
+def build_item_name(base_name, affix_ids, affix_pool):
     prefixes = []
     suffixes = []
 
     for affix_id in affix_ids:
-        affix = UNCOMMON_AFFIXES[affix_id]
+        affix = affix_pool[affix_id]
 
         if affix.get("type") == "prefix":
             prefixes.append(affix["name"])
@@ -99,14 +128,11 @@ def build_item_name(base_name, affix_ids):
 def generate_item(base_id, item_level):
     base = EQUIPMENT[base_id]
 
-    rarity_id = roll_rarity()
-    rarity = RARITIES[rarity_id]
-
     item = create_item_base()
 
     # from weapons_data, EQUIPMENT definition
 
-    item["id"] = f"{rarity_id}_{base_id}_{random.randint(1000, 9999)}"
+    item["id"] = f"{base_id}_{random.randint(1000, 9999)}"
     item["name"] = base["name"]
     item["type"] = base["type"]
     item["base_stats"] = base.get("base_stats", {})
@@ -116,24 +142,19 @@ def generate_item(base_id, item_level):
     item["lvl"] = base.get("lvl", 1)
     item["max_lvl"] = base.get("max_lvl", 7)
 
-    # from rarity_data & affix_data
+    item["affixes"], available_affixes = choose_affixes(item_level=item_level, item_type=item["type"])
 
-    item["rarity"] = rarity_id
+    item["rarity"] = calculate_rarity(item["affixes"])
+
     item["abilities"] = base.get("abilities", [])
 
-    pools = create_affix_pool(item_level)
-    affix_pool = merge_affix_pools(pools)
-
-    affix_count = rarity.get("affix_count", 0)
-    item["affixes"] = choose_affixes(count=affix_count, item_level=item_level, item_type=item["type"])
-
     for affix_id in item["affixes"]:
-        affix = affix_pool[affix_id]
+        affix = available_affixes[affix_id]
         apply_affix_stats(item, affix.get("affix_stats", {}))
 
     item["tags"] = list(base.get("tags", []))
 
-    item["name"] = build_item_name(base["name"], item["affixes"])
+    item["name"] = build_item_name(base["name"], item["affixes"], available_affixes)
 
     return item
 

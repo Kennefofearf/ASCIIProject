@@ -75,6 +75,6 @@ class Monster:
 
 
 class GiantAnt(Monster):
-    def __init__(self, name="Giant Ant", icon="A", level=1, max_hp=20, hp=20, st=5, df=1, xp=2):
+    def __init__(self, name="Giant Ant", icon="A", level=5, max_hp=20, hp=20, st=5, df=1, xp=2):
         super().__init__(name, icon, level, max_hp, hp, st, df, xp, respawn_delay=None, attack_cooldown=2.0,
-                         drop_chance=0.25)
+                         drop_chance=1.0)
