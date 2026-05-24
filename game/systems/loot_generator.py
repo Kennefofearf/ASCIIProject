@@ -3,6 +3,7 @@ from data.weapons_data import EQUIPMENT
 from data.item_base import create_item_base
 from data.affix_data import UNCOMMON_AFFIXES
 from data.rarities_data import RARITIES
+from data.skill_node_data import COMMON_NODES
 
 # def roll_value(value):
 #     if isinstance(value, list):
@@ -125,6 +126,63 @@ def build_item_name(base_name, affix_ids, affix_pool):
 
     return " ".join(name_parts)
 
+def get_skill_node_count(item):
+    rarity = item.get("rarity", "white")
+
+    rarity_tiers = {
+        "white": 7,
+        "green": 14,
+        "blue": 21,
+        "yellow": 28,
+        "purple": 35
+    }
+
+    tier_bonus = rarity_tiers.get(rarity, 0)
+
+    return 7 + (tier_bonus * 7)
+
+def generate_item_skill_tree(item, base):
+    node_count = get_skill_node_count(item)
+    item_tags = base.get("skill_tags", [])
+
+    possible_nodes = {}
+
+    for node_id, node_data in COMMON_NODES.items():
+        node_tags = node_data.get("skill_tags", [])
+
+        if any(tag in item_tags for tag in node_tags):
+            possible_nodes[node_id] = node_data
+
+    chosen_node_ids = random.sample(
+        list(possible_nodes.keys()),
+        min(node_count, len(possible_nodes))
+    )
+
+    skill_tree = {}
+
+    for node_id in chosen_node_ids:
+
+        node_data = possible_nodes[node_id]
+
+        skill_tree[node_id] = {
+            "name": node_data.get("name", ""),
+            "tooltip": node_data.get("tooltip", ""),
+            "points": 0,
+            "max_points": node_data.get("max_points", 1),
+            "active": False,
+            "stats": dict(node_data.get("stats", {})),
+            "requires": list(node_data.get("requires", [])),
+            "unlocks": list(node_data.get("unlocks", [])),
+            "skill_tags": list(node_data.get("skill_tags", []))
+        }
+
+    dbg(chosen_node_ids)
+    dbg(item_tags)
+    dbg(node_count)
+    dbg(possible_nodes)
+
+    return skill_tree
+
 def generate_item(base_id, item_level):
     base = EQUIPMENT[base_id]
 
@@ -141,6 +199,8 @@ def generate_item(base_id, item_level):
     item["max_xp"] = base.get("max_xp", 100)
     item["lvl"] = base.get("lvl", 1)
     item["max_lvl"] = base.get("max_lvl", 7)
+    item["skill_tags"] = base.get("skill_tags", [])
+    item["skill_nodes"] = generate_item_skill_tree(item, base)
 
     item["affixes"], available_affixes = choose_affixes(item_level=item_level, item_type=item["type"])
 
@@ -151,8 +211,6 @@ def generate_item(base_id, item_level):
     for affix_id in item["affixes"]:
         affix = available_affixes[affix_id]
         apply_affix_stats(item, affix.get("affix_stats", {}))
-
-    item["tags"] = list(base.get("tags", []))
 
     item["name"] = build_item_name(base["name"], item["affixes"], available_affixes)
 

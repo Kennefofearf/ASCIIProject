@@ -1,7 +1,7 @@
 import curses
 import monster_module
 import random
-from data.weapon_skills_data import COMMON_SKILLS
+from data.skill_node_data import COMMON_NODES
 import time
 
 
@@ -50,7 +50,7 @@ class Player:
                 if points <= 0:
                     continue
 
-                skill_data = COMMON_SKILLS.get(skill_id, {})
+                skill_data = COMMON_NODES.get(skill_id, {})
                 bonus += skill_data.get("stats", {}).get("st", 0) * points
 
         for effect in self.active_effects:
@@ -77,7 +77,7 @@ class Player:
                 if points <= 0:
                     continue
 
-                skill_data = COMMON_SKILLS.get(skill_id, {})
+                skill_data = COMMON_NODES.get(skill_id, {})
                 bonus += skill_data.get("stats", {}).get("df", 0) * points
 
         for effect in self.active_effects:

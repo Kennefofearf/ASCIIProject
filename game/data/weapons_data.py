@@ -6,12 +6,14 @@ EQUIPMENT = {
                 "max_dmg": 6,
                 "max_hp": 0,
                 "base_stats": {"max_hp": 0, "st": 0, "df": 0},
-                "skill_tree": 7,
+                "skill_nodes": 7,
+                "skill_tree": {},
                 "item_level": 1,
                 "xp": 0,
                 "max_xp": 100,
                 "lvl": 1,
-                "max_lvl": 10
+                "max_lvl": 10,
+                "skill_tags": []
             },
             "short sword": {
                 "name": "Short Sword",
@@ -20,12 +22,14 @@ EQUIPMENT = {
                 "max_dmg": 8,
                 "max_hp": 0,
                 "base_stats": {"max_hp": 0, "st": 0, "df": 0},
-                "skill_tree": 7,
+                "skill_nodes": 7,
+                "skill_tree": {},
                 "item_level": 1,
                 "xp": 0,
                 "max_xp": 100,
                 "lvl": 1,
-                "max_lvl": 10
+                "max_lvl": 10,
+                "skill_tags": []
             },
             "wooden spear": {
                 "name": "Wooden Spear",
@@ -34,12 +38,14 @@ EQUIPMENT = {
                 "max_dmg": 4,
                 "max_hp": 0,
                 "base_stats": {"max_hp": 0, "st": 0, "df": 0},
-                "skill_tree": 7,
+                "skill_nodes": 7,
+                "skill_tree": {},
                 "item_level": 1,
                 "xp": 0,
                 "max_xp": 100,
                 "lvl": 1,
-                "max_lvl": 10
+                "max_lvl": 10,
+                "skill_tags": []
             },
             "hand axe": {
                 "name": "Hand Axe",
@@ -48,11 +54,13 @@ EQUIPMENT = {
                 "max_dmg": 12,
                 "max_hp": 0,
                 "base_stats": {"max_hp": 0, "st": 0, "df": 0},
-                "skill_tree": 7,
+                "skill_nodes": 7,
+                "skill_tree": {},
                 "item_level": 1,
                 "xp": 0,
                 "max_xp": 100,
                 "lvl": 1,
-                "max_lvl": 10
+                "max_lvl": 10,
+                "skill_tags": []
             }
         }

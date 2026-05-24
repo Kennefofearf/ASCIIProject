@@ -1,8 +1,8 @@
-from game.data.weapon_skills_data import COMMON_SKILLS
+from game.data.skill_node_data import COMMON_NODES
 from game.systems.ability_logic import rebuild_abilities
 
 def can_activate(player, skill_id):
-    skill = COMMON_SKILLS["skill_id"]
+    skill = COMMON_NODES["skill_id"]
 
     for req in skill.get("requires", []):
         if player.skill_tree[req]["points"] <= 0:
@@ -11,7 +11,7 @@ def can_activate(player, skill_id):
     return True
 
 def assign_points(player, skill_id):
-    skill_data = COMMON_SKILLS["skill_id"]
+    skill_data = COMMON_NODES["skill_id"]
     skill_state = player.skill_tree["skill_id"]
 
     if skill_state["points"] >= skill_data["max_points"]:
