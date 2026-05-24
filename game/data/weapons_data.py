@@ -13,7 +13,7 @@ EQUIPMENT = {
                 "max_xp": 100,
                 "lvl": 1,
                 "max_lvl": 10,
-                "skill_tags": []
+                "skill_tags": ["weapon"]
             },
             "short sword": {
                 "name": "Short Sword",
@@ -29,7 +29,7 @@ EQUIPMENT = {
                 "max_xp": 100,
                 "lvl": 1,
                 "max_lvl": 10,
-                "skill_tags": []
+                "skill_tags": ["weapon"]
             },
             "wooden spear": {
                 "name": "Wooden Spear",
@@ -45,7 +45,7 @@ EQUIPMENT = {
                 "max_xp": 100,
                 "lvl": 1,
                 "max_lvl": 10,
-                "skill_tags": []
+                "skill_tags": ["weapon"]
             },
             "hand axe": {
                 "name": "Hand Axe",
@@ -61,6 +61,6 @@ EQUIPMENT = {
                 "max_xp": 100,
                 "lvl": 1,
                 "max_lvl": 10,
-                "skill_tags": []
+                "skill_tags": ["weapon"]
             }
         }

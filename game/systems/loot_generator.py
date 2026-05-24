@@ -176,11 +176,6 @@ def generate_item_skill_tree(item, base):
             "skill_tags": list(node_data.get("skill_tags", []))
         }
 
-    dbg(chosen_node_ids)
-    dbg(item_tags)
-    dbg(node_count)
-    dbg(possible_nodes)
-
     return skill_tree
 
 def generate_item(base_id, item_level):

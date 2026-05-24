@@ -6,7 +6,7 @@ COMMON_NODES = {
                 "stats": {"max_hp": 0, "st": 1, "df": 0},
                 "requires": [],
                 "unlocks": [],
-                "skill_tags": []
+                "skill_tags": ["weapon"]
             },
             "full_body_callus": {
                 "name": "Full Body Callus",
@@ -15,7 +15,7 @@ COMMON_NODES = {
                 "stats": {"max_hp": 0, "st": 0, "df": 1},
                 "requires": [],
                 "unlocks": [],
-                "skill_tags": []
+                "skill_tags": ["armor"]
             },
             "pain_tolerance": {
                 "name": "Pain Tolerance",
@@ -24,7 +24,7 @@ COMMON_NODES = {
                 "stats": {"max_hp": 3, "st": 0, "df": 0},
                 "requires": [],
                 "unlocks": [],
-                "skill_tags": []
+                "skill_tags": ["weapon", "armor"]
             },
             "cautious": {
                 "name": "Cautious",
@@ -33,7 +33,7 @@ COMMON_NODES = {
                 "stats": {"max_hp": 2, "st": 0, "df": 1},
                 "requires": [],
                 "unlocks": [],
-                "skill_tags": []
+                "skill_tags": ["weapon"]
             },
             "reckless": {
                 "name": "Reckless",
@@ -42,7 +42,7 @@ COMMON_NODES = {
                 "stats": {"max_hp": 0, "st": 3, "df": -1},
                 "requires": [],
                 "unlocks": [],
-                "skill_tags": []
+                "skill_tags": ["weapon"]
             },
             "ability_bash": {
                 "name": "Bash",
@@ -51,7 +51,7 @@ COMMON_NODES = {
                 "stats": {},
                 "requires": [],
                 "unlocks": ["bash"],
-                "skill_tags": []
+                "skill_tags": ["weapon"]
             },
             "ability_gash": {
                 "name": "Gash",
@@ -60,6 +60,6 @@ COMMON_NODES = {
                 "stats": {},
                 "requires": [],
                 "unlocks": ["gash"],
-                "skill_tags": []
+                "skill_tags": ["weapon"]
             }
         }
