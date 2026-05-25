@@ -1,6 +1,7 @@
 import curses
 from curses import wrapper
 from systems.combat import player_auto_attack_logic, enemy_auto_attack_logic
+from UI.inventory_screen import open_inventory_window
 from player_module import Player
 from monster_module import GiantAnt
 
@@ -204,6 +205,8 @@ def gamestart(stdscr):
 
         if key == ord("q"):
             break
+        elif key == ord("i"):
+            open_inventory_window(stdscr, player)
         elif key == curses.KEY_RESIZE:
             stdscr.clear()
             stdscr_y, stdscr_x = stdscr.getmaxyx()
