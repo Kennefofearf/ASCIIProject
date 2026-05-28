@@ -1,5 +1,6 @@
 import curses
 from player_module import Player
+from data.affix_data import UNCOMMON_AFFIXES
 
 def open_inventory_window(stdscr, player):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
@@ -31,11 +32,29 @@ def open_inventory_window(stdscr, player):
         if selected_item:
             detail_x = width // 2
 
-            inventory_window.addstr(3, detail_x, selected_item["name"])
-            inventory_window.addstr(4, detail_x, f"{selected_item.get('min_dmg', 0)} - {selected_item.get('max_dmg', 0)}")
-            inventory_window.addstr(5, detail_x, f"HP: + {selected_item.get('hp', 0)}")
-            inventory_window.addstr(6, detail_x, f"STR: + {selected_item.get('st', 0)}")
-            inventory_window.addstr(7, detail_x, f"DEF: + {selected_item.get('df', 0)}")
+            affixes = selected_item.get("affixes", [])
+
+            row = 5
+
+            for affix_id in affixes:
+                affix_data = UNCOMMON_AFFIXES[affix_id]
+
+                inventory_window.addstr(row, detail_x, selected_item["name"])
+                row += 1
+                inventory_window.addstr(row, detail_x, f"{selected_item['min_dmg'] + affix_data['min_dmg']}"
+                                                       f" - {selected_item['max_dmg'] + affix_data['max_dmg']}")
+                row += 1
+
+                affix_stats = affix_data.get("affix_stats", {})
+
+                for stat, value in affix_stats.items():
+                    inventory_window.addstr(row, detail_x, f"{stat.upper()}: {value}")
+                    row += 1
+
+            if not affixes:
+                inventory_window.addstr(row, detail_x, selected_item["name"])
+                row += 1
+                inventory_window.addstr(row, detail_x, f"{selected_item['min_dmg']} - {selected_item['max_dmg']}")
 
         inventory_window.refresh()
         key = stdscr.getch()
