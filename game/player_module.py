@@ -19,6 +19,9 @@ class Player:
         self.req_xp = req_xp
         self.lvl = lvl
         self.weapon = None
+        self.armor = None
+        self.boots = None
+        self.helm = None
         self.target = None
         self.skill_tree = {}
         self.abilities = []

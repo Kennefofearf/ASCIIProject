@@ -61,12 +61,35 @@ def open_inventory_window(stdscr, player):
                 for stat, value in affix_stats.items():
                     item_description_window.addstr(row, detail_x, f"{stat.upper()}: {value}")
                     row += 1
+
+                row += 3
+                item_description_window.addstr(row, detail_x, f"(E)quip")
+                row += 1
+                item_description_window.addstr(row, detail_x, f"(R)emove")
+
+                if key == ord("e"):
+                    player.weapon = selected_item
+                elif key == ord("r"):
+                    player.weapon = None
+                elif key == ord("i"):
+                    item_description_window.erase()
                 item_description_window.refresh()
 
             if not affixes:
                 item_description_window.addstr(row, detail_x, selected_item["name"])
                 row += 1
                 item_description_window.addstr(row, detail_x, f"{selected_item['min_dmg']} - {selected_item['max_dmg']}")
+                row += 3
+                item_description_window.addstr(row, detail_x, f"(E)quip")
+                row += 1
+                item_description_window.addstr(row, detail_x, f"(R)emove")
+
+                if key == ord("e"):
+                    player.weapon = selected_item
+                elif key == ord("r"):
+                    player.weapon = None
+                elif key == ord("i"):
+                    item_description_window.erase()
                 item_description_window.refresh()
 
         inventory_window.refresh()
