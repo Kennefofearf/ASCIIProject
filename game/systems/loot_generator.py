@@ -1,3 +1,4 @@
+import curses
 import random
 from data.weapons_data import EQUIPMENT
 from data.item_base import create_item_base

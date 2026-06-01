@@ -1,3 +1,5 @@
+import curses
+
 from systems.loot_generator import roll_item_drop
 from systems.loot_generator import get_rarity_color
 import time
