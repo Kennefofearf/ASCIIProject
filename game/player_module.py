@@ -37,16 +37,17 @@ class Player:
         bonus = 0
 
         if self.weapon:
+            bonus += self.weapon.get("base_stats", {}).get("max_hp", 0)
 
             for affix_id in self.weapon.get("affixes", []):
                 affix_data = UNCOMMON_AFFIXES.get(affix_id, {})
                 bonus += affix_data.get("affix_stats", {}).get("max_hp", 0)
 
-        return self.max_hp + (self.weapon.total_bonus("max_hp") if self.weapon else 0)
+        return self.max_hp + bonus
 
     @hp.setter
     def hp(self, value):
-        self._hp = max(0, min(value, self.max_hp))
+        self.max_hp = max(0, value)
 
     @property
     def st(self):

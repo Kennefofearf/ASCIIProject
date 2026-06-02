@@ -190,9 +190,9 @@ def gamestart(stdscr):
 
         player_window.addstr(1, 1, f"       {player.name}")
         player_window.addstr(2, 1, f"Lvl:   {player.lvl}")
-        player_window.addstr(3, 1, f" HP:   {player._hp} / {player.max_hp}")
-        player_window.addstr(4, 1, f"STR:   {player._st}")
-        player_window.addstr(5, 1, f"DEF:   {player._df}")
+        player_window.addstr(3, 1, f" HP:   {player.hp} / {player.max_hp}")
+        player_window.addstr(4, 1, f"STR:   {player.st}")
+        player_window.addstr(5, 1, f"DEF:   {player.df}")
         player_window.addstr(6, 1, f"Nxt:   {player.req_xp}")
         player_window.refresh()
 
