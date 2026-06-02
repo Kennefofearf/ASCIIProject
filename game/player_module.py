@@ -2,6 +2,7 @@ import curses
 import monster_module
 import random
 from data.skill_node_data import COMMON_NODES
+from data.affix_data import UNCOMMON_AFFIXES
 import time
 
 
@@ -19,9 +20,9 @@ class Player:
         self.req_xp = req_xp
         self.lvl = lvl
         self.weapon = None
-        self.armor = None
-        self.boots = None
-        self.helm = None
+        # self.armor = None
+        # self.boots = None
+        # self.helm = None
         self.target = None
         self.skill_tree = {}
         self.abilities = []
@@ -33,6 +34,14 @@ class Player:
 
     @property
     def hp(self):
+        bonus = 0
+
+        if self.weapon:
+
+            for affix_id in self.weapon.get("affixes", []):
+                affix_data = UNCOMMON_AFFIXES.get(affix_id, {})
+                bonus += affix_data.get("affix_stats", {}).get("max_hp", 0)
+
         return self.max_hp + (self.weapon.total_bonus("max_hp") if self.weapon else 0)
 
     @hp.setter
@@ -45,6 +54,10 @@ class Player:
 
         if self.weapon:
             bonus += self.weapon.get("base_stats", {}).get("st", 0)
+
+            for affix_id in self.weapon.get("affixes", []):
+                affix_data = UNCOMMON_AFFIXES.get(affix_id, {})
+                bonus += affix_data.get("affix_stats", {}).get("st", 0)
 
         if self.skill_tree is not None:
             for skill_id, skill_state in self.skill_tree.items():
@@ -72,6 +85,10 @@ class Player:
 
         if self.weapon:
             bonus += self.weapon.get("base_stats", {}).get("df", 0)
+
+            for affix_id in self.weapon.get("affixes", []):
+                affix_data = UNCOMMON_AFFIXES.get(affix_id, {})
+                bonus += affix_data.get("affix_stats", {}).get("df", 0)
 
         if self.skill_tree is not None:
             for skill_id, skill_state in self.skill_tree.items():
@@ -101,6 +118,8 @@ class Player:
         return (self.position[0] + py, self.position[1] - px)
 
     def take_dmg(self, dmg):
+        if dmg <= 0:
+            dmg = 0
         self._hp -= dmg
         self.damaged = True
         if self._hp <= 0:

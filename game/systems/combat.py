@@ -23,9 +23,14 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
     if is_adjacent(player.position, target.position):
         now = time.time()
         if now - player.last_attack_time >= player.attack_cooldown:
-            target.take_dmg(max(0, player.st - target.df))
+            dmg = player.st - target.df
+
+            if dmg <= 0:
+                dmg = 0
+
+            target.take_dmg(max(0, dmg))
             player.last_attack_time = now
-            add_log_messages(combat_messages, [(f"{target.name} ", 1), ("is hit for ", 0), (f"{player.st - target.df}", 2),
+            add_log_messages(combat_messages, [(f"{target.name} ", 1), ("is hit for ", 0), (f"{dmg}", 2),
                                                ("!", 0)])
             # draw_log(inner, combat_messages, scroll_offset)
             # target_window.erase()
@@ -57,10 +62,15 @@ def enemy_auto_attack_logic(enemies, player, add_log_messages, combat_messages):
             enemy.is_attacking = True
             now = time.time()
             if now - enemy.last_attack_time >= enemy.attack_cooldown:
-                player.take_dmg(max(0, enemy.st - player.df))
+                dmg = enemy.st - player.df
+
+                if dmg <= 0:
+                    dmg = 0
+
+                player.take_dmg(max(0, dmg))
                 enemy.last_attack_time = now
                 add_log_messages(combat_messages,
-                                 [(f"{player.name} ", 2), ("is hit for ", 0), (f"{enemy.st - player.df}", 1), ("!", 0)])
+                                 [(f"{player.name} ", 2), ("is hit for ", 0), (f"{dmg}", 1), ("!", 0)])
                 # draw_log(inner, combat_messages, scroll_offset)
                 # player_window.erase()
                 # player_window.refresh()

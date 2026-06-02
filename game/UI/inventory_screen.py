@@ -7,6 +7,7 @@ def open_inventory_window(stdscr, player):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
 
     selected_item = None
+    item_description_window = None
 
     while True:
         stdscr_y, stdscr_x = stdscr.getmaxyx()
@@ -22,7 +23,6 @@ def open_inventory_window(stdscr, player):
         inventory = player.inventory
 
         inventory_window.addstr(1, (int(inventory_width / 2) - 11), f"Inventory ({len(inventory)})")
-        #inventory_window.addstr(2, 1, str(inventory)[:width - 2])
 
         item_rows = {}
 
@@ -69,10 +69,17 @@ def open_inventory_window(stdscr, player):
 
                 if key == ord("e"):
                     player.weapon = selected_item
+                    item_description_window.erase()
+                    item_description_window.refresh()
+                    selected_item = None
+                    continue
                 elif key == ord("r"):
                     player.weapon = None
-                elif key == ord("i"):
                     item_description_window.erase()
+                    item_description_window.refresh()
+                    selected_item = None
+                    continue
+
                 item_description_window.refresh()
 
             if not affixes:
@@ -84,22 +91,32 @@ def open_inventory_window(stdscr, player):
                 row += 1
                 item_description_window.addstr(row, detail_x, f"(R)emove")
 
+                item_description_window.refresh()
+
                 if key == ord("e"):
                     player.weapon = selected_item
+                    item_description_window.erase()
+                    item_description_window.refresh()
+                    selected_item = None
+                    continue
                 elif key == ord("r"):
                     player.weapon = None
-                elif key == ord("i"):
                     item_description_window.erase()
+                    item_description_window.refresh()
+                    selected_item = None
+                    continue
+
                 item_description_window.refresh()
 
         inventory_window.refresh()
         key = stdscr.getch()
 
         if key in (ord("i"), ord("I"), 27):
-            # inventory_window.erase()
-            # inventory_window.refresh()
-            stdscr.clear()
-            stdscr.refresh()
+            if item_description_window:
+                item_description_window.erase()
+                item_description_window.refresh()
+            inventory_window.clear()
+            inventory_window.refresh()
             break
 
         if key == curses.KEY_RESIZE:
