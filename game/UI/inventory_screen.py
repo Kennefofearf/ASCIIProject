@@ -28,10 +28,15 @@ def open_inventory_window(stdscr, player):
 
         for index, item in enumerate(inventory):
 
+            display_name = item["name"]
+
+            if item == player.weapon:
+                display_name = "* " + display_name
+
             item_color = get_rarity_color(item)
             row = 3 + index
 
-            inventory_window.addstr(row, 2, item["name"], curses.color_pair(item_color))
+            inventory_window.addstr(row, 2, display_name, curses.color_pair(item_color))
 
             item_rows[start_y + row] = item
 
@@ -68,6 +73,10 @@ def open_inventory_window(stdscr, player):
                 item_description_window.addstr(row, detail_x, f"(R)emove")
 
                 if key == ord("e"):
+
+                    if player.weapon:
+                        player.weapon = None
+
                     player.weapon = selected_item
                     item_description_window.erase()
                     item_description_window.refresh()
@@ -94,6 +103,10 @@ def open_inventory_window(stdscr, player):
                 item_description_window.refresh()
 
                 if key == ord("e"):
+
+                    if player.weapon:
+                        player.weapon = None
+
                     player.weapon = selected_item
                     item_description_window.erase()
                     item_description_window.refresh()
