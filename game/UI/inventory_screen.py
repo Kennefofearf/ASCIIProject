@@ -55,6 +55,13 @@ def open_inventory_window(stdscr, player):
             for affix_id in affixes:
                 affix_data = UNCOMMON_AFFIXES[affix_id]
 
+                stat_forecast_hp = player.max_hp + (selected_item.get('base_stats', {}).get('max_hp') +
+                                                    affix_data.get('affix_stats', {}).get('max_hp'))
+                stat_forecast_st = player.st + (selected_item.get('base_stats', {}).get('st') +
+                                                    affix_data.get('affix_stats', {}).get('st'))
+                stat_forecast_df = player.df + (selected_item.get('base_stats', {}).get('df') +
+                                                    affix_data.get('affix_stats', {}).get('df'))
+
                 item_description_window.addstr(row, detail_x, selected_item["name"], curses.color_pair(item_color))
                 row += 1
                 item_description_window.addstr(row, detail_x, f"{selected_item['min_dmg'] + affix_data['min_dmg']}"
@@ -66,6 +73,17 @@ def open_inventory_window(stdscr, player):
                 for stat, value in affix_stats.items():
                     item_description_window.addstr(row, detail_x, f"{stat.upper()}: {value}")
                     row += 1
+
+                row += 5
+
+                item_description_window.addstr(row, detail_x,
+                                               f" HP: {player.max_hp} --> {stat_forecast_hp}")
+                row += 1
+                item_description_window.addstr(row, detail_x,
+                                               f"STR: {player.st} --> {stat_forecast_st}")
+                row += 1
+                item_description_window.addstr(row, detail_x,
+                                               f"DEF: {player.df} --> {stat_forecast_df}")
 
                 row += 3
                 item_description_window.addstr(row, detail_x, f"(E)quip")
@@ -92,9 +110,24 @@ def open_inventory_window(stdscr, player):
                 item_description_window.refresh()
 
             if not affixes:
+
+                stat_forecast_hp = player.max_hp + selected_item.get('base_stats', {}).get('max_hp')
+                stat_forecast_st = player.st + selected_item.get('base_stats', {}).get('st')
+                stat_forecast_df = player.df + selected_item.get('base_stats', {}).get('df')
+
                 item_description_window.addstr(row, detail_x, selected_item["name"])
                 row += 1
                 item_description_window.addstr(row, detail_x, f"{selected_item['min_dmg']} - {selected_item['max_dmg']}")
+                row += 5
+
+                item_description_window.addstr(row, detail_x,
+                                               f" HP: {player.max_hp} --> {stat_forecast_hp}")
+                row += 1
+                item_description_window.addstr(row, detail_x,
+                                               f"STR: {player.st} --> {stat_forecast_st}")
+                row += 1
+                item_description_window.addstr(row, detail_x,
+                                               f"DEF: {player.df} --> {stat_forecast_df}")
                 row += 3
                 item_description_window.addstr(row, detail_x, f"(E)quip")
                 row += 1
