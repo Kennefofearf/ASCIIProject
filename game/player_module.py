@@ -11,7 +11,7 @@ class Player:
     def __init__(self, name, icon, max_hp, hp, st, df, req_xp, lvl):
         self.name = name
         self.icon = "@"
-        self.max_hp = max_hp
+        self._max_hp = max_hp
         self._hp = hp
         self._st = st
         self._df = df
@@ -34,6 +34,14 @@ class Player:
 
     @property
     def hp(self):
+        return self._hp
+
+    @hp.setter
+    def hp(self, value):
+        self._hp = max(0, min(value, self.max_hp))
+
+    @property
+    def max_hp(self):
         bonus = 0
 
         if self.weapon:
@@ -43,11 +51,14 @@ class Player:
                 affix_data = UNCOMMON_AFFIXES.get(affix_id, {})
                 bonus += affix_data.get("affix_stats", {}).get("max_hp", 0)
 
-        return self.max_hp + bonus
+        return self._max_hp + bonus
 
-    @hp.setter
-    def hp(self, value):
-        self.max_hp = max(0, value)
+    @max_hp.setter
+    def max_hp(self, value):
+        self._max_hp = max(1, value)
+
+        if self._hp > self.max_hp:
+            self._hp = self.max_hp
 
     @property
     def st(self):
