@@ -3,6 +3,18 @@ from player_module import Player
 from data.affix_data import UNCOMMON_AFFIXES
 from systems.loot_generator import get_rarity_color
 
+def get_item_stat_bonus(item, stat):
+    if not item:
+        return 0
+
+    total = item.get("base_stats", {}).get(stat, 0)
+
+    for affix_id in item.get("affixes", []):
+        affix_data = UNCOMMON_AFFIXES[affix_id]
+        total += affix_data.get("affix_stats", {}).get(stat, 0)
+
+    return total
+
 def open_inventory_window(stdscr, player):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
 
@@ -42,135 +54,80 @@ def open_inventory_window(stdscr, player):
 
         if selected_item:
 
+            old_weapon = player.weapon
+            new_weapon = selected_item
+
+            stat_forecast_hp = (
+                    player.max_hp - get_item_stat_bonus(old_weapon, "max_hp")
+                    + get_item_stat_bonus(new_weapon, "max_hp")
+            )
+            stat_forecast_st = (
+                    player.st - get_item_stat_bonus(old_weapon, "st")
+                    + get_item_stat_bonus(new_weapon, "st")
+            )
+            stat_forecast_df = (
+                    player.df - get_item_stat_bonus(old_weapon, "df")
+                    + get_item_stat_bonus(new_weapon, "df")
+            )
+
             item_color = get_rarity_color(selected_item)
             item_description_window = curses.newwin(height, description_width, start_y, description_x)
             item_description_window.box()
 
             detail_x = description_width // 9
-
-            affixes = selected_item.get("affixes", [])
-
             row = 5
 
-            for affix_id in affixes:
+            item_description_window.addstr(row, detail_x, selected_item["name"], curses.color_pair(item_color))
+            row += 1
+
+            min_dmg = selected_item["min_dmg"]
+            max_dmg = selected_item["max_dmg"]
+
+            for affix_id in selected_item.get("affixes", []):
+                affix_data = UNCOMMON_AFFIXES[affix_id]
+                min_dmg += affix_data.get("min_dmg", 0)
+                max_dmg += affix_data.get("max_dmg", 0)
+
+            item_description_window.addstr(row, detail_x, f"{min_dmg} - {max_dmg}")
+            row += 1
+
+            for affix_id in selected_item.get("affixes", []):
                 affix_data = UNCOMMON_AFFIXES[affix_id]
 
-                predicted_stat_change_hp = (player.max_hp + selected_item.get('base_stats', {}).get('max_hp')
-                                                        + affix_data.get('affix_stats', {}).get('max_hp')) - player.max_hp
-
-                predicted_stat_change_st = (player.st + selected_item.get('base_stats', {}).get('st')
-                                                        + affix_data.get('affix_stats', {}).get('st')) - player.st
-
-                predicted_stat_change_df = (player.df + selected_item.get('base_stats', {}).get('df')
-                                                        + affix_data.get('affix_stats', {}).get('df')) - player.df
-
-                if player.weapon == selected_item:
-                    stat_forecast_hp = player.max_hp
-                    stat_forecast_st = player.st
-                    stat_forecast_df = player.df
-                else:
-                    stat_forecast_hp = player.max_hp + predicted_stat_change_hp
-                    stat_forecast_st = player.st + predicted_stat_change_st
-                    stat_forecast_df = player.df + predicted_stat_change_df
-
-
-                item_description_window.addstr(row, detail_x, selected_item["name"], curses.color_pair(item_color))
-                row += 1
-                item_description_window.addstr(row, detail_x, f"{selected_item['min_dmg'] + affix_data['min_dmg']}"
-                                                       f" - {selected_item['max_dmg'] + affix_data['max_dmg']}")
-                row += 1
-
-                affix_stats = affix_data.get("affix_stats", {})
-
-                for stat, value in affix_stats.items():
+                for stat, value in affix_data.get("affix_stats", {}).items():
                     item_description_window.addstr(row, detail_x, f"{stat.upper()}: {value}")
                     row += 1
 
-                row += 5
+            row += 5
 
-                item_description_window.addstr(row, detail_x,
+            item_description_window.addstr(row, detail_x,
                                                f" HP: {player.max_hp} --> {stat_forecast_hp}")
-                row += 1
-                item_description_window.addstr(row, detail_x,
+            row += 1
+            item_description_window.addstr(row, detail_x,
                                                f"STR: {player.st} --> {stat_forecast_st}")
-                row += 1
-                item_description_window.addstr(row, detail_x,
+            row += 1
+            item_description_window.addstr(row, detail_x,
                                                f"DEF: {player.df} --> {stat_forecast_df}")
 
-                row += 3
-                item_description_window.addstr(row, detail_x, f"(E)quip")
-                row += 1
-                item_description_window.addstr(row, detail_x, f"(R)emove")
+            row += 3
+            item_description_window.addstr(row, detail_x, f"(E)quip")
+            row += 1
+            item_description_window.addstr(row, detail_x, f"(R)emove")
 
-                if key == ord("e"):
-
-                    if player.weapon:
-                        player.weapon = None
-
-                    player.weapon = selected_item
-                    item_description_window.erase()
-                    item_description_window.refresh()
-                    selected_item = None
-                    continue
-                elif key == ord("r"):
-                    player.weapon = None
-                    item_description_window.erase()
-                    item_description_window.refresh()
-                    selected_item = None
-                    continue
-
+            if key == ord("e"):
+                player.weapon = selected_item
+                item_description_window.erase()
                 item_description_window.refresh()
-
-            if not affixes:
-
-                if player.weapon:
-                    stat_forecast_hp = player.max_hp + affix_data.get('base_stats', {}).get('max_hp')
-                    stat_forecast_st = player.st + affix_data.get('base_stats', {}).get('st')
-                    stat_forecast_df = player.df + affix_data.get('base_stats', {}).get('df')
-                else:
-                    stat_forecast_hp = player.max_hp
-                    stat_forecast_st = player.st
-                    stat_forecast_df = player.df
-
-
-                item_description_window.addstr(row, detail_x, selected_item["name"])
-                row += 1
-                item_description_window.addstr(row, detail_x, f"{selected_item['min_dmg']} - {selected_item['max_dmg']}")
-                row += 5
-
-                item_description_window.addstr(row, detail_x,
-                                               f" HP: {player.max_hp} --> {stat_forecast_hp}")
-                row += 1
-                item_description_window.addstr(row, detail_x,
-                                               f"STR: {player.st} --> {stat_forecast_st}")
-                row += 1
-                item_description_window.addstr(row, detail_x,
-                                               f"DEF: {player.df} --> {stat_forecast_df}")
-                row += 3
-                item_description_window.addstr(row, detail_x, f"(E)quip")
-                row += 1
-                item_description_window.addstr(row, detail_x, f"(R)emove")
-
+                selected_item = None
+                continue
+            elif key == ord("r"):
+                item_description_window.erase()
                 item_description_window.refresh()
+                player.weapon = None
+                selected_item = None
+                continue
 
-                if key == ord("e"):
-
-                    if player.weapon:
-                        player.weapon = None
-
-                    player.weapon = selected_item
-                    item_description_window.erase()
-                    item_description_window.refresh()
-                    selected_item = None
-                    continue
-                elif key == ord("r"):
-                    player.weapon = None
-                    item_description_window.erase()
-                    item_description_window.refresh()
-                    selected_item = None
-                    continue
-
-                item_description_window.refresh()
+            item_description_window.refresh()
 
         inventory_window.refresh()
         key = stdscr.getch()
