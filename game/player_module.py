@@ -15,6 +15,9 @@ class Player:
         self._hp = hp
         self._st = st
         self._df = df
+        self.base_max_hp = 50
+        self.base_st = 21
+        self.base_df = 3
         self.weapon_dmg = [0, 0]
         self.position = [0, 0]
         self.req_xp = req_xp
@@ -146,8 +149,8 @@ class Player:
             hp_gain = random.choice([5, 7, 7, 7, 10, 20])
             self.max_hp += hp_gain
             self._hp += hp_gain
-            self._st += random.choice([1, 1, 0, 2])
-            self._df += random.choice([1, 1, 1, 0])
+            # self._st += random.choice([1, 1, 0, 2])
+            # self._df += random.choice([1, 1, 1, 0])
             self.req_xp += 4 + self.lvl * 5
             self.req_xp -= xp_overflow
 

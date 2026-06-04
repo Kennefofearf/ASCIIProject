@@ -55,12 +55,24 @@ def open_inventory_window(stdscr, player):
             for affix_id in affixes:
                 affix_data = UNCOMMON_AFFIXES[affix_id]
 
-                stat_forecast_hp = player.max_hp + (selected_item.get('base_stats', {}).get('max_hp') +
-                                                    affix_data.get('affix_stats', {}).get('max_hp'))
-                stat_forecast_st = player.st + (selected_item.get('base_stats', {}).get('st') +
-                                                    affix_data.get('affix_stats', {}).get('st'))
-                stat_forecast_df = player.df + (selected_item.get('base_stats', {}).get('df') +
-                                                    affix_data.get('affix_stats', {}).get('df'))
+                predicted_stat_change_hp = (player.max_hp + selected_item.get('base_stats', {}).get('max_hp')
+                                                        + affix_data.get('affix_stats', {}).get('max_hp')) - player.max_hp
+
+                predicted_stat_change_st = (player.st + selected_item.get('base_stats', {}).get('st')
+                                                        + affix_data.get('affix_stats', {}).get('st')) - player.st
+
+                predicted_stat_change_df = (player.df + selected_item.get('base_stats', {}).get('df')
+                                                        + affix_data.get('affix_stats', {}).get('df')) - player.df
+
+                if player.weapon == selected_item:
+                    stat_forecast_hp = player.max_hp
+                    stat_forecast_st = player.st
+                    stat_forecast_df = player.df
+                else:
+                    stat_forecast_hp = player.max_hp + predicted_stat_change_hp
+                    stat_forecast_st = player.st + predicted_stat_change_st
+                    stat_forecast_df = player.df + predicted_stat_change_df
+
 
                 item_description_window.addstr(row, detail_x, selected_item["name"], curses.color_pair(item_color))
                 row += 1
@@ -111,9 +123,15 @@ def open_inventory_window(stdscr, player):
 
             if not affixes:
 
-                stat_forecast_hp = player.max_hp + selected_item.get('base_stats', {}).get('max_hp')
-                stat_forecast_st = player.st + selected_item.get('base_stats', {}).get('st')
-                stat_forecast_df = player.df + selected_item.get('base_stats', {}).get('df')
+                if player.weapon:
+                    stat_forecast_hp = player.max_hp + affix_data.get('base_stats', {}).get('max_hp')
+                    stat_forecast_st = player.st + affix_data.get('base_stats', {}).get('st')
+                    stat_forecast_df = player.df + affix_data.get('base_stats', {}).get('df')
+                else:
+                    stat_forecast_hp = player.max_hp
+                    stat_forecast_st = player.st
+                    stat_forecast_df = player.df
+
 
                 item_description_window.addstr(row, detail_x, selected_item["name"])
                 row += 1
