@@ -19,6 +19,7 @@ def open_inventory_window(stdscr, player):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
 
     selected_item = None
+    drop_item = False
     item_description_window = None
 
     while True:
@@ -51,6 +52,9 @@ def open_inventory_window(stdscr, player):
             inventory_window.addstr(row, 2, display_name, curses.color_pair(item_color))
 
             item_rows[start_y + row] = item
+
+            # if drop_item:
+            #     inventory.remove(item)
 
         if selected_item:
 
@@ -148,6 +152,13 @@ def open_inventory_window(stdscr, player):
         if key == curses.KEY_MOUSE:
             _, mouse_x, mouse_y, _, button_state = curses.getmouse()
 
-            if button_state and curses.BUTTON1_CLICKED:
+            if button_state & curses.BUTTON1_CLICKED:
                 if mouse_y in item_rows:
                     selected_item = item_rows[mouse_y]
+
+            if button_state & curses.BUTTON3_CLICKED:
+                if mouse_y in item_rows:
+                    drop_item = item_rows[mouse_y]
+                    if player.weapon == drop_item:
+                        player.weapon = None
+                    inventory.remove(drop_item)
