@@ -1,4 +1,5 @@
 import curses
+import random
 
 from systems.loot_generator import roll_item_drop
 from systems.loot_generator import get_rarity_color
@@ -23,7 +24,12 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
     if is_adjacent(player.position, target.position):
         now = time.time()
         if now - player.last_attack_time >= player.attack_cooldown:
-            dmg = player.st - target.df
+
+            if player.weapon:
+                dmg = (random.randint((player.weapon.get('min_dmg') + player.st),
+                       (player.weapon.get('max_dmg') + player.st))) - target.df
+            else:
+                dmg = player.st - target.df
 
             if dmg <= 0:
                 dmg = 0

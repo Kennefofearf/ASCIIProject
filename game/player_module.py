@@ -8,7 +8,7 @@ import time
 
 
 class Player:
-    def __init__(self, name, icon, max_hp, hp, st, df, req_xp, lvl):
+    def __init__(self, name, icon, max_hp, hp, st, df, req_xp, total_req_xp, xp_bar_text, lvl):
         self.name = name
         self.icon = "@"
         self._max_hp = max_hp
@@ -21,6 +21,8 @@ class Player:
         self.weapon_dmg = [0, 0]
         self.position = [0, 0]
         self.req_xp = req_xp
+        self.total_req_xp = total_req_xp
+        self.xp_bar_text = xp_bar_text
         self.lvl = lvl
         self.weapon = None
         # self.armor = None
@@ -140,20 +142,26 @@ class Player:
         if self._hp <= 0:
             self._hp = 0
 
+    def update_xp_bar(self):
+        progress = self.total_req_xp - self.req_xp
+        bar_count = int((progress / self.total_req_xp) * 10)
+
+        self.xp_bar_text = '=' * bar_count
 
     def xp_gain(self, xp):
         self.req_xp -= xp
-        if self.req_xp <= 0:
+
+        while self.req_xp <= 0:
             xp_overflow = -self.req_xp
             self.lvl += 1
             hp_gain = random.choice([5, 7, 7, 7, 10, 20])
             self.max_hp += hp_gain
             self._hp += hp_gain
-            # self._st += random.choice([1, 1, 0, 2])
-            # self._df += random.choice([1, 1, 1, 0])
-            self.req_xp += 4 + self.lvl * 5
-            self.req_xp -= xp_overflow
+            self.total_req_xp += 5 + self.lvl * 5
+            self.req_xp = self.total_req_xp - xp_overflow
+            #self.req_xp -= xp_overflow
 
+        self.update_xp_bar()
 
     def input_action(self, key):
         py, px = 0, 0

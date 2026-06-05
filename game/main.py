@@ -138,7 +138,7 @@ def gamestart(stdscr):
     stdscr.clear()
 
     y, x = stdscr.getmaxyx()
-    player = Player("Koe", "@", 50, 50, 21, 3, 4, 5)
+    player = Player("Koe", "@", 50, 50, 21, 3, 5, 5, "", 5)
     player.position = [20, 55]
 
     # Window rendering
@@ -160,8 +160,6 @@ def gamestart(stdscr):
     scroll_offset = 0
 
     while True:
-        #time.sleep(0.5)
-        #time.sleep(2)
         for y, x in prev_positions:
             stdscr.addch(y, x, ord(" "))
 
@@ -188,15 +186,24 @@ def gamestart(stdscr):
             target_window.box()
             target_window.refresh()
 
-        player_window.addstr(1, 1, f"       {player.name}")
-        player_window.addstr(2, 1, f"Lvl:   {player.lvl}")
-        player_window.addstr(3, 1, f" HP:   {player.hp} / {player.max_hp}")
-        player_window.addstr(4, 1, f"STR:   {player.st}")
-        player_window.addstr(5, 1, f"DEF:   {player.df}")
-        player_window.addstr(6, 1, f"Nxt:   {player.req_xp}")
+        player_window.addstr(1, 2, f"{player.name}  Level: {player.lvl}")
+
+        if player.weapon:
+            player_window.addstr(3, 1, f"DMG: {player.weapon.get('min_dmg') + player.st} - "
+                                        f"{player.weapon.get('max_dmg') + player.st}")
+        else:
+            player_window.addstr(3, 1, f"DMG: {player.st} - {player.st}")
+
+        player_window.addstr(4, 1, f" HP:   {player.hp} / {player.max_hp}")
+        player_window.addstr(5, 1, f"STR:   {player.st}")
+        player_window.addstr(6, 1, f"DEF:   {player.df}")
+        player_window.addstr(7, 1, f" XP: {player.total_req_xp - player.req_xp} / {player.total_req_xp}")
+        player_window.addstr(8, 1, f"[")
+        player_window.addstr(8, 2, f"{player.xp_bar_text:<10}")
+        player_window.addstr(8, 12, f"]")
         player_window.refresh()
 
-        dbg.addstr(1, 1, f"{player.name}")
+        dbg.addstr(1, 1, f"")
         dbg.refresh()
 
         key = stdscr.getch()
