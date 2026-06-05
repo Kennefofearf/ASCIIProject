@@ -206,6 +206,7 @@ def gamestart(stdscr):
         if key == ord("q"):
             break
         elif key == ord("i"):
+            player_window.clear()
             open_inventory_window(stdscr, player)
         elif key == curses.KEY_RESIZE:
             stdscr.clear()
