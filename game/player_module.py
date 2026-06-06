@@ -142,11 +142,15 @@ class Player:
         if self._hp <= 0:
             self._hp = 0
 
+    # Updates the XP bar
+
     def update_xp_bar(self):
         progress = self.total_req_xp - self.req_xp
         bar_count = int((progress / self.total_req_xp) * 10)
 
         self.xp_bar_text = '=' * bar_count
+
+    # Calculates XP gain and uses it to update the XP bar
 
     def xp_gain(self, xp):
         self.req_xp -= xp
