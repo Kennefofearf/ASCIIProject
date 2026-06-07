@@ -2,6 +2,7 @@ import curses
 from player_module import Player
 from data.affix_data import UNCOMMON_AFFIXES
 from systems.loot_generator import get_rarity_color
+from UI.skill_tree_screen import open_skill_tree
 
 def get_item_stat_bonus(item, stat):
     if not item:
@@ -117,6 +118,8 @@ def open_inventory_window(stdscr, player):
             item_description_window.addstr(row, detail_x, f"(E)quip")
             row += 1
             item_description_window.addstr(row, detail_x, f"(R)emove")
+            row += 1
+            item_description_window.addstr(row, detail_x, f"S(k)ill Tree")
 
             if key == ord("e"):
                 player.weapon = selected_item
@@ -130,6 +133,10 @@ def open_inventory_window(stdscr, player):
                 player.weapon = None
                 selected_item = None
                 continue
+            elif key == ord("k"):
+                item_description_window.erase()
+                item_description_window.refresh()
+                open_skill_tree(stdscr, selected_item)
 
             item_description_window.refresh()
 
