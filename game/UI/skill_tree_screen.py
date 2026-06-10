@@ -1,5 +1,11 @@
 import curses
 
+def draw_node(window, y, x, label=""):
+    window.addstr(y, x, "_____")
+    window.addstr(y + 1, x, "|     |")
+    window.addstr(y+ 2, x, f"|{label:^5}|")
+    window.addstr(y + 3, x, "|_____|")
+
 def open_skill_tree(stdscr, selected_item):
 
     while True:
@@ -12,39 +18,6 @@ def open_skill_tree(stdscr, selected_item):
         skill_tree_window = curses.newwin(height, tree_width, start_y, tree_x)
 
         skill_tree_window.box()
-
-        skill_tree_dividers = "_" * (tree_width - 2)
-        empty_space = " " * (tree_width - 2)
-
-        # Drawing the skill tree diagram
-
-        skill_tree_window.addstr(1, int(tree_width / 2), f"|")
-        skill_tree_window.addstr(2, int(tree_width / 2), f"|")
-        skill_tree_window.addstr(3, int(tree_width / 2), f"|")
-        skill_tree_window.addstr(4, int(tree_width / 2), f"|")
-        skill_tree_window.addstr(4, 1, f"{skill_tree_dividers}")
-        skill_tree_window.addstr(5, 1, f"{empty_space}")
-        skill_tree_window.addstr(6, 1, f"       _____     _____     _____       ")
-        skill_tree_window.addstr(7, 1, f"      |     |   |     |   |     |      ")
-        skill_tree_window.addstr(8, 1, f"      |     |   |     |   |     |      ")
-        skill_tree_window.addstr(9, 1, f"      |     |   |     |   |     |      ")
-        skill_tree_window.addstr(10, 1, f"       -----     -----     -----      ")
-        skill_tree_window.addstr(11, 1, f"{empty_space}")
-        skill_tree_window.addstr(12, 1, f"       _____     _____     _____       ")
-        skill_tree_window.addstr(13, 1, f"      |     |   |     |   |     |      ")
-        skill_tree_window.addstr(14, 1, f"      |     |   |     |   |     |      ")
-        skill_tree_window.addstr(15, 1, f"      |     |   |     |   |     |      ")
-        skill_tree_window.addstr(16, 1, f"       -----     -----     -----      ")
-        skill_tree_window.addstr(17, 1, f"{empty_space}")
-        skill_tree_window.addstr(18, 1, f"{skill_tree_dividers}")
-        skill_tree_window.addstr(19, 1, f"{empty_space}")
-        skill_tree_window.addstr(20, 1, f"                 _____                 ")
-        skill_tree_window.addstr(21, 1, f"                |     |                ")
-        skill_tree_window.addstr(22, 1, f"                |     |                ")
-        skill_tree_window.addstr(23, 1, f"                |     |                ")
-        skill_tree_window.addstr(24, 1, f"                 -----                ")
-
-        skill_tree_window.refresh()
 
         key = stdscr.getch()
 
