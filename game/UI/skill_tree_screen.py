@@ -16,6 +16,8 @@ def open_skill_tree(stdscr, selected_item):
         skill_tree_dividers = "_" * (tree_width - 2)
         empty_space = " " * (tree_width - 2)
 
+        # Drawing the skill tree diagram
+
         skill_tree_window.addstr(1, int(tree_width / 2), f"|")
         skill_tree_window.addstr(2, int(tree_width / 2), f"|")
         skill_tree_window.addstr(3, int(tree_width / 2), f"|")
