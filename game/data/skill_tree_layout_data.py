@@ -1,9 +1,29 @@
-SKILL_TREE_LAYOUTS_ONE = {
+SKILL_TREE_WHITE_LAYOUT_ONE = {
     "white": {
         "slots": [
             (50, 7), (50, 19), (50, 31),
             (45, 7), (45, 19), (45, 31),
-            None,    (45, 19), None
+            None,    (40, 19), None
+        ],
+        "connections": [
+            (0, 3),
+            (1, 4),
+            (2, 5),
+            (3, 4),
+            (4, 1),
+            (4, 3),
+            (4, 5),
+            (4, 7)
+        ]
+    },
+}
+
+SKILL_TREE_GREEN_LAYOUT_ONE = {
+    "white": {
+        "slots": [
+            (35, 7), (35, 19), (35, 31),
+            (30, 7), (30, 19), (30, 31),
+            None,    (25, 19), None
         ],
         "connections": [
             (0, 3),
