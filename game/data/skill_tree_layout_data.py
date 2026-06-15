@@ -18,6 +18,24 @@ SKILL_TREE_WHITE_LAYOUT_ONE = {
     },
 }
 
+SKILL_TREE_WHITE_LAYOUT_TWO = {
+    "white": {
+        "slots": [
+            (50, 7), None, None,
+            (45, 7), (45, 19), (45, 31),
+            None,    (40, 19), None
+        ],
+        "connections": [
+            (0, 3),
+            (3, 4),
+            (4, 5),
+            (4, 7)
+        ]
+    },
+}
+
+# Green layouts
+
 SKILL_TREE_GREEN_LAYOUT_ONE = {
     "white": {
         "slots": [
@@ -34,6 +52,26 @@ SKILL_TREE_GREEN_LAYOUT_ONE = {
             (4, 3),
             (4, 5),
             (4, 7)
+        ]
+    },
+}
+
+SKILL_TREE_GREEN_LAYOUT_TWO = {
+    "white": {
+        "slots": [
+            (35, 7), (35, 19), None,
+            (30, 7), None, None,
+            (25, 7), (25, 19), None
+        ],
+        "connections": [
+            (0, 1),
+            (0, 3),
+            (1, 0),
+            (3, 0),
+            (3, 6),
+            (6, 3),
+            (6, 7),
+            (7, 6)
         ]
     },
 }
