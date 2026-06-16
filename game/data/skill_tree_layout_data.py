@@ -1,5 +1,5 @@
-SKILL_TREE_WHITE_LAYOUT_ONE = {
-    "white": {
+SKILL_TREE_WHITE_LAYOUTS= {
+    "white_0": {
         "slots": [
             (50, 7), (50, 19), (50, 31),
             (45, 7), (45, 19), (45, 31),
@@ -16,10 +16,7 @@ SKILL_TREE_WHITE_LAYOUT_ONE = {
             (4, 7)
         ]
     },
-}
-
-SKILL_TREE_WHITE_LAYOUT_TWO = {
-    "white": {
+    "white_1": {
         "slots": [
             (50, 7), None, None,
             (45, 7), (45, 19), (45, 31),
@@ -32,12 +29,7 @@ SKILL_TREE_WHITE_LAYOUT_TWO = {
             (4, 7)
         ]
     },
-}
-
-# Green layouts
-
-SKILL_TREE_GREEN_LAYOUT_ONE = {
-    "white": {
+    "green_0": {
         "slots": [
             (35, 7), (35, 19), (35, 31),
             (30, 7), (30, 19), (30, 31),
@@ -54,10 +46,7 @@ SKILL_TREE_GREEN_LAYOUT_ONE = {
             (4, 7)
         ]
     },
-}
-
-SKILL_TREE_GREEN_LAYOUT_TWO = {
-    "white": {
+    "green_1": {
         "slots": [
             (35, 7), (35, 19), None,
             (30, 7), None, None,
