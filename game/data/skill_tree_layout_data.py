@@ -1,4 +1,4 @@
-SKILL_TREE_WHITE_LAYOUTS= {
+SKILL_TREE_LAYOUTS = {
     "white_0": {
         "slots": [
             (50, 7), (50, 19), (50, 31),
