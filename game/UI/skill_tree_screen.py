@@ -30,6 +30,11 @@ def draw_skill_tree_nodes(window, item, selected_slot):
     for slot_index, (y, x) in enumerate(layout["slots"]):
         node = item["skill_tree"]["nodes"].get(slot_index)
 
+        # if y == 6 | y == 7 | y == 8:
+        #     node_data = TIER_CAPSTONE_NODES[node["node_id"]]
+        #     label = node_data["name"][:5]
+        #     is_selected = slot_index == selected_slot
+
         if node:
             node_data = COMMON_NODES[node["node_id"]]
             label = node_data["name"][:5]
@@ -50,6 +55,7 @@ def open_skill_tree(stdscr, selected_item):
         skill_tree_window = curses.newwin(height, tree_width, start_y, tree_x)
 
         skill_tree_window.box()
+        skill_tree_window.refresh()
 
         key = stdscr.getch()
 
