@@ -53,8 +53,10 @@ def open_skill_tree(stdscr, selected_item):
         tree_x = int(stdscr_x * 0.55)
 
         skill_tree_window = curses.newwin(height, tree_width, start_y, tree_x)
-
         skill_tree_window.box()
+
+        #draw_skill_tree_nodes(skill_tree_window, selected_item, selected_slot)
+
         skill_tree_window.refresh()
 
         key = stdscr.getch()

@@ -7,7 +7,9 @@ EQUIPMENT = {
                 "max_hp": 0,
                 "base_stats": {"max_hp": 0, "st": 0, "df": 0},
                 "skill_nodes": 7,
-                "skill_tree": {},
+                "skill_tree": {
+                    "layout": ""
+                },
                 "item_level": 1,
                 "xp": 0,
                 "max_xp": 100,
@@ -23,7 +25,9 @@ EQUIPMENT = {
                 "max_hp": 0,
                 "base_stats": {"max_hp": 0, "st": 0, "df": 0},
                 "skill_nodes": 7,
-                "skill_tree": {},
+                "skill_tree": {
+                    "layout": ""
+                },
                 "item_level": 1,
                 "xp": 0,
                 "max_xp": 100,
@@ -39,7 +43,9 @@ EQUIPMENT = {
                 "max_hp": 0,
                 "base_stats": {"max_hp": 0, "st": 0, "df": 0},
                 "skill_nodes": 7,
-                "skill_tree": {},
+                "skill_tree": {
+                    "layout": ""
+                },
                 "item_level": 1,
                 "xp": 0,
                 "max_xp": 100,
@@ -55,7 +61,9 @@ EQUIPMENT = {
                 "max_hp": 0,
                 "base_stats": {"max_hp": 0, "st": 0, "df": 0},
                 "skill_nodes": 7,
-                "skill_tree": {},
+                "skill_tree": {
+                    "layout": ""
+                },
                 "item_level": 1,
                 "xp": 0,
                 "max_xp": 100,
