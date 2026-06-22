@@ -1,6 +1,7 @@
 import curses
+import random
 from systems.loot_generator import get_rarity_color
-from data.skill_tree_layout_data import WHITE_LAYOUTS
+from data.skill_tree_layout_data import LAYOUTS, RARITY_ORDER
 from data.skill_node_data import COMMON_NODES
 
 def draw_node(window, y, x, label, node, is_selected=False):
@@ -23,9 +24,43 @@ def draw_item_name(window, item, width):
     title = f"{name}    {xp}/{max_xp}"
     window.addstr(1, max(1, (width - len(title)) / 2), title, curses.color_pair(item_color))
 
+def generate_rarity_layout(rarity):
+    slots = []
+    connections = []
+    previous_exits = []
+
+    rarity_index = RARITY_ORDER.index(rarity)
+
+    for rarity_name in RARITY_ORDER[:rarity_index + 1]:
+        piece = random.choice(LAYOUTS[rarity_name])
+
+        offset = len(slots)
+
+        slots.extend(piece["slots"])
+
+        for start, end in piece["connections"]:
+            connections.append((start + offset, end + offset))
+
+        current_entries = [slot + offset for slot in piece["entry_slots"]]
+        current_exits = [slot + offset for slot in piece["exit_slots"]]
+
+        for previous_slots in previous_exits:
+            for current_slot in current_entries:
+                connections.append((previous_slots, current_slot))
+
+        previous_exits = current_exits
+
+    return {
+        "slots": slots,
+        "connections": connections
+    }
+
 def draw_skill_tree_nodes(window, item, selected_slot):
-    layout_name = item["skill_tree"]["layout"]
-    layout = WHITE_LAYOUTS[layout_name]
+
+    # if item["rarity"] == "white":
+    #     white_id = random.choice(list(WHITE_LAYOUTS.keys()))
+    layout = item["skill_tree"]["layout"]
+
 
     for slot_index, (y, x) in enumerate(layout["slots"]):
         node = item["skill_tree"]["nodes"].get(slot_index)
