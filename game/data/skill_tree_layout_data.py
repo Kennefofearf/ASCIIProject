@@ -1,4 +1,4 @@
-SKILL_TREE_LAYOUTS = {
+WHITE_LAYOUTS = {
     "white_0": {
         "slots": [
             (50, 7), (50, 19), (50, 31),
@@ -29,6 +29,9 @@ SKILL_TREE_LAYOUTS = {
             (4, 7)
         ]
     },
+}
+
+GREEN_LAYOUTS = {
     "green_0": {
         "slots": [
             (35, 7), (35, 19), (35, 31),

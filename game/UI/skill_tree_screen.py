@@ -1,6 +1,6 @@
 import curses
 from systems.loot_generator import get_rarity_color
-from data.skill_tree_layout_data import SKILL_TREE_LAYOUTS
+from data.skill_tree_layout_data import WHITE_LAYOUTS
 from data.skill_node_data import COMMON_NODES
 
 def draw_node(window, y, x, label, node, is_selected=False):
@@ -25,7 +25,7 @@ def draw_item_name(window, item, width):
 
 def draw_skill_tree_nodes(window, item, selected_slot):
     layout_name = item["skill_tree"]["layout"]
-    layout = SKILL_TREE_LAYOUTS[layout_name]
+    layout = WHITE_LAYOUTS[layout_name]
 
     for slot_index, (y, x) in enumerate(layout["slots"]):
         node = item["skill_tree"]["nodes"].get(slot_index)
@@ -55,7 +55,7 @@ def open_skill_tree(stdscr, selected_item):
         skill_tree_window = curses.newwin(height, tree_width, start_y, tree_x)
         skill_tree_window.box()
 
-        #draw_skill_tree_nodes(skill_tree_window, selected_item, selected_slot)
+        draw_skill_tree_nodes(skill_tree_window, selected_item, selected_slot)
 
         skill_tree_window.refresh()
 
