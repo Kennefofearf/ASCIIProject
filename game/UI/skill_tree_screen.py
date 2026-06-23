@@ -57,9 +57,7 @@ def generate_rarity_layout(rarity):
 
 def draw_skill_tree_nodes(window, item, selected_slot):
 
-    # if item["rarity"] == "white":
-    #     white_id = random.choice(list(WHITE_LAYOUTS.keys()))
-    layout = item["skill_tree"]["layout"]
+    layout = generate_rarity_layout(item["rarity"])
 
 
     for slot_index, (y, x) in enumerate(layout["slots"]):
