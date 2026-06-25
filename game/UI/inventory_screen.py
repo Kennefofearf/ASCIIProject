@@ -1,7 +1,7 @@
 import curses
 from player_module import Player
 from data.affix_data import UNCOMMON_AFFIXES
-from systems.loot_generator import get_rarity_color
+from UI.colors import get_rarity_color
 from UI.skill_tree_screen import open_skill_tree
 
 def get_item_stat_bonus(item, stat):

@@ -3,8 +3,8 @@ import random
 from data.weapons_data import EQUIPMENT
 from data.item_base import create_item_base
 from data.affix_data import UNCOMMON_AFFIXES
-from data.rarities_data import RARITIES
 from data.skill_node_data import COMMON_NODES
+from systems.weapon_skill_tree import generate_rarity_layout
 
 # def roll_value(value):
 #     if isinstance(value, list):
@@ -198,13 +198,16 @@ def generate_item(base_id, item_level):
     item["lvl"] = base.get("lvl", 1)
     item["max_lvl"] = base.get("max_lvl", 7)
     item["skill_tags"] = base.get("skill_tags", [])
-    item["skill_nodes"] = generate_item_skill_tree(item, base)
+    item["abilities"] = base.get("abilities", [])
 
     item["affixes"], available_affixes = choose_affixes(item_level=item_level, item_type=item["type"])
 
     item["rarity"] = calculate_rarity(item["affixes"])
 
-    item["abilities"] = base.get("abilities", [])
+    item["skill_tree"] = {
+        "layout": generate_rarity_layout(item["rarity"]),
+        "nodes": generate_item_skill_tree(item, base)
+    }
 
     for affix_id in item["affixes"]:
         affix = available_affixes[affix_id]
@@ -213,19 +216,6 @@ def generate_item(base_id, item_level):
     item["name"] = build_item_name(base["name"], item["affixes"], available_affixes)
 
     return item
-
-def get_rarity_color(item):
-    rarity = item.get("rarity")
-    item_level = item.get("item_level")
-
-    # item level determines possible rarity
-
-    if rarity == "white":
-        return 0
-    elif rarity == "green" and item_level >= 5:
-        return 3
-
-    return 0
 
 def roll_item_drop(enemy):
     drop_chance = getattr(enemy, "drop_chance", 0.25)

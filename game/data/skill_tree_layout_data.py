@@ -19,10 +19,10 @@ LAYOUTS = {
             (4, 7)
         ],
         "entry_slots": [
-            (0, 1, 2)
+            2
         ],
         "exit_slots": [
-            7
+            0
         ]
         }
     ],
@@ -43,7 +43,7 @@ LAYOUTS = {
             0
         ],
         "exit_slots": [
-            7
+            0
         ]
         }
     ],
@@ -66,10 +66,10 @@ LAYOUTS = {
             (4, 7)
         ],
         "entry_slots": [
-            (0, 1, 2)
+            2
         ],
         "exit_slots": [
-            7
+            0
         ]
         }
     ],
@@ -91,10 +91,10 @@ LAYOUTS = {
             (7, 6)
         ],
         "entry_slots": [
-            (0, 1)
+            1
         ],
         "exit_slots": [
-            (6, 7)
+            1
         ]
         }
     ],

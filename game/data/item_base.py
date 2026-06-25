@@ -10,10 +10,10 @@ def create_item_base():
         "max_xp": 100,
         "lvl": 1,
         "max_lvl": 7,
-        "skill_nodes": 0,
-        "skill_tree": {
-            "layout": ""
-        },
+        # "skill_nodes": 0,
+        # "skill_tree": {
+        #     "layout": ""
+        # },
         "abilities": [],
         "affixes": [],
         "skill_tags": []

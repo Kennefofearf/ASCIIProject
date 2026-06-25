@@ -1,10 +1,10 @@
 import curses
-import random
-from systems.loot_generator import get_rarity_color
-from data.skill_tree_layout_data import LAYOUTS, RARITY_ORDER
+from systems.weapon_skill_tree import generate_rarity_layout
 from data.skill_node_data import COMMON_NODES
+from UI.colors import get_rarity_color
 
-def draw_node(window, y, x, label, node, is_selected=False):
+
+def draw_node(window, x, y, label, node, is_selected=False):
     color = curses.A_REVERSE if is_selected else curses.A_NORMAL
 
     window.addstr(y, x, "_____")
@@ -15,6 +15,7 @@ def draw_node(window, y, x, label, node, is_selected=False):
     rank = f"{node['points']}/{node['max_points']}"
     window.addstr(y + 4, x + 1, rank)
 
+
 def draw_item_name(window, item, width):
     name = item["name"]
     item_color = get_rarity_color(item)
@@ -24,43 +25,17 @@ def draw_item_name(window, item, width):
     title = f"{name}    {xp}/{max_xp}"
     window.addstr(1, max(1, (width - len(title)) / 2), title, curses.color_pair(item_color))
 
-def generate_rarity_layout(rarity):
-    slots = []
-    connections = []
-    previous_exits = []
-
-    rarity_index = RARITY_ORDER.index(rarity)
-
-    for rarity_name in RARITY_ORDER[:rarity_index + 1]:
-        piece = random.choice(LAYOUTS[rarity_name])
-
-        offset = len(slots)
-
-        slots.extend(piece["slots"])
-
-        for start, end in piece["connections"]:
-            connections.append((start + offset, end + offset))
-
-        current_entries = [slot + offset for slot in piece["entry_slots"]]
-        current_exits = [slot + offset for slot in piece["exit_slots"]]
-
-        for previous_slots in previous_exits:
-            for current_slot in current_entries:
-                connections.append((previous_slots, current_slot))
-
-        previous_exits = current_exits
-
-    return {
-        "slots": slots,
-        "connections": connections
-    }
 
 def draw_skill_tree_nodes(window, item, selected_slot):
 
-    layout = generate_rarity_layout(item["rarity"])
+    layout = item["skill_tree"]["layout"]
 
+    for slot_index, position in enumerate(layout["slots"]):
+        if position is None:
+            continue
 
-    for slot_index, (y, x) in enumerate(layout["slots"]):
+        y, x = position
+
         node = item["skill_tree"]["nodes"].get(slot_index)
 
         # if y == 6 | y == 7 | y == 8:
@@ -74,6 +49,7 @@ def draw_skill_tree_nodes(window, item, selected_slot):
             is_selected = slot_index == selected_slot
 
             draw_node(window, y, x, label, node, is_selected)
+
 
 def open_skill_tree(stdscr, selected_item):
     selected_slot = 0
@@ -89,7 +65,6 @@ def open_skill_tree(stdscr, selected_item):
         skill_tree_window.box()
 
         draw_skill_tree_nodes(skill_tree_window, selected_item, selected_slot)
-
         skill_tree_window.refresh()
 
         key = stdscr.getch()
