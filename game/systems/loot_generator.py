@@ -20,13 +20,13 @@ from systems.weapon_skill_tree import generate_rarity_layout
 #         rolled[stat_name] = max(0, int(rolled_value * stat_multi))
 #
 #     return rolled
-import json
-
-
-def dbg(data):
-    with open("debug.txt", "a") as f:
-        f.write(json.dumps(data, indent=4))
-        f.write("\n\n")
+# import json
+#
+#
+# def dbg(data):
+#     with open("debug.txt", "a") as f:
+#         f.write(json.dumps(data, indent=4))
+#         f.write("\n\n")
 
 def create_affix_pool(item_level):
     pools = []
@@ -142,11 +142,12 @@ def get_skill_node_count(item):
 
     return 7 + (tier_bonus * 7)
 
-def generate_item_skill_tree(item, base):
-    node_count = get_skill_node_count(item)
-    item_tags = base.get("skill_tags", [])
+def generate_item_skill_tree(base, layout):
+    node_count = len(layout["slots"])
 
     possible_nodes = {}
+
+    item_tags = base.get("skill_tags", [])
 
     for node_id, node_data in COMMON_NODES.items():
         node_tags = node_data.get("skill_tags", [])
@@ -159,25 +160,18 @@ def generate_item_skill_tree(item, base):
         min(node_count, len(possible_nodes))
     )
 
-    skill_tree = {}
+    nodes = {}
 
-    for node_id in chosen_node_ids:
+    for slot_index, node_id in enumerate(chosen_node_ids):
 
-        node_data = possible_nodes[node_id]
-
-        skill_tree[node_id] = {
-            "name": node_data.get("name", ""),
-            "tooltip": node_data.get("tooltip", ""),
+        nodes[slot_index] = {
+            "node_id": node_id,
             "points": 0,
-            "max_points": node_data.get("max_points", 1),
+            "max_points": COMMON_NODES[node_id].get("max_points", 1),
             "active": False,
-            "stats": dict(node_data.get("stats", {})),
-            "requires": list(node_data.get("requires", [])),
-            "unlocks": list(node_data.get("unlocks", [])),
-            "skill_tags": list(node_data.get("skill_tags", []))
         }
 
-    return skill_tree
+    return nodes
 
 def generate_item(base_id, item_level):
     base = EQUIPMENT[base_id]
@@ -204,9 +198,11 @@ def generate_item(base_id, item_level):
 
     item["rarity"] = calculate_rarity(item["affixes"])
 
+    layout = generate_rarity_layout(item["rarity"])
+
     item["skill_tree"] = {
-        "layout": generate_rarity_layout(item["rarity"]),
-        "nodes": generate_item_skill_tree(item, base)
+        "layout": layout,
+        "nodes": generate_item_skill_tree(base, layout)
     }
 
     for affix_id in item["affixes"]:

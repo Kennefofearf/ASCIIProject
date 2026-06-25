@@ -2,15 +2,32 @@ import curses
 from systems.weapon_skill_tree import generate_rarity_layout
 from data.skill_node_data import COMMON_NODES
 from UI.colors import get_rarity_color
+import json
+
+
+def dbg(data):
+    with open("debug.txt", "a") as f:
+        f.write(json.dumps(data, indent=4))
+        f.write("\n\n")
 
 
 def draw_node(window, x, y, label, node, is_selected=False):
+    height, width = window.getmaxyx()
+
+    node_height = 5
+    node_width = 7
+
+    if y + node_height >= height or x + node_width >= width:
+        dbg(node_height)
+        dbg(height)
+        return
+
     color = curses.A_REVERSE if is_selected else curses.A_NORMAL
 
-    window.addstr(y, x, "_____")
-    window.addstr(y + 1, x, "|     |")
-    window.addstr(y+ 2, x, f"|{label:^5}|")
-    window.addstr(y + 3, x, "|_____|")
+    window.addstr(y, x, "_____", color)
+    window.addstr(y + 1, x, "|     |", color)
+    window.addstr(y + 2, x, f"|{label:^5}|", color)
+    window.addstr(y + 3, x, "|_____|", color)
 
     rank = f"{node['points']}/{node['max_points']}"
     window.addstr(y + 4, x + 1, rank)
@@ -23,8 +40,7 @@ def draw_item_name(window, item, width):
     max_xp = item["max_xp"]
 
     title = f"{name}    {xp}/{max_xp}"
-    window.addstr(1, max(1, (width - len(title)) / 2), title, curses.color_pair(item_color))
-
+    window.addstr(1, max(1, (width - len(title)) / 2), title, item_color)
 
 def draw_skill_tree_nodes(window, item, selected_slot):
 
@@ -64,6 +80,9 @@ def open_skill_tree(stdscr, selected_item):
         skill_tree_window = curses.newwin(height, tree_width, start_y, tree_x)
         skill_tree_window.box()
 
+        height, width = skill_tree_window.getmaxyx()
+
+        # draw_item_name(skill_tree_window, selected_item, width)
         draw_skill_tree_nodes(skill_tree_window, selected_item, selected_slot)
         skill_tree_window.refresh()
 
@@ -72,3 +91,5 @@ def open_skill_tree(stdscr, selected_item):
         if key == ord("k"):
             skill_tree_window.erase()
             skill_tree_window.refresh()
+            break
+
