@@ -18,8 +18,10 @@ def draw_node(window, x, y, label, node, is_selected=False):
     node_width = 7
 
     if y + node_height >= height or x + node_width >= width:
-        dbg(node_height)
-        dbg(height)
+
+        dbg(x)
+        dbg(x + node_width)
+        dbg(width)
         return
 
     color = curses.A_REVERSE if is_selected else curses.A_NORMAL
