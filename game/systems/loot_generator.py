@@ -142,8 +142,15 @@ def get_skill_node_count(item):
 
     return 7 + (tier_bonus * 7)
 
+
 def generate_item_skill_tree(base, layout):
-    node_count = len(layout["slots"])
+    valid_slot_indexes = []
+
+    for index, position in enumerate(layout["slots"]):
+        if position is not None:
+            valid_slot_indexes.append(index)
+
+    node_count = len(valid_slot_indexes)
 
     possible_nodes = {}
 
@@ -162,7 +169,7 @@ def generate_item_skill_tree(base, layout):
 
     nodes = {}
 
-    for slot_index, node_id in enumerate(chosen_node_ids):
+    for slot_index, node_id in zip(valid_slot_indexes, chosen_node_ids):
 
         nodes[slot_index] = {
             "node_id": node_id,
