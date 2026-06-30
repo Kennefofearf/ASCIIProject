@@ -18,10 +18,6 @@ def draw_node(window, x, y, label, node, is_selected=False):
     node_width = 7
 
     if y + node_height >= height or x + node_width >= width:
-
-        dbg(x)
-        dbg(x + node_width)
-        dbg(width)
         return
 
     color = curses.A_REVERSE if is_selected else curses.A_NORMAL
@@ -45,16 +41,17 @@ def draw_item_name(window, item, width):
     window.addstr(1, max(1, (width - len(title)) / 2), title, item_color)
 
 def draw_skill_tree_nodes(window, item, selected_slot):
-
     layout = item["skill_tree"]["layout"]
 
     for slot_index, position in enumerate(layout["slots"]):
+        # dbg(f"{slot_index}: {position}")
         if position is None:
             continue
 
         y, x = position
 
         node = item["skill_tree"]["nodes"].get(slot_index)
+        dbg(f"{slot_index}: {node}")
 
         # if y == 6 | y == 7 | y == 8:
         #     node_data = TIER_CAPSTONE_NODES[node["node_id"]]

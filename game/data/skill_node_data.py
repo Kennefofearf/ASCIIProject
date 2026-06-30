@@ -41,13 +41,43 @@ COMMON_NODES = {
             },
             "reckless": {
                 "name": "Reckless",
-                "tooltip": "You love to charge in without a plan. Raised STR by 3 & decreases DEF by 1.",
+                "tooltip": "You love to charge in without a plan. Raises STR by 3 & decreases DEF by 1.",
                 "points": 0,
                 "max_points": 3,
                 "stats": {"max_hp": 0, "st": 3, "df": -1},
                 "requires": [],
                 "unlocks": [],
                 "skill_tags": ["weapon"]
+            },
+            "confidence": {
+                "name": "Confidence",
+                "tooltip": "You believe in your ability to stand up to your opponents. HP +5 DEF +1",
+                "points": 0,
+                "max_points": 3,
+                "stats": {"max_hp": 5, "st": 0, "df": 1},
+                "requires": [],
+                "unlocks": [],
+                "skill_tags": ["weapon, armor"]
+            },
+            "frail": {
+                "name": "Frail",
+                "tooltip": "Your body gets weaker. HP -5 STR -1 DEF -1",
+                "points": 0,
+                "max_points": 3,
+                "stats": {"max_hp": -5, "st": -1, "df": -1},
+                "requires": [],
+                "unlocks": [],
+                "skill_tags": ["weapon, armor"]
+            },
+            "turtle instincts": {
+                "name": "Turtle Instincts",
+                "tooltip": "You prioritize sheilding yourself above all else. HP - 15 STR -3 DEF +3",
+                "points": 0,
+                "max_points": 3,
+                "stats": {"max_hp": -15, "st": -3, "df": 5},
+                "requires": [],
+                "unlocks": [],
+                "skill_tags": ["weapon, armor"]
             },
             "ability_bash": {
                 "name": "Bash",
