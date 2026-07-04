@@ -12,14 +12,12 @@ def dbg(data):
 
 
 def draw_node(window, x, y, label, node, is_selected=False):
-    dbg("Drawing...")
     height, width = window.getmaxyx()
 
     node_height = 5
     node_width = 7
 
     if y + node_height >= height or x + node_width >= width:
-        dbg("Passed if statement...")
         return
 
     color = curses.A_REVERSE if is_selected else curses.A_NORMAL
@@ -30,7 +28,6 @@ def draw_node(window, x, y, label, node, is_selected=False):
     window.addstr(y + 3, x, "|_____|", color)
 
     rank = f"{node['points']}/{node['max_points']}"
-    dbg(rank)
     window.addstr(y + 4, x + 1, rank)
 
 
@@ -78,6 +75,8 @@ def open_skill_tree(stdscr, selected_item):
         tree_x = int(stdscr_x * 0.55)
 
         skill_tree_window = curses.newwin(height, tree_width, start_y, tree_x)
+        skill_tree_window.scrollok(True)
+        skill_tree_window.idlok(True)
         skill_tree_window.box()
 
         height, width = skill_tree_window.getmaxyx()
