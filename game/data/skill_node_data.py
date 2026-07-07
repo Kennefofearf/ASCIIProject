@@ -57,7 +57,7 @@ COMMON_NODES = {
                 "stats": {"max_hp": 5, "st": 0, "df": 1},
                 "requires": [],
                 "unlocks": [],
-                "skill_tags": ["weapon, armor"]
+                "skill_tags": ["weapon", "armor"]
             },
             "frail": {
                 "name": "Frail",
@@ -67,7 +67,7 @@ COMMON_NODES = {
                 "stats": {"max_hp": -5, "st": -1, "df": -1},
                 "requires": [],
                 "unlocks": [],
-                "skill_tags": ["weapon, armor"]
+                "skill_tags": ["weapon", "armor"]
             },
             "turtle instincts": {
                 "name": "Turtle Instincts",
@@ -77,7 +77,7 @@ COMMON_NODES = {
                 "stats": {"max_hp": -15, "st": -3, "df": 5},
                 "requires": [],
                 "unlocks": [],
-                "skill_tags": ["weapon, armor"]
+                "skill_tags": ["weapon", "armor"]
             },
             "ability_bash": {
                 "name": "Bash",

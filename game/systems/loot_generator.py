@@ -1,5 +1,6 @@
 import curses
 import random
+import json
 from data.weapons_data import EQUIPMENT
 from data.item_base import create_item_base
 from data.affix_data import UNCOMMON_AFFIXES
@@ -27,6 +28,13 @@ from systems.weapon_skill_tree import generate_rarity_layout
 #     with open("debug.txt", "a") as f:
 #         f.write(json.dumps(data, indent=4))
 #         f.write("\n\n")
+
+
+def dbg(data):
+    with open("debug.txt", "a") as f:
+        f.write(json.dumps(data, indent=4))
+        f.write("\n\n")
+
 
 def create_affix_pool(item_level):
     pools = []
@@ -168,6 +176,14 @@ def generate_item_skill_tree(base, layout):
     )
 
     nodes = {}
+
+    dbg({
+        "node_count": node_count,
+        "possible_node_count": len(possible_nodes),
+        "possible_nodes": list(possible_nodes.keys()),
+        "chosen_node_count": len(chosen_node_ids),
+        "chosen_node_ids": chosen_node_ids,
+    })
 
     for slot_index, node_id in zip(valid_slot_indexes, chosen_node_ids):
 

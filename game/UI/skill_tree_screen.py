@@ -11,7 +11,7 @@ def dbg(data):
         f.write("\n\n")
 
 
-def draw_node(window, x, y, label, node, is_selected=False):
+def draw_node(window, y, x, label, node, is_selected=False):
     height, width = window.getmaxyx()
 
     node_height = 5
@@ -51,7 +51,7 @@ def draw_skill_tree_nodes(window, item, selected_slot, scroll):
             continue
 
         y, x = position
-        x -= scroll
+        y -= scroll
 
         node = item["skill_tree"]["nodes"].get(slot_index)
 
