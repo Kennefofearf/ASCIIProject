@@ -151,7 +151,8 @@ COMMON_NODES = {
             }
         }
 
-WHITE_CAPSTONE_NODES = {
+CAPSTONE_NODES = {
+    "white": {
             "constitution boost": {
                 "name": "Constitution Boost",
                 "tooltip": "Your physical health inspires others. HP +30",
@@ -161,10 +162,9 @@ WHITE_CAPSTONE_NODES = {
                 "requires": [],
                 "unlocks": [],
                 "skill_tags": ["weapon", "armor"]
-            },
-        }
-
-GREEN_CAPSTONE_NODES = {
+            }
+    },
+    "green": {
             "level up": {
                 "name": "Level Up",
                 "tooltip": "You level up in a more traditional way. HP +10 STR +5 DEF +5",
@@ -175,5 +175,8 @@ GREEN_CAPSTONE_NODES = {
                 "unlocks": [],
                 "skill_tags": ["weapon", "armor"]
             },
-        }
+    }
+}
+
+
 

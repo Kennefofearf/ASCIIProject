@@ -1,6 +1,8 @@
 import curses
+import random
+
 from systems.weapon_skill_tree import generate_rarity_layout
-from data.skill_node_data import COMMON_NODES
+from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
 from UI.colors import get_rarity_color
 import json
 
@@ -43,6 +45,7 @@ def draw_item_name(window, item, width):
     title = f"{name}    {xp}/{max_xp}"
     window.addstr(1, max(1, (width - len(title)) / 2), title, item_color)
 
+
 def draw_skill_tree_nodes(window, item, selected_slot, scroll):
     layout = item["skill_tree"]["layout"]
 
@@ -54,18 +57,20 @@ def draw_skill_tree_nodes(window, item, selected_slot, scroll):
         y -= scroll
 
         node = item["skill_tree"]["nodes"].get(slot_index)
+        if not node:
+            continue
 
-        # if y == 6 | y == 7 | y == 8:
-        #     node_data = TIER_CAPSTONE_NODES[node["node_id"]]
-        #     label = node_data["name"][:5]
-        #     is_selected = slot_index == selected_slot
+        capstone_rarity = layout["capstones"].get(slot_index)
 
-        if node:
+        if capstone_rarity:
+            node_data = CAPSTONE_NODES[capstone_rarity][node["node_id"]]
+        else:
             node_data = COMMON_NODES[node["node_id"]]
-            label = node_data["name"][:5]
-            is_selected = slot_index == selected_slot
 
-            draw_node(window, y, x, label, node, is_selected)
+        label = node_data["name"][:5]
+        is_selected = slot_index == selected_slot
+
+        draw_node(window, y, x, label, node, is_selected)
 
 
 def open_skill_tree(stdscr, selected_item):

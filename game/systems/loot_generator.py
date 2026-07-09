@@ -4,7 +4,7 @@ import json
 from data.weapons_data import EQUIPMENT
 from data.item_base import create_item_base
 from data.affix_data import UNCOMMON_AFFIXES
-from data.skill_node_data import COMMON_NODES
+from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
 from systems.weapon_skill_tree import generate_rarity_layout
 
 # def roll_value(value):
@@ -177,24 +177,25 @@ def generate_item_skill_tree(base, layout):
 
     nodes = {}
 
-    dbg({
-        "node_count": node_count,
-        "possible_node_count": len(possible_nodes),
-        "possible_nodes": list(possible_nodes.keys()),
-        "chosen_node_count": len(chosen_node_ids),
-        "chosen_node_ids": chosen_node_ids,
-    })
+    for slot_index in valid_slot_indexes:
+        capstone_rarity = layout["capstones"].get(slot_index)
 
-    for slot_index, node_id in zip(valid_slot_indexes, chosen_node_ids):
+        if capstone_rarity:
+            node_pool = CAPSTONE_NODES[capstone_rarity]
+        else:
+            node_pool = COMMON_NODES
+
+        node_id = random.choice(list(node_pool.keys()))
 
         nodes[slot_index] = {
             "node_id": node_id,
             "points": 0,
-            "max_points": COMMON_NODES[node_id].get("max_points", 1),
+            "max_points": node_pool[node_id].get("max_points", 1),
             "active": False,
         }
 
     return nodes
+
 
 def generate_item(base_id, item_level):
     base = EQUIPMENT[base_id]

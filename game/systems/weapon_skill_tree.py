@@ -3,6 +3,7 @@ from data.skill_node_data import COMMON_NODES
 from data.skill_tree_layout_data import RARITY_ORDER, LAYOUTS
 # from game.systems.ability_logic import rebuild_abilities
 
+
 def can_activate(player, skill_id):
     skill = COMMON_NODES["skill_id"]
 
@@ -11,6 +12,7 @@ def can_activate(player, skill_id):
             return False
 
     return True
+
 
 def assign_points(player, skill_id):
     skill_data = COMMON_NODES["skill_id"]
@@ -29,11 +31,12 @@ def assign_points(player, skill_id):
 
     return True
 
+
 def generate_rarity_layout(rarity):
     slots = []
-    capstone_slot = 0
     connections = []
     previous_exits = []
+    capstones = {}
 
     rarity_index = RARITY_ORDER.index(rarity)
 
@@ -41,6 +44,9 @@ def generate_rarity_layout(rarity):
         piece = random.choice(LAYOUTS[rarity_name])
 
         offset = len(slots)
+
+        global_capstone = piece["capstone_slot"] + offset
+        capstones[global_capstone] = rarity_name
 
         slots.extend(piece["slots"])
 
@@ -58,6 +64,6 @@ def generate_rarity_layout(rarity):
 
     return {
         "slots": slots,
-        "capstone_slot": capstone_slot,
-        "connections": connections
+        "connections": connections,
+        "capstones": capstones
     }
