@@ -31,6 +31,7 @@ def assign_points(player, skill_id):
 
 def generate_rarity_layout(rarity):
     slots = []
+    capstone_slot = 0
     connections = []
     previous_exits = []
 
@@ -57,5 +58,6 @@ def generate_rarity_layout(rarity):
 
     return {
         "slots": slots,
+        "capstone_slot": capstone_slot,
         "connections": connections
     }

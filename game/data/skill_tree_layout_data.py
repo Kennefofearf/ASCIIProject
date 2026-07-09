@@ -8,6 +8,7 @@ LAYOUTS = {
                 (12, 1), (12, 9), (12, 17),
                 None,    (19, 9), None
             ],
+            "capstone_slot": 7,
             "connections": [
                 (0, 3),
                 (1, 4),
@@ -31,6 +32,7 @@ LAYOUTS = {
                 (12, 1), (12, 9), (12, 17),
                 None, (19, 9), None
             ],
+            "capstone_slot": 7,
             "connections": [
                 (0, 3),
                 (3, 4),
@@ -53,6 +55,7 @@ LAYOUTS = {
                 (33, 1), (33, 9), (33, 17),
                 None,    (40, 9), None
             ],
+            "capstone_slot": 7,
             "connections": [
                 (0, 3),
                 (1, 4),
@@ -76,6 +79,7 @@ LAYOUTS = {
                 (33, 1), None, None,
                 (40, 1), (40, 9), None
             ],
+            "capstone_slot": 7,
             "connections": [
                 (0, 1),
                 (0, 3),

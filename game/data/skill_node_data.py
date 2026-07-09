@@ -79,6 +79,56 @@ COMMON_NODES = {
                 "unlocks": [],
                 "skill_tags": ["weapon", "armor"]
             },
+            "block training": {
+                "name": "Block Training",
+                "tooltip": "You practice blocking blows from various angles. DEF +1",
+                "points": 0,
+                "max_points": 3,
+                "stats": {"max_hp": 0, "st": 0, "df": 1},
+                "requires": [],
+                "unlocks": [],
+                "skill_tags": ["weapon", "armor"]
+            },
+            "weight lifting": {
+                "name": "Weight Lifting",
+                "tooltip": "Lifting weights helps you build muscle. STR +1",
+                "points": 0,
+                "max_points": 3,
+                "stats": {"max_hp": 0, "st": 1, "df": 0},
+                "requires": [],
+                "unlocks": [],
+                "skill_tags": ["weapon", "armor"]
+            },
+            "illness": {
+                "name": "Illness",
+                "tooltip": "The equipment's aura makes you nauseous. HP -10",
+                "points": 0,
+                "max_points": 3,
+                "stats": {"max_hp": -10, "st": 0, "df": 0},
+                "requires": [],
+                "unlocks": [],
+                "skill_tags": ["weapon", "armor"]
+            },
+            "handicap": {
+                "name": "Handicap",
+                "tooltip": "You're very confident in yourself. HP -10 STR -3 DEF -3",
+                "points": 0,
+                "max_points": 3,
+                "stats": {"max_hp": -10, "st": -3, "df": -3},
+                "requires": [],
+                "unlocks": [],
+                "skill_tags": ["weapon", "armor"]
+            },
+            "goof off": {
+                "name": "Goof Off",
+                "tooltip": "You love wasting time. HP +0 STR +0 DEF +0",
+                "points": 0,
+                "max_points": 3,
+                "stats": {"max_hp": 0, "st": 0, "df": 0},
+                "requires": [],
+                "unlocks": [],
+                "skill_tags": ["weapon", "armor"]
+            },
             "ability_bash": {
                 "name": "Bash",
                 "tooltip": "Hit the target with the hilt of your weapon for X damage.",
@@ -100,3 +150,30 @@ COMMON_NODES = {
                 "skill_tags": ["weapon"]
             }
         }
+
+WHITE_CAPSTONE_NODES = {
+            "constitution boost": {
+                "name": "Constitution Boost",
+                "tooltip": "Your physical health inspires others. HP +30",
+                "points": 0,
+                "max_points": 1,
+                "stats": {"max_hp": 30, "st": 0, "df": 0},
+                "requires": [],
+                "unlocks": [],
+                "skill_tags": ["weapon", "armor"]
+            },
+        }
+
+GREEN_CAPSTONE_NODES = {
+            "level up": {
+                "name": "Level Up",
+                "tooltip": "You level up in a more traditional way. HP +10 STR +5 DEF +5",
+                "points": 0,
+                "max_points": 1,
+                "stats": {"max_hp": 10, "st": 5, "df": 5},
+                "requires": [],
+                "unlocks": [],
+                "skill_tags": ["weapon", "armor"]
+            },
+        }
+
