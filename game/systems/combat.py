@@ -35,11 +35,12 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
 
             target.take_dmg(max(0, dmg))
             player.last_attack_time = now
+
+            if player.weapon:
+                gain_item_xp(player.weapon, 1)
+
             add_log_messages(combat_messages, [(f"{target.name} ", 1), ("is hit for ", 0), (f"{dmg}", 2),
                                                ("!", 0)])
-            # draw_log(inner, combat_messages, scroll_offset)
-            # target_window.erase()
-            # target_window.refresh()
 
         if not target.alive:
             player.xp_gain(target.xp)

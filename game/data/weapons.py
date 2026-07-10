@@ -47,3 +47,11 @@ class Weapons:
             + self.skill_tree_bonus(stat)
         )
 
+    # def gain_item_xp(self, item, amount):
+    #     if item["lvl"] >= item["max_level"]:
+    #         return
+    #
+    #     item["xp"] += amount
+    #
+    #     while item["xp"] >= item["max_xp"]:
+    #         level_up_item(item)
