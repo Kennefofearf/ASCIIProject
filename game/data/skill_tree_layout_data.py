@@ -4,9 +4,9 @@ LAYOUTS = {
     "white": [
         {
             "slots": [
-                (5, 1), (5, 9), (5, 17),
-                (12, 1), (12, 9), (12, 17),
-                None,    (19, 9), None
+                (5, 9), (5, 17), (5, 25),
+                (12, 9), (12, 17), (12, 25),
+                None,    (19, 17), None
             ],
             "capstone_slot": 7,
             "connections": [
@@ -28,9 +28,9 @@ LAYOUTS = {
         },
         {
             "slots": [
-                (5, 1), None, None,
-                (12, 1), (12, 9), (12, 17),
-                None, (19, 9), None
+                (5, 9), None, None,
+                (12, 9), (12, 17), (12, 25),
+                None, (19, 17), None
             ],
             "capstone_slot": 7,
             "connections": [
@@ -51,9 +51,9 @@ LAYOUTS = {
     "green": [
         {
             "slots": [
-                (26, 1), (26, 9), (26, 17),
-                (33, 1), (33, 9), (33, 17),
-                None,    (40, 9), None
+                (26, 9), (26, 17), (26, 25),
+                (33, 9), (33, 17), (33, 25),
+                None,    (40, 17), None
             ],
             "capstone_slot": 7,
             "connections": [
@@ -75,9 +75,9 @@ LAYOUTS = {
         },
         {
             "slots": [
-                (26, 1), (26, 9), None,
-                (33, 1), None, None,
-                (40, 1), (40, 9), None
+                (26, 9), (26, 17), None,
+                (33, 9), None, None,
+                (40, 9), (40, 17), None
             ],
             "capstone_slot": 7,
             "connections": [
