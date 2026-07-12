@@ -55,3 +55,12 @@ class Weapons:
     #
     #     while item["xp"] >= item["max_xp"]:
     #         level_up_item(item)
+
+    # def level_up_item(self, item):
+    #     item["xp"] -= item["max_xp"]
+    #     item["lvl"] += 1
+    #     item["skill_points"] += 1
+    #     item["max_xp"] = calculate_item_xp_requirement(item["lvl"])
+    #
+    #     if item["lvl"] >= item["max_lvl"]:
+    #         item["xp"] = 0

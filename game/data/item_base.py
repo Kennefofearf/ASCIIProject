@@ -10,6 +10,7 @@ def create_item_base():
         "max_xp": 100,
         "lvl": 1,
         "max_lvl": 10,
+        "skill_points": 0,
         "abilities": [],
         "affixes": [],
         "skill_tags": []
