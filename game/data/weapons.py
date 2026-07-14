@@ -57,7 +57,7 @@ class Weapons:
 
         xp_requirement = (average_attack_cooldown / weapon_speed) * 100
 
-        return xp_requirement
+        return round(xp_requirement)
 
     def level_up_item(self, item):
         item["xp"] -= item["max_xp"]
@@ -69,7 +69,7 @@ class Weapons:
             item["xp"] = 0
 
     def gain_item_xp(self, item, amount):
-        if item["lvl"] >= item["max_level"]:
+        if item["lvl"] >= item["max_lvl"]:
             return
 
         item["xp"] += amount

@@ -59,6 +59,16 @@ def open_inventory_window(stdscr, player):
 
         if selected_item:
 
+            lvl = selected_item["lvl"]
+            max_lvl = selected_item["max_lvl"]
+            xp = selected_item["xp"]
+            max_xp = selected_item["max_xp"]
+            skill_points = selected_item["skill_points"]
+
+            progress = xp / max_xp if max_xp > 0 else 0
+            filled = int(progress * 10)
+            xp_bar = "=" * filled + "-" * (10 - filled)
+
             old_weapon = player.weapon
             new_weapon = selected_item
 
@@ -83,7 +93,19 @@ def open_inventory_window(stdscr, player):
             row = 5
 
             item_description_window.addstr(row, detail_x, selected_item["name"], curses.color_pair(item_color))
+            row += 2
+
+            item_description_window.addstr(row, detail_x, f"Lvl: {lvl} / {max_lvl}")
             row += 1
+
+            item_description_window.addstr(row, detail_x, f"XP: {xp} / {max_xp}")
+            row += 1
+
+            item_description_window.addstr(row, detail_x, f"[{xp_bar}]")
+            row += 1
+
+            item_description_window.addstr(row, detail_x, f"Skill Points: {skill_points}")
+            row += 2
 
             min_dmg = selected_item["min_dmg"]
             max_dmg = selected_item["max_dmg"]
@@ -93,7 +115,7 @@ def open_inventory_window(stdscr, player):
                 min_dmg += affix_data.get("min_dmg", 0)
                 max_dmg += affix_data.get("max_dmg", 0)
 
-            item_description_window.addstr(row, detail_x, f"{min_dmg} - {max_dmg}")
+            item_description_window.addstr(row, detail_x, f"DMG: {min_dmg} - {max_dmg}")
             row += 1
 
             for affix_id in selected_item.get("affixes", []):
@@ -103,7 +125,7 @@ def open_inventory_window(stdscr, player):
                     item_description_window.addstr(row, detail_x, f"{stat.upper()}: {value}")
                     row += 1
 
-            row += 5
+            row += 1
 
             item_description_window.addstr(row, detail_x,
                                                f" HP: {player.max_hp} --> {stat_forecast_hp}")
