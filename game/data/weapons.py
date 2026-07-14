@@ -47,20 +47,37 @@ class Weapons:
             + self.skill_tree_bonus(stat)
         )
 
-    # def gain_item_xp(self, item, amount):
-    #     if item["lvl"] >= item["max_level"]:
-    #         return
-    #
-    #     item["xp"] += amount
-    #
-    #     while item["xp"] >= item["max_xp"]:
-    #         level_up_item(item)
+    def calculate_item_xp_requirement(self, item):
+        if item is None:
+            return 0
 
-    # def level_up_item(self, item):
-    #     item["xp"] -= item["max_xp"]
-    #     item["lvl"] += 1
-    #     item["skill_points"] += 1
-    #     item["max_xp"] = calculate_item_xp_requirement(item["lvl"])
-    #
-    #     if item["lvl"] >= item["max_lvl"]:
-    #         item["xp"] = 0
+        average_attack_cooldown = 1.0
+
+        weapon_speed = item["attack_cooldown"]
+
+        xp_requirement = (average_attack_cooldown / weapon_speed) * 100
+
+        return xp_requirement
+
+    def level_up_item(self, item):
+        item["xp"] -= item["max_xp"]
+        item["lvl"] += 1
+        item["skill_points"] += 1
+        item["max_xp"] = self.calculate_item_xp_requirement(item)
+
+        if item["lvl"] >= item["max_lvl"]:
+            item["xp"] = 0
+
+    def gain_item_xp(self, item, amount):
+        if item["lvl"] >= item["max_level"]:
+            return
+
+        item["xp"] += amount
+
+        while item["xp"] >= item["max_xp"]:
+            self.level_up_item(item)
+
+
+
+
+

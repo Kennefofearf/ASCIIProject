@@ -2,6 +2,7 @@ import curses
 import random
 from systems.loot_generator import roll_item_drop
 from UI.colors import get_rarity_color
+from data.weapons import Weapons
 import time
 
 def is_adjacent(p1, p2):
@@ -37,7 +38,7 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
             player.last_attack_time = now
 
             if player.weapon:
-                gain_item_xp(player.weapon, 1)
+                Weapons.gain_item_xp(player.weapon, 1)
 
             add_log_messages(combat_messages, [(f"{target.name} ", 1), ("is hit for ", 0), (f"{dmg}", 2),
                                                ("!", 0)])
