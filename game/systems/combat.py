@@ -38,7 +38,8 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
             player.last_attack_time = now
 
             if player.weapon:
-                Weapons.gain_item_xp(player.weapon, 1)
+                amount = 1
+                Weapons.gain_item_xp(player.weapon, player.weapon, amount)
 
             add_log_messages(combat_messages, [(f"{target.name} ", 1), ("is hit for ", 0), (f"{dmg}", 2),
                                                ("!", 0)])

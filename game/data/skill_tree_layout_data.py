@@ -1,5 +1,13 @@
 RARITY_ORDER = ["white", "green", "blue", "yellow", "purple"]
 
+# TIERS = {
+#     "white": range(9, 16),
+#     "green": range(17, 24),
+#     "blue": range(25, 32),
+#     "yellow": range(33, 40),
+#     "purple": range(41, 48)
+# }
+
 LAYOUTS = {
     "white": [
         {

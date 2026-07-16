@@ -1,12 +1,9 @@
 def get_rarity_color(item):
-    rarity = item.get("rarity")
-    item_level = item.get("item_level")
+    return get_color_from_rarity(item["rarity"])
 
-    # item level determines possible rarity
 
+def get_color_from_rarity(rarity):
     if rarity == "white":
         return 0
-    elif rarity == "green" and item_level >= 5:
+    elif rarity == "green":
         return 3
-
-    return 0

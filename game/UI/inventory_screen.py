@@ -67,7 +67,7 @@ def open_inventory_window(stdscr, player):
 
             progress = xp / max_xp if max_xp > 0 else 0
             filled = int(progress * 10)
-            xp_bar = "=" * filled + "-" * (10 - filled)
+            # xp_bar = "=" * filled + "-" * (10 - filled)
 
             old_weapon = player.weapon
             new_weapon = selected_item
@@ -101,8 +101,8 @@ def open_inventory_window(stdscr, player):
             item_description_window.addstr(row, detail_x, f"XP: {xp} / {max_xp}")
             row += 1
 
-            item_description_window.addstr(row, detail_x, f"[{xp_bar}]")
-            row += 1
+            # item_description_window.addstr(row, detail_x, f"[{xp_bar}]")
+            # row += 1
 
             item_description_window.addstr(row, detail_x, f"Skill Points: {skill_points}")
             row += 2

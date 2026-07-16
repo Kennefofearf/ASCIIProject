@@ -3,7 +3,7 @@ import random
 
 from systems.weapon_skill_tree import generate_rarity_layout
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
-from UI.colors import get_rarity_color
+from UI.colors import get_rarity_color, get_color_from_rarity
 import json
 
 
@@ -12,8 +12,20 @@ def dbg(data):
         f.write(json.dumps(data, indent=4))
         f.write("\n\n")
 
+def get_node_tier_rarity(slot_index):
+    if slot_index <= 8:
+        return "white"
+    elif slot_index <= 17:
+        return "green"
+    elif slot_index <= 26:
+        return "blue"
+    elif slot_index <= 35:
+        return "yellow"
+    else:
+        return "purple"
 
-def draw_node(window, y, x, label, node, is_selected=False):
+
+def draw_node(window, y, x, label, node, is_selected, border_color):
     height, width = window.getmaxyx()
 
     node_height = 5
@@ -25,15 +37,17 @@ def draw_node(window, y, x, label, node, is_selected=False):
     if x < 1 or x + node_width >= width:
         return
 
-    color = curses.A_REVERSE if is_selected else curses.A_NORMAL
+    border_attr = curses.color_pair(border_color)
 
-    window.addstr(y, x, "_____", color)
-    window.addstr(y + 1, x, "|     |", color)
-    window.addstr(y + 2, x, f"|{label:^5}|", color)
-    window.addstr(y + 3, x, "|_____|", color)
+    window.addstr(y, x, "_____", border_attr)
+    window.addstr(y + 1, x, "|     |", border_attr)
+    window.addstr(y + 2, x, f"|{label:^5}|", border_attr)
+    window.addstr(y + 3, x, "|_____|", border_attr)
+
+    label_attr = curses.A_REVERSE if is_selected else curses.A_NORMAL
 
     rank = f"{node['points']}/{node['max_points']}"
-    window.addstr(y + 4, x + 1, rank)
+    window.addstr(y + 4, x + 1, rank, label_attr)
 
 
 def draw_item_name(window, item, width):
@@ -60,6 +74,9 @@ def draw_skill_tree_nodes(window, item, selected_slot, scroll):
         if not node:
             continue
 
+        tier_rarity = get_node_tier_rarity(slot_index)
+        border_color = get_color_from_rarity(tier_rarity)
+
         capstone_rarity = layout["capstones"].get(slot_index)
 
         if capstone_rarity:
@@ -70,7 +87,7 @@ def draw_skill_tree_nodes(window, item, selected_slot, scroll):
         label = node_data["name"][:5]
         is_selected = slot_index == selected_slot
 
-        draw_node(window, y, x, label, node, is_selected)
+        draw_node(window, y, x, label, node, is_selected, border_color)
 
 
 def open_skill_tree(stdscr, selected_item):
