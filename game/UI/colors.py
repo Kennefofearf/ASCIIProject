@@ -7,3 +7,9 @@ def get_color_from_rarity(rarity):
         return 0
     elif rarity == "green":
         return 3
+    elif rarity == "blue":
+        return 4
+    elif rarity == "yellow":
+        return 2
+    elif rarity == "purple":
+        return 5
