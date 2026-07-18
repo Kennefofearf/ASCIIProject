@@ -47,7 +47,8 @@ class Weapons:
             + self.skill_tree_bonus(stat)
         )
 
-    def calculate_item_xp_requirement(self, item):
+    @staticmethod
+    def calculate_item_xp_requirement(item):
         if item is None:
             return 0
 
@@ -59,23 +60,25 @@ class Weapons:
 
         return round(xp_requirement)
 
-    def level_up_item(self, item):
+    @staticmethod
+    def level_up_item(item):
         item["xp"] -= item["max_xp"]
         item["lvl"] += 1
         item["skill_points"] += 1
-        item["max_xp"] = self.calculate_item_xp_requirement(item)
+        item["max_xp"] = Weapons.calculate_item_xp_requirement(item)
 
         if item["lvl"] >= item["max_lvl"]:
             item["xp"] = 0
 
-    def gain_item_xp(self, item, amount):
+    @staticmethod
+    def gain_item_xp(item, amount):
         if item["lvl"] >= item["max_lvl"]:
             return
 
         item["xp"] += amount
 
         while item["xp"] >= item["max_xp"]:
-            self.level_up_item(item)
+            Weapons.level_up_item(item)
 
 
 
