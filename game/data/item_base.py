@@ -5,6 +5,7 @@ def create_item_base():
         "type": "",
         "rarity": None,
         "base_stats": {},
+        "attack_cooldown": 1.0,
         "item_lvl": 1,
         "xp": 0,
         "max_xp": 100,
