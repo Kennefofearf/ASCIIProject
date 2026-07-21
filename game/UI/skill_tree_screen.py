@@ -127,11 +127,23 @@ def open_skill_tree(stdscr, selected_item):
 
 
 def open_skill_tree_node_window(stdscr, item, slot_index):
+    curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
     node = item["skill_tree"]["nodes"][slot_index]
 
     while True:
 
-        key = window.getch()
+        stdscr_y, stdscr_x = stdscr.getmaxyx()
+        height = int(stdscr_y * 0.7)
+        tree_width = int(stdscr_x * 0.35)
+        start_y = int(stdscr_y * 0.15)
+        tree_x = int(stdscr_x * 0.55)
+
+        node_description_window = curses.newwin(height, tree_width, start_y, tree_x)
+        node_description_window.box()
+
+
+
+        key = stdscr.getch()
 
         if key in (27, ord("q")):
             break
