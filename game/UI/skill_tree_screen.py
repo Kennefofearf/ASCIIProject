@@ -125,3 +125,15 @@ def open_skill_tree(stdscr, selected_item):
             elif bstate & curses.BUTTON5_PRESSED:
                 scroll_y += 2
 
+
+def open_skill_tree_node_window(stdscr, item, slot_index):
+    node = item["skill_tree"]["nodes"][slot_index]
+
+    while True:
+
+        key = window.getch()
+
+        if key in (27, ord("q")):
+            break
+
+
