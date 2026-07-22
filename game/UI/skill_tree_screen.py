@@ -125,6 +125,9 @@ def open_skill_tree(stdscr, selected_item):
             elif bstate & curses.BUTTON5_PRESSED:
                 scroll_y += 2
 
+            elif bstate & curses.BUTTON1_CLICKED:
+                open_skill_tree_node_window(stdscr, selected_item, selected_slot)
+
 
 def open_skill_tree_node_window(stdscr, item, slot_index):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
@@ -141,7 +144,8 @@ def open_skill_tree_node_window(stdscr, item, slot_index):
         node_description_window = curses.newwin(height, tree_width, start_y, tree_x)
         node_description_window.box()
 
-
+        # node_description_window.addstr(1, int(tree_width / 2), f"{node['name']}")
+        # node_description_window.addstr(2, 1, f"{node['tooltip']}")
 
         key = stdscr.getch()
 
