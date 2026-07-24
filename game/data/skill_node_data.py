@@ -1,7 +1,7 @@
 COMMON_NODES = {
             "sharper_edge": {
                 "name": "Sharper Edge",
-                "tooltip": "Sharpen your weapon increasing STR by 1.",
+                "tooltip": "Sharpen your weapon.\n\nSTR +1",
                 "points": 0,
                 "max_points": 5,
                 "stats": {"max_hp": 0, "st": 1, "df": 0},
@@ -11,7 +11,7 @@ COMMON_NODES = {
             },
             "full_body_callus": {
                 "name": "Full Body Callus",
-                "tooltip": "The skin on your body thickens raising DEF by 1.",
+                "tooltip": "The skin on your body thickens.\n\nDEF +1",
                 "points": 0,
                 "max_points": 5,
                 "stats": {"max_hp": 0, "st": 0, "df": 1},
@@ -21,7 +21,7 @@ COMMON_NODES = {
             },
             "pain_tolerance": {
                 "name": "Pain Tolerance",
-                "tooltip": "Ignoring pain becomes easier. Raises your Max HP by 3.",
+                "tooltip": "Ignoring pain becomes easier.\n\nHP +3",
                 "points": 0,
                 "max_points": 5,
                 "stats": {"max_hp": 3, "st": 0, "df": 0},
@@ -31,7 +31,7 @@ COMMON_NODES = {
             },
             "cautious": {
                 "name": "Cautious",
-                "tooltip": "You always think before acting. Raises your Max HP by 2 & DEF by 1.",
+                "tooltip": "You always think before acting.\n\nHP +2\nDEF +1",
                 "points": 0,
                 "max_points": 5,
                 "stats": {"max_hp": 2, "st": 0, "df": 1},
@@ -41,7 +41,7 @@ COMMON_NODES = {
             },
             "reckless": {
                 "name": "Reckless",
-                "tooltip": "You love to charge in without a plan. Raises STR by 3 & decreases DEF by 1.",
+                "tooltip": "You love to charge in without a plan.\n\nSTR +3\nDEF -1",
                 "points": 0,
                 "max_points": 3,
                 "stats": {"max_hp": 0, "st": 3, "df": -1},
@@ -51,7 +51,7 @@ COMMON_NODES = {
             },
             "confidence": {
                 "name": "Confidence",
-                "tooltip": "You believe in your ability to stand up to your opponents. HP +5 DEF +1",
+                "tooltip": "You believe in your ability to stand up to your opponents.\n\nHP +5\nDEF +1",
                 "points": 0,
                 "max_points": 3,
                 "stats": {"max_hp": 5, "st": 0, "df": 1},
@@ -61,7 +61,7 @@ COMMON_NODES = {
             },
             "frail": {
                 "name": "Frail",
-                "tooltip": "Your body gets weaker. HP -5 STR -1 DEF -1",
+                "tooltip": "Your body gets weaker.\n\nHP -5\nSTR -1\nDEF -1",
                 "points": 0,
                 "max_points": 3,
                 "stats": {"max_hp": -5, "st": -1, "df": -1},
@@ -71,7 +71,7 @@ COMMON_NODES = {
             },
             "turtle instincts": {
                 "name": "Turtle Instincts",
-                "tooltip": "You prioritize sheilding yourself above all else. HP - 15 STR -3 DEF +3",
+                "tooltip": "You prioritize shielding yourself above all else.\n\nHP -15\nSTR -3\nDEF +5",
                 "points": 0,
                 "max_points": 3,
                 "stats": {"max_hp": -15, "st": -3, "df": 5},
@@ -81,7 +81,7 @@ COMMON_NODES = {
             },
             "block training": {
                 "name": "Block Training",
-                "tooltip": "You practice blocking blows from various angles. DEF +1",
+                "tooltip": "You practice blocking blows from various angles.\n\nDEF +1",
                 "points": 0,
                 "max_points": 3,
                 "stats": {"max_hp": 0, "st": 0, "df": 1},
@@ -91,7 +91,7 @@ COMMON_NODES = {
             },
             "weight lifting": {
                 "name": "Weight Lifting",
-                "tooltip": "Lifting weights helps you build muscle. STR +1",
+                "tooltip": "Lifting weights helps you build muscle.\n\nSTR +1",
                 "points": 0,
                 "max_points": 3,
                 "stats": {"max_hp": 0, "st": 1, "df": 0},
@@ -101,7 +101,7 @@ COMMON_NODES = {
             },
             "illness": {
                 "name": "Illness",
-                "tooltip": "The equipment's aura makes you nauseous. HP -10",
+                "tooltip": "The equipment's aura makes you nauseous.\n\nHP -10",
                 "points": 0,
                 "max_points": 3,
                 "stats": {"max_hp": -10, "st": 0, "df": 0},
@@ -111,7 +111,7 @@ COMMON_NODES = {
             },
             "handicap": {
                 "name": "Handicap",
-                "tooltip": "You're very confident in yourself. HP -10 STR -3 DEF -3",
+                "tooltip": "You're very confident in yourself.\n\nHP -10\nSTR -3\nDEF -3",
                 "points": 0,
                 "max_points": 3,
                 "stats": {"max_hp": -10, "st": -3, "df": -3},
@@ -121,7 +121,7 @@ COMMON_NODES = {
             },
             "goof off": {
                 "name": "Goof Off",
-                "tooltip": "You love wasting time. HP +0 STR +0 DEF +0",
+                "tooltip": "You love wasting time.\n\nHP +0\nSTR +0\nDEF +0",
                 "points": 0,
                 "max_points": 3,
                 "stats": {"max_hp": 0, "st": 0, "df": 0},
@@ -131,7 +131,7 @@ COMMON_NODES = {
             },
             "ability_bash": {
                 "name": "Bash",
-                "tooltip": "Hit the target with the hilt of your weapon for X damage.",
+                "tooltip": "Hit the target with the hilt of your weapon.\n\n6-8 damage",
                 "points": 0,
                 "max_points": 5,
                 "stats": {},
@@ -141,7 +141,7 @@ COMMON_NODES = {
             },
             "ability_gash": {
                 "name": "Gash",
-                "tooltip": "Give the target a deep cut that inflicts 10 damage over 5 seconds.",
+                "tooltip": "Give the target a deep cut.\n\n10 damage over 5 seconds",
                 "points": 0,
                 "max_points": 3,
                 "stats": {},
@@ -155,7 +155,7 @@ CAPSTONE_NODES = {
     "white": {
             "constitution boost": {
                 "name": "Constitution Boost",
-                "tooltip": "Your physical health inspires others. HP +30",
+                "tooltip": "Your physical health inspires others.\n\nHP +30",
                 "points": 0,
                 "max_points": 1,
                 "stats": {"max_hp": 30, "st": 0, "df": 0},
@@ -167,7 +167,7 @@ CAPSTONE_NODES = {
     "green": {
             "level up": {
                 "name": "Level Up",
-                "tooltip": "You level up in a more traditional way. HP +10 STR +5 DEF +5",
+                "tooltip": "You level up in a more traditional way.\n\nHP +10\nSTR +5\nDEF +5",
                 "points": 0,
                 "max_points": 1,
                 "stats": {"max_hp": 10, "st": 5, "df": 5},

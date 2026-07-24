@@ -133,6 +133,8 @@ def open_skill_tree_node_window(stdscr, item, slot_index):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
     node = item["skill_tree"]["nodes"][slot_index]
 
+    node_data = COMMON_NODES[node["node_id"]]
+
     while True:
 
         stdscr_y, stdscr_x = stdscr.getmaxyx()
@@ -144,8 +146,11 @@ def open_skill_tree_node_window(stdscr, item, slot_index):
         node_description_window = curses.newwin(height, tree_width, start_y, tree_x)
         node_description_window.box()
 
-        # node_description_window.addstr(1, int(tree_width / 2), f"{node['name']}")
-        # node_description_window.addstr(2, 1, f"{node['tooltip']}")
+        node_description_window.addstr(1, (int(tree_width / 2) - int(len(node_data["name"]) / 2)),
+                                       f"{node_data['name']}")
+        node_description_window.addstr(3, 2, f"{node_data['tooltip']}")
+
+        node_description_window.refresh()
 
         key = stdscr.getch()
 
