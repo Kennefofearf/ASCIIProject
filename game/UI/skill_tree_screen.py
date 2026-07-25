@@ -1,5 +1,6 @@
 import curses
 import random
+import textwrap
 
 from systems.weapon_skill_tree import generate_rarity_layout
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
@@ -135,6 +136,11 @@ def open_skill_tree_node_window(stdscr, item, slot_index):
 
     node_data = COMMON_NODES[node["node_id"]]
 
+    node_name = node_data["name"]
+    node_tooltip = node_data["tooltip"]
+
+    wrapped_tooltip = textwrap.wrap(node_tooltip, 34, break_long_words=True, break_on_hyphens=True)
+
     while True:
 
         stdscr_y, stdscr_x = stdscr.getmaxyx()
@@ -146,9 +152,13 @@ def open_skill_tree_node_window(stdscr, item, slot_index):
         node_description_window = curses.newwin(height, tree_width, start_y, tree_x)
         node_description_window.box()
 
-        node_description_window.addstr(1, (int(tree_width / 2) - int(len(node_data["name"]) / 2)),
-                                       f"{node_data['name']}")
-        node_description_window.addstr(3, 2, f"{node_data['tooltip']}")
+        row = 3
+
+        node_description_window.addstr(1, (int(tree_width / 2) - int(len(node_name) / 2)),
+                                       f"{node_name}")
+        for line in wrapped_tooltip:
+            node_description_window.addstr(row, 2, f"{line}")
+            row += 1
 
         node_description_window.refresh()
 
