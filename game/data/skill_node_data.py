@@ -1,3 +1,9 @@
+STAT_NAMES = {
+    "max_hp": "HP",
+    "st": "STR",
+    "df": "DEF"
+}
+
 COMMON_NODES = {
             "sharper_edge": {
                 "name": "Sharper Edge",

@@ -3,7 +3,7 @@ import random
 import textwrap
 
 from systems.weapon_skill_tree import generate_rarity_layout
-from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
+from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, STAT_NAMES
 from UI.colors import get_rarity_color, get_color_from_rarity
 import json
 
@@ -161,9 +161,10 @@ def open_skill_tree_node_window(stdscr, item, slot_index):
             row += 1
 
         for stat, value in node_data.get("stats").items():
+            display_name = STAT_NAMES.get(stat, stat)
 
             row += 1
-            node_description_window.addstr(row, 2, f"{stat}: {value}")
+            node_description_window.addstr(row, 2, f"{display_name}: {value}")
 
         node_description_window.refresh()
 
