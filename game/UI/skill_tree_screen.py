@@ -160,6 +160,11 @@ def open_skill_tree_node_window(stdscr, item, slot_index):
             node_description_window.addstr(row, 2, f"{line}")
             row += 1
 
+        for stat, value in node_data.get("stats").items():
+
+            row += 1
+            node_description_window.addstr(row, 2, f"{stat}: {value}")
+
         node_description_window.refresh()
 
         key = stdscr.getch()
