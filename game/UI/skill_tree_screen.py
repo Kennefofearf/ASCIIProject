@@ -141,6 +141,11 @@ def open_skill_tree_node_window(stdscr, item, slot_index):
 
     wrapped_tooltip = textwrap.wrap(node_tooltip, 34, break_long_words=True, break_on_hyphens=True)
 
+    node_rank = node_data["points"]
+    max_node_rank = node_data["max_points"]
+
+    available_skill_points = item["skill_points"]
+
     while True:
 
         stdscr_y, stdscr_x = stdscr.getmaxyx()
@@ -165,6 +170,12 @@ def open_skill_tree_node_window(stdscr, item, slot_index):
 
             row += 1
             node_description_window.addstr(row, 2, f"{display_name}: {value}")
+
+        row += 3
+
+        node_description_window.addstr(row, 2, f"Rank: {node_rank}/{max_node_rank}")
+        row += 1
+        node_description_window.addstr(row, 2, f"Available Points: {available_skill_points}")
 
         node_description_window.refresh()
 
