@@ -165,7 +165,7 @@ def open_inventory_window(stdscr, player):
         inventory_window.refresh()
         key = stdscr.getch()
 
-        if key in (ord("i"), ord("I"), 27):
+        if key in (ord("q"), 27):
             if item_description_window:
                 item_description_window.erase()
                 item_description_window.refresh()

@@ -170,10 +170,10 @@ def generate_item_skill_tree(base, layout):
         if any(tag in item_tags for tag in node_tags):
             possible_nodes[node_id] = node_data
 
-    chosen_node_ids = random.sample(
-        list(possible_nodes.keys()),
-        min(node_count, len(possible_nodes))
-    )
+    # chosen_node_ids = random.sample(
+    #     list(possible_nodes.keys()),
+    #     min(node_count, len(possible_nodes))
+    # )
 
     nodes = {}
 
@@ -182,13 +182,17 @@ def generate_item_skill_tree(base, layout):
 
         if capstone_rarity:
             node_pool = CAPSTONE_NODES[capstone_rarity]
+            node_type = "capstone"
         else:
-            node_pool = COMMON_NODES
+            node_pool = possible_nodes
+            node_type = "common"
 
         node_id = random.choice(list(node_pool.keys()))
 
         nodes[slot_index] = {
             "node_id": node_id,
+            "node_type": node_type,
+            "capstone_rarity": capstone_rarity,
             "points": 0,
             "max_points": node_pool[node_id].get("max_points", 1),
             "active": False,

@@ -1,3 +1,6 @@
+from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, STAT_NAMES
+from data.affix_data import UNCOMMON_AFFIXES
+
 class Weapons:
 
     def __init__(self, name, min_dmg, max_dmg, xp, skill_tree, lvl, max_lvl, base_stats, affix, affix_stats):
@@ -33,19 +36,39 @@ class Weapons:
     def affix_stats(self, affix_stats):
         self.base_stats.get(affix_stats, 0)
 
-    def skill_tree_bonus(self, stats):
+    @staticmethod
+    def skill_tree_bonus(item, stat):
+        nodes = item["skill_tree"]["nodes"].values()
+
         total = 0
-        for node in self.skill_tree:
-            if node.stats == stats:
-                total += node.bonus()
+
+        for node in nodes:
+
+            if node.get("node_type") == "capstone":
+                rarity = node["capstone_rarity"]
+                node_data = CAPSTONE_NODES[rarity][node["node_id"]]
+            else:
+                node_data = COMMON_NODES[node["node_id"]]
+
+            stat_value = node_data["stats"].get(stat, 0)
+            total += stat_value * node["points"]
+
         return total
 
-    def total_bonus(self, stat):
-        return (
-            self.base_stats(stat)
-            + self.affix_stats(stat)
-            + self.skill_tree_bonus(stat)
-        )
+    @staticmethod
+    def total_bonus(item, stat):
+        if not item:
+            return 0
+
+        total = item.get("base_stats", {}).get(stat, 0)
+
+        for affix_id in item.get("affixes", []):
+            affix_data = UNCOMMON_AFFIXES.get(affix_id, {})
+            total += affix_data.get("affix_stats", {}).get(stat, 0)
+
+        total += Weapons.skill_tree_bonus(item, stat)
+
+        return total
 
     @staticmethod
     def calculate_item_xp_requirement(item):

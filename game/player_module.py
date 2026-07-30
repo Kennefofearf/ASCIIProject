@@ -3,6 +3,7 @@ import monster_module
 import random
 from data.skill_node_data import COMMON_NODES
 from data.affix_data import UNCOMMON_AFFIXES
+from data.weapons import Weapons
 import time
 
 
@@ -50,11 +51,7 @@ class Player:
         bonus = 0
 
         if self.weapon:
-            bonus += self.weapon.get("base_stats", {}).get("max_hp", 0)
-
-            for affix_id in self.weapon.get("affixes", []):
-                affix_data = UNCOMMON_AFFIXES.get(affix_id, {})
-                bonus += affix_data.get("affix_stats", {}).get("max_hp", 0)
+            bonus += Weapons.total_bonus(self.weapon, "max_hp")
 
         return self._max_hp + bonus
 
@@ -70,25 +67,7 @@ class Player:
         bonus = 0
 
         if self.weapon:
-            bonus += self.weapon.get("base_stats", {}).get("st", 0)
-
-            for affix_id in self.weapon.get("affixes", []):
-                affix_data = UNCOMMON_AFFIXES.get(affix_id, {})
-                bonus += affix_data.get("affix_stats", {}).get("st", 0)
-
-        if self.skill_tree is not None:
-            for skill_id, skill_state in self.skill_tree.items():
-                points = skill_state.get("points", 0)
-
-                if points <= 0:
-                    continue
-
-                skill_data = COMMON_NODES.get(skill_id, {})
-                bonus += skill_data.get("stats", {}).get("st", 0) * points
-
-        for effect in self.active_effects:
-            if effect["effect_id"] == "st_up":
-                bonus += effect["value"]
+            bonus += Weapons.total_bonus(self.weapon, "st")
 
         return self._st + bonus
 
@@ -101,25 +80,7 @@ class Player:
         bonus = 0
 
         if self.weapon:
-            bonus += self.weapon.get("base_stats", {}).get("df", 0)
-
-            for affix_id in self.weapon.get("affixes", []):
-                affix_data = UNCOMMON_AFFIXES.get(affix_id, {})
-                bonus += affix_data.get("affix_stats", {}).get("df", 0)
-
-        if self.skill_tree is not None:
-            for skill_id, skill_state in self.skill_tree.items():
-                points = skill_state.get("points", 0)
-
-                if points <= 0:
-                    continue
-
-                skill_data = COMMON_NODES.get(skill_id, {})
-                bonus += skill_data.get("stats", {}).get("df", 0) * points
-
-        for effect in self.active_effects:
-            if effect["effect_id"] == "df_up":
-                bonus += effect["value"]
+            bonus += Weapons.total_bonus(self.weapon, "df")
 
         return self._df + bonus
 
@@ -163,7 +124,6 @@ class Player:
             self._hp += hp_gain
             self.total_req_xp += 5 + self.lvl * 5
             self.req_xp = self.total_req_xp - xp_overflow
-            #self.req_xp -= xp_overflow
 
         self.update_xp_bar()
 
