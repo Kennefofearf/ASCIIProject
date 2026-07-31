@@ -1,4 +1,4 @@
-from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, STAT_NAMES
+from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
 from data.affix_data import UNCOMMON_AFFIXES
 
 class Weapons:
