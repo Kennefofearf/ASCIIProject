@@ -96,6 +96,8 @@ def open_skill_tree(stdscr, selected_item):
 
     selected_slot = 0
     scroll_y = 0
+    mouse_y = 0
+    mouse_x = 0
 
     while True:
         stdscr_y, stdscr_x = stdscr.getmaxyx()
@@ -106,6 +108,8 @@ def open_skill_tree(stdscr, selected_item):
 
         skill_tree_window = curses.newwin(height, tree_width, start_y, tree_x)
         skill_tree_window.box()
+
+        skill_tree_window_y, skill_tree_window_x = skill_tree_window.getbegyx()
 
         # draw_item_name(skill_tree_window, selected_item, width)
         draw_skill_tree_nodes(skill_tree_window, selected_item, selected_slot, scroll_y)
@@ -127,6 +131,22 @@ def open_skill_tree(stdscr, selected_item):
                 scroll_y += 2
 
             elif bstate & curses.BUTTON1_CLICKED:
+
+                layout = selected_item["skill_tree"]["layout"]
+                selected_slot = 0
+
+                for slot_index, position in enumerate(layout["slots"]):
+                    if position is None:
+                        continue
+
+                    mouse_y = my - skill_tree_window_y
+                    mouse_x = mx - skill_tree_window_x
+                    y, x = position
+
+                    if y <= mouse_y <= y + 2 and x <= mouse_x <= x + 4:
+                        selected_slot = slot_index
+                        break
+
                 open_skill_tree_node_window(stdscr, selected_item, selected_slot)
 
 
