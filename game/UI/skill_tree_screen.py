@@ -45,7 +45,20 @@ def draw_node(window, y, x, label, node, is_selected, border_color):
     window.addstr(y + 2, x, f"|{label:^5}|", border_attr)
     window.addstr(y + 3, x, "|_____|", border_attr)
 
-    label_attr = curses.A_REVERSE if is_selected else curses.A_NORMAL
+    if is_selected:
+
+        label_attr = curses.A_REVERSE
+
+    if node.get("available", False):
+
+        label_attr = curses.color_pair(2)
+
+    else:
+
+        label_attr = curses.A_NORMAL
+
+
+
 
     rank = f"{node['points']}/{node['max_points']}"
     window.addstr(y + 4, x + 1, rank, label_attr)
@@ -91,13 +104,26 @@ def draw_skill_tree_nodes(window, item, selected_slot, scroll):
         draw_node(window, y, x, label, node, is_selected, border_color)
 
 
+def unlock_adjacent_nodes(selected_item, selected_slot):
+    skill_tree = selected_item["skill_tree"]
+    nodes = skill_tree["nodes"]
+    connections = skill_tree["layout"]["connections"]
+
+    for first_slot, second_slot in connections:
+        if first_slot == selected_slot:
+            if second_slot in nodes:
+                nodes[second_slot]["available"] = True
+
+        elif second_slot == selected_slot:
+            if first_slot in nodes:
+                nodes[first_slot]["available"] = True
+
+
 def open_skill_tree(stdscr, selected_item):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
 
     selected_slot = 0
     scroll_y = 0
-    mouse_y = 0
-    mouse_x = 0
 
     while True:
         stdscr_y, stdscr_x = stdscr.getmaxyx()
@@ -205,7 +231,7 @@ def open_skill_tree_node_window(stdscr, item, slot_index):
             break
 
         if key == ord("a"):
-            if node_rank < max_node_rank and available_skill_points > 0:
+            if node_rank < max_node_rank and available_skill_points > 0 and node["available"]:
                 node["points"] += 1
                 item["skill_points"] -= 1
 
@@ -219,6 +245,10 @@ def open_skill_tree_node_window(stdscr, item, slot_index):
             elif available_skill_points <= 0:
                 row += 1
                 node_description_window.addstr(row, 2, f"No skill points available!")
+
+            elif not node["available"]:
+                row += 1
+                node_description_window.addstr(row, 2, f"Node is not yet unlocked.")
 
             node_description_window.refresh()
 

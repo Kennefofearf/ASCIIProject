@@ -65,5 +65,7 @@ def generate_rarity_layout(rarity):
     return {
         "slots": slots,
         "connections": connections,
+        "entry_slots": current_entries,
+        "exit_slots": current_exits,
         "capstones": capstones
     }

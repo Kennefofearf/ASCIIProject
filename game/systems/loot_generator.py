@@ -189,14 +189,19 @@ def generate_item_skill_tree(base, layout):
 
         node_id = random.choice(list(node_pool.keys()))
 
+        entry_slots = layout.get("entry_slots", [])
+
         nodes[slot_index] = {
             "node_id": node_id,
             "node_type": node_type,
             "capstone_rarity": capstone_rarity,
             "points": 0,
             "max_points": node_pool[node_id].get("max_points", 1),
-            "active": False,
+            "available": slot_index in entry_slots
         }
+
+
+    dbg(nodes)
 
     return nodes
 

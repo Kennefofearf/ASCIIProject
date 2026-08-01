@@ -16,22 +16,22 @@ LAYOUTS = {
                 (12, 9), (12, 17), (12, 25),
                 None,    (19, 17), None
             ],
-            "capstone_slot": 7,
+            "capstone_slot": 8,
             "connections": [
                 (0, 3),
                 (1, 4),
                 (2, 5),
                 (3, 4),
-                (4, 1),
                 (4, 3),
                 (4, 5),
-                (4, 7)
+                (4, 7),
+                (5, 4)
             ],
             "entry_slots": [
-                2
+                0, 1, 2
             ],
             "exit_slots": [
-                0
+                8
             ],
         },
         {
@@ -40,7 +40,7 @@ LAYOUTS = {
                 (12, 9), (12, 17), (12, 25),
                 None, (19, 17), None
             ],
-            "capstone_slot": 7,
+            "capstone_slot": 8,
             "connections": [
                 (0, 3),
                 (3, 4),
@@ -51,7 +51,7 @@ LAYOUTS = {
                 0
             ],
             "exit_slots": [
-                0
+                8
             ],
         },
     ],
@@ -63,22 +63,22 @@ LAYOUTS = {
                 (33, 9), (33, 17), (33, 25),
                 None,    (40, 17), None
             ],
-            "capstone_slot": 7,
+            "capstone_slot": 8,
             "connections": [
                 (0, 3),
                 (1, 4),
                 (2, 5),
                 (3, 4),
-                (4, 1),
                 (4, 3),
                 (4, 5),
-                (4, 7)
+                (4, 7),
+                (5, 4)
             ],
             "entry_slots": [
-                2
+                0, 1, 2
             ],
             "exit_slots": [
-                0
+                8
             ],
         },
         {
@@ -87,22 +87,17 @@ LAYOUTS = {
                 (33, 9), None, None,
                 (40, 9), (40, 17), None
             ],
-            "capstone_slot": 7,
+            "capstone_slot": 8,
             "connections": [
-                (0, 1),
                 (0, 3),
-                (1, 0),
-                (3, 0),
                 (3, 6),
-                (6, 3),
-                (6, 7),
-                (7, 6)
+                (6, 7)
             ],
             "entry_slots": [
-                1
+                0, 1
             ],
             "exit_slots": [
-                1
+                7, 8
             ],
         },
     ],
