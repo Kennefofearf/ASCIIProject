@@ -31,7 +31,7 @@ LAYOUTS = {
                 0, 1, 2
             ],
             "exit_slots": [
-                8
+                7
             ],
         },
         {
@@ -51,7 +51,7 @@ LAYOUTS = {
                 0
             ],
             "exit_slots": [
-                8
+                7
             ],
         },
     ],
@@ -78,7 +78,7 @@ LAYOUTS = {
                 0, 1, 2
             ],
             "exit_slots": [
-                8
+                7
             ],
         },
         {

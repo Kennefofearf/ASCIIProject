@@ -176,9 +176,9 @@ def open_skill_tree(stdscr, selected_item):
                 open_skill_tree_node_window(stdscr, selected_item, selected_slot)
 
 
-def open_skill_tree_node_window(stdscr, item, slot_index):
+def open_skill_tree_node_window(stdscr, selected_item, selected_slot):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
-    node = item["skill_tree"]["nodes"][slot_index]
+    node = selected_item["skill_tree"]["nodes"][selected_slot]
 
     node_data = COMMON_NODES[node["node_id"]]
 
@@ -190,7 +190,9 @@ def open_skill_tree_node_window(stdscr, item, slot_index):
     node_rank = node["points"]
     max_node_rank = node_data["max_points"]
 
-    available_skill_points = item["skill_points"]
+    available_skill_points = selected_item["skill_points"]
+
+    dbg(node)
 
     while True:
 
@@ -233,10 +235,12 @@ def open_skill_tree_node_window(stdscr, item, slot_index):
         if key == ord("a"):
             if node_rank < max_node_rank and available_skill_points > 0 and node["available"]:
                 node["points"] += 1
-                item["skill_points"] -= 1
+                selected_item["skill_points"] -= 1
 
                 node_rank = node["points"]
-                available_skill_points = item["skill_points"]
+                available_skill_points = selected_item["skill_points"]
+
+                unlock_adjacent_nodes(selected_item, selected_slot)
 
             elif node_rank >= max_node_rank:
                 row += 1

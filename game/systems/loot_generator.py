@@ -200,9 +200,6 @@ def generate_item_skill_tree(base, layout):
             "available": slot_index in entry_slots
         }
 
-
-    dbg(nodes)
-
     return nodes
 
 
