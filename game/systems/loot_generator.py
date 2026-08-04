@@ -189,6 +189,8 @@ def generate_item_skill_tree(base, layout):
 
         node_id = random.choice(list(node_pool.keys()))
 
+        is_starting_layout = base["rarity"] == "white"
+
         entry_slots = layout.get("entry_slots", [])
 
         nodes[slot_index] = {
@@ -197,7 +199,9 @@ def generate_item_skill_tree(base, layout):
             "capstone_rarity": capstone_rarity,
             "points": 0,
             "max_points": node_pool[node_id].get("max_points", 1),
-            "available": slot_index in entry_slots
+            "available": (
+                is_starting_layout and slot_index in entry_slots
+            )
         }
 
     return nodes

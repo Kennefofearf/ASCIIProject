@@ -108,6 +108,11 @@ def unlock_adjacent_nodes(selected_item, selected_slot):
     skill_tree = selected_item["skill_tree"]
     nodes = skill_tree["nodes"]
     connections = skill_tree["layout"]["connections"]
+    layout = skill_tree["layout"]
+
+    tier_offset = 0
+    local_slot = 0
+    global_slot = local_slot + tier_offset
 
     for first_slot, second_slot in connections:
         if first_slot == selected_slot:
@@ -117,6 +122,8 @@ def unlock_adjacent_nodes(selected_item, selected_slot):
         elif second_slot == selected_slot:
             if first_slot in nodes:
                 nodes[first_slot]["available"] = True
+
+
 
 
 def open_skill_tree(stdscr, selected_item):
