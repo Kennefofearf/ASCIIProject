@@ -202,6 +202,7 @@ def generate_item_skill_tree(base, layout):
             "available": (
                 is_starting_layout and slot_index in entry_slots
             )
+
         }
 
     return nodes
