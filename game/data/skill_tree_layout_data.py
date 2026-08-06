@@ -89,6 +89,7 @@ LAYOUTS = {
             ],
             "capstone_slot": 7,
             "connections": [
+                (0, 1),
                 (0, 3),
                 (3, 6),
                 (6, 7)

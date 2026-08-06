@@ -40,15 +40,17 @@ def generate_rarity_layout(rarity):
 
     rarity_index = RARITY_ORDER.index(rarity)
 
-    for rarity_name in RARITY_ORDER[:rarity_index + 1]:
+    for tier_index, rarity_name in enumerate(RARITY_ORDER[:rarity_index + 1]):
         piece = random.choice(LAYOUTS[rarity_name])
 
         offset = len(slots)
 
         global_capstone = piece["capstone_slot"] + offset
-        capstones[global_capstone] = rarity_name
 
         slots.extend(piece["slots"])
+
+        if piece["slots"][piece["capstone_slot"]] is not None:
+            capstones[global_capstone] = rarity_name
 
         for start, end in piece["connections"]:
             connections.append((start + offset, end + offset))
@@ -56,16 +58,20 @@ def generate_rarity_layout(rarity):
         current_entries = [slot + offset for slot in piece["entry_slots"]]
         current_exits = [slot + offset for slot in piece["exit_slots"]]
 
-        for previous_slots in previous_exits:
-            for current_slot in current_entries:
-                connections.append((previous_slots, current_slot))
+        # Only the first tier starts available
+        if tier_index == 0:
+            initial_entries = current_entries
+
+        # Pair previous exits with this tier's entries
+        for previous_slots, current_slot in zip(previous_exits, current_entries):
+            connections.append((previous_slots, current_slot))
 
         previous_exits = current_exits
 
     return {
         "slots": slots,
         "connections": connections,
-        "entry_slots": current_entries,
-        "exit_slots": current_exits,
+        "entry_slots": initial_entries,
+        "exit_slots": previous_exits,
         "capstones": capstones
     }

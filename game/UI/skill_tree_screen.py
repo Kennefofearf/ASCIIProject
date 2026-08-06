@@ -1,7 +1,6 @@
 import curses
 import random
 import textwrap
-
 from systems.weapon_skill_tree import generate_rarity_layout
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, STAT_NAMES
 from UI.colors import get_rarity_color, get_color_from_rarity
@@ -162,28 +161,35 @@ def open_skill_tree(stdscr, selected_item):
             elif bstate & curses.BUTTON1_CLICKED:
 
                 layout = selected_item["skill_tree"]["layout"]
-                selected_slot = 0
+                selected_slot = None
+
+                mouse_y = my - skill_tree_window_y
+                mouse_x = mx - skill_tree_window_x
 
                 for slot_index, position in enumerate(layout["slots"]):
                     if position is None:
                         continue
 
-                    mouse_y = my - skill_tree_window_y
-                    mouse_x = mx - skill_tree_window_x
                     y, x = position
+                    y -= scroll_y
 
                     if y <= mouse_y <= y + 2 and x <= mouse_x <= x + 4:
                         selected_slot = slot_index
                         break
 
-                open_skill_tree_node_window(stdscr, selected_item, selected_slot)
+                if selected_slot is not None:
+                    open_skill_tree_node_window(stdscr, selected_item, selected_slot)
 
 
 def open_skill_tree_node_window(stdscr, selected_item, selected_slot):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
     node = selected_item["skill_tree"]["nodes"][selected_slot]
 
-    node_data = COMMON_NODES[node["node_id"]]
+    if node.get("node_type") == "capstone":
+        capstone_rarity = node["capstone_rarity"]
+        node_data = CAPSTONE_NODES[capstone_rarity][node["node_id"]]
+    else:
+        node_data = COMMON_NODES[node["node_id"]]
 
     node_name = node_data["name"]
     node_tooltip = node_data["tooltip"]
