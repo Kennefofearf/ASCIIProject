@@ -10,7 +10,7 @@ EQUIPMENT = {
                 "item_level": 1,
                 "xp": 0,
                 "max_xp": 100,
-                "lvl": 1,
+                "lvl": 0,
                 "max_lvl": 10,
                 "skill_tags": ["weapon"]
             },
@@ -25,7 +25,7 @@ EQUIPMENT = {
                 "item_level": 1,
                 "xp": 0,
                 "max_xp": 100,
-                "lvl": 1,
+                "lvl": 0,
                 "max_lvl": 10,
                 "skill_tags": ["weapon"]
             },
@@ -40,7 +40,7 @@ EQUIPMENT = {
                 "item_level": 1,
                 "xp": 0,
                 "max_xp": 100,
-                "lvl": 1,
+                "lvl": 0,
                 "max_lvl": 10,
                 "skill_tags": ["weapon"]
             },
@@ -55,7 +55,7 @@ EQUIPMENT = {
                 "item_level": 1,
                 "xp": 0,
                 "max_xp": 100,
-                "lvl": 1,
+                "lvl": 0,
                 "max_lvl": 10,
                 "skill_tags": ["weapon"]
             }
