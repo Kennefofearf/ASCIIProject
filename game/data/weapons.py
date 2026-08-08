@@ -36,6 +36,8 @@ class Weapons:
     def affix_stats(self, affix_stats):
         self.base_stats.get(affix_stats, 0)
 
+    # Using static methods until refactor
+
     @staticmethod
     def skill_tree_bonus(item, stat):
         nodes = item["skill_tree"]["nodes"].values()
