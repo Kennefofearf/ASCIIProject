@@ -39,6 +39,7 @@ def draw_node(window, y, x, label, node, is_selected, border_color):
 
     border_attr = curses.color_pair(border_color)
 
+    # draws the nodes
     window.addstr(y, x, "_____", border_attr)
     window.addstr(y + 1, x, "|     |", border_attr)
     window.addstr(y + 2, x, f"|{label:^5}|", border_attr)
