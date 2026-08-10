@@ -32,10 +32,26 @@ def assign_points(player, skill_id):
     return True
 
 
+def connect_tiers(connections, slots, previous_exits, current_entries):
+
+    for previous_slot in previous_exits:
+        previous_position = slots[previous_slot]
+
+        if previous_position is None:
+            continue
+
+        _, previous_x = previous_position
+
+        closest_entry = min(current_entries, key=lambda entry_slot: abs(slots[entry_slot][1] - previous_x))
+
+        connections.append((previous_slot, closest_entry))
+
+
 def generate_rarity_layout(rarity):
     slots = []
     connections = []
     previous_exits = []
+    initial_entries = []
     capstones = {}
 
     rarity_index = RARITY_ORDER.index(rarity)
@@ -62,9 +78,11 @@ def generate_rarity_layout(rarity):
         if tier_index == 0:
             initial_entries = current_entries
 
-        # Pair previous exits with this tier's entries
-        for previous_slots, current_slot in zip(previous_exits, current_entries):
-            connections.append((previous_slots, current_slot))
+        # for previous_slots, current_slot in zip(previous_exits, current_entries):
+        #     connections.append((previous_slots, current_slot))
+
+        if previous_exits:
+            connect_tiers(connections, slots, previous_exits, current_entries)
 
         previous_exits = current_exits
 
