@@ -1,8 +1,9 @@
 import curses
 import random
 import json
+
+import item_module
 from data.weapons_data import EQUIPMENT
-from data.item_base import create_item_base
 from data.affix_data import UNCOMMON_AFFIXES
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
 from systems.weapon_skill_tree import generate_rarity_layout
@@ -207,40 +208,40 @@ def generate_item_skill_tree(base, layout):
 def generate_item(base_id, item_level):
     base = EQUIPMENT[base_id]
 
-    item = create_item_base()
+    item = item_module.Item()
 
     # from weapons_data, EQUIPMENT definition
 
-    item["id"] = f"{base_id}_{random.randint(1000, 9999)}"
-    item["name"] = base["name"]
-    item["type"] = base["type"]
+    item.id = f"{base_id}_{random.randint(1000, 9999)}"
+    item.name = base["name"]
+    item.type = base["type"]
     item["min_dmg"] = base["min_dmg"]
     item["max_dmg"] = base["max_dmg"]
-    item["base_stats"] = base.get("base_stats", {})
-    item["item_level"] = item_level
-    item["xp"] = base.get("xp", 0)
-    item["max_xp"] = base.get("max_xp", 100)
-    item["lvl"] = base.get("lvl", 1)
-    item["max_lvl"] = base.get("max_lvl", 7)
-    item["skill_tags"] = base.get("skill_tags", [])
-    item["abilities"] = base.get("abilities", [])
+    item.base_stats = base.get("base_stats", {})
+    item.item_lvl = item_level
+    item.xp = base.get("xp", 0)
+    item.max_xp = base.get("max_xp", 100)
+    item.lvl = base.get("lvl", 1)
+    item.max_lvl = base.get("max_lvl", 7)
+    item.skill_tags = base.get("skill_tags", [])
+    item.abilities = base.get("abilities", [])
 
-    item["affixes"], available_affixes = choose_affixes(item_level=item_level, item_type=item["type"])
+    item.affixes, available_affixes = choose_affixes(item_level=item_level, item_type=item.type)
 
-    item["rarity"] = calculate_rarity(item["affixes"])
+    item.rarity = calculate_rarity(item.affixes)
 
-    layout = generate_rarity_layout(item["rarity"])
+    layout = generate_rarity_layout(item.rarity)
 
     item["skill_tree"] = {
         "layout": layout,
         "nodes": generate_item_skill_tree(base, layout)
     }
 
-    for affix_id in item["affixes"]:
+    for affix_id in item.affixes:
         affix = available_affixes[affix_id]
         apply_affix_stats(item, affix.get("affix_stats", {}))
 
-    item["name"] = build_item_name(base["name"], item["affixes"], available_affixes)
+    item.name = build_item_name(base["name"], item.affixes, available_affixes)
 
     return item
 

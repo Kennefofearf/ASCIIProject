@@ -15,4 +15,4 @@ class Item:
         self.skill_points = 0
         self.abilities = []
         self.affixes = []
-        self.tags = []
+        self.skill_tags = []
