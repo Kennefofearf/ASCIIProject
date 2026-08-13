@@ -3,7 +3,7 @@ import monster_module
 import random
 from data.skill_node_data import COMMON_NODES
 from data.affix_data import UNCOMMON_AFFIXES
-from data.weapons import Weapons
+from data.weapon import Weapon
 import time
 
 
@@ -51,7 +51,7 @@ class Player:
         bonus = 0
 
         if self.weapon:
-            bonus += Weapons.total_bonus(self.weapon, "max_hp")
+            bonus += Weapon.total_bonus(self.weapon, "max_hp")
 
         return self._max_hp + bonus
 
@@ -67,7 +67,7 @@ class Player:
         bonus = 0
 
         if self.weapon:
-            bonus += Weapons.total_bonus(self.weapon, "st")
+            bonus += Weapon.total_bonus(self.weapon, "st")
 
         return self._st + bonus
 
@@ -80,7 +80,7 @@ class Player:
         bonus = 0
 
         if self.weapon:
-            bonus += Weapons.total_bonus(self.weapon, "df")
+            bonus += Weapon.total_bonus(self.weapon, "df")
 
         return self._df + bonus
 

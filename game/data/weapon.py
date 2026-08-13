@@ -1,19 +1,15 @@
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
 from data.affix_data import UNCOMMON_AFFIXES
+from item_module import Item
 
-class Weapons:
+class Weapon(Item):
 
-    def __init__(self, name, min_dmg, max_dmg, xp, skill_tree, lvl, max_lvl, base_stats, affix, affix_stats):
-        self.name = name
-        self.min_dmg = min_dmg
-        self.max_dmg = max_dmg
-        self.base_stats = base_stats
-        self.affix = affix
-        self.affix_stats = affix_stats
-        self.xp = xp
-        self.skill_tree = skill_tree
-        self.lvl = lvl
-        self.max_lvl = max_lvl
+    def __init__(self):
+        super().__init__()
+
+        self.min_dmg = 0
+        self.max_dmg = 0
+        self.attack_cooldown = 1
 
     @property
     def name(self):
@@ -68,7 +64,7 @@ class Weapons:
             affix_data = UNCOMMON_AFFIXES.get(affix_id, {})
             total += affix_data.get("affix_stats", {}).get(stat, 0)
 
-        total += Weapons.skill_tree_bonus(item, stat)
+        total += Weapon.skill_tree_bonus(item, stat)
 
         return total
 
@@ -90,7 +86,7 @@ class Weapons:
         item["xp"] -= item["max_xp"]
         item["lvl"] += 1
         item["skill_points"] += 1
-        item["max_xp"] = Weapons.calculate_item_xp_requirement(item)
+        item["max_xp"] = Weapon.calculate_item_xp_requirement(item)
 
         if item["lvl"] >= item["max_lvl"]:
             item["xp"] = 0
@@ -103,7 +99,7 @@ class Weapons:
         item["xp"] += amount
 
         while item["xp"] >= item["max_xp"]:
-            Weapons.level_up_item(item)
+            Weapon.level_up_item(item)
 
 
 
