@@ -2,7 +2,8 @@ import curses
 import random
 import json
 
-import item_module
+from item_module import Item
+from data.weapon import Weapon
 from data.weapons_data import EQUIPMENT
 from data.affix_data import UNCOMMON_AFFIXES
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
@@ -205,18 +206,23 @@ def generate_item_skill_tree(base, layout):
     return nodes
 
 
+def create_item_instance(base):
+    if base["type"] == "weapon":
+        return Weapon()
+
+    return Item()
+
+
 def generate_item(base_id, item_level):
     base = EQUIPMENT[base_id]
 
-    item = item_module.Item()
+    item = create_item_instance(base)
 
     # from weapons_data, EQUIPMENT definition
 
     item.id = f"{base_id}_{random.randint(1000, 9999)}"
     item.name = base["name"]
     item.type = base["type"]
-    item["min_dmg"] = base["min_dmg"]
-    item["max_dmg"] = base["max_dmg"]
     item.base_stats = base.get("base_stats", {})
     item.item_lvl = item_level
     item.xp = base.get("xp", 0)
