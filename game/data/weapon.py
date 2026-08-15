@@ -7,30 +7,37 @@ class Weapon(Item):
     def __init__(self):
         super().__init__()
 
-        self.min_dmg = 0
-        self.max_dmg = 0
+        self._min_dmg = 0
+        self._max_dmg = 0
         self.attack_cooldown = 1
 
     @property
-    def name(self):
-        if self.affix:
-            return f"{self.name} {self.affix}"
-        return self.name
+    def min_dmg(self):
+        bonus = 0
 
-    def min_dmg(self, affix_min_dmg):
-        if self.affix:
-            self.min_dmg += self.affix_min_dmg.get(affix_min_dmg, 0)
-            return self.min_dmg
-        return self.min_dmg
+        for affix_id in self.affixes:
+            affix = UNCOMMON_AFFIXES.get(affix_id, {})
+            bonus += affix.get("affix_stats", {}).get("min_dmg", 0)
 
-    def max_dmg(self, affix_max_dmg):
-        if self.affix:
-            self.max_dmg += self.affix_max_dmg.get(affix_max_dmg, 0)
-            return self.max_dmg
-        return self.max_dmg
+        return self._min_dmg + bonus
 
-    def affix_stats(self, affix_stats):
-        self.base_stats.get(affix_stats, 0)
+    @min_dmg.setter
+    def min_dmg(self, value):
+        self._min_dmg = value
+
+    @property
+    def max_dmg(self):
+        bonus = 0
+
+        for affix_id in self.affixes:
+            affix = UNCOMMON_AFFIXES.get(affix_id, {})
+            bonus += affix.get("affix_stats", {}).get("max_dmg", 0)
+
+        return self._max_dmg + bonus
+
+    @max_dmg.setter
+    def max_dmg(self, value):
+        self._max_dmg = value
 
     # Using static methods until refactor
 

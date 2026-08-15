@@ -238,7 +238,7 @@ def generate_item(base_id, item_level):
 
     layout = generate_rarity_layout(item.rarity)
 
-    item["skill_tree"] = {
+    item.skill_tree = {
         "layout": layout,
         "nodes": generate_item_skill_tree(base, layout)
     }

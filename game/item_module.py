@@ -13,6 +13,7 @@ class Item:
         self.lvl = 0
         self.max_lvl = 10
         self.skill_points = 0
+        self.skill_tree = {}
         self.abilities = []
         self.affixes = []
         self.skill_tags = []
