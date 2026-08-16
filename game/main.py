@@ -191,8 +191,8 @@ def gamestart(stdscr):
         player_window.addstr(1, 2, f"{player.name}  Level: {player.lvl}")
 
         if player.weapon:
-            player_window.addstr(3, 1, f"DMG: {player.weapon.get('min_dmg') + player.st} - "
-                                        f"{player.weapon.get('max_dmg') + player.st}")
+            player_window.addstr(3, 1, f"DMG: {player.weapon.min_dmg + player.st} - "
+                                        f"{player.weapon.max_dmg + player.st}")
         else:
             player_window.addstr(3, 1, f"DMG: {player.st} - {player.st}")
 

@@ -223,6 +223,12 @@ def generate_item(base_id, item_level):
     item.id = f"{base_id}_{random.randint(1000, 9999)}"
     item.name = base["name"]
     item.type = base["type"]
+
+    if item.type == "weapon":
+        item.min_dmg = base["min_dmg"]
+        item.max_dmg = base["max_dmg"]
+        item.attack_cooldown = base["attack_cooldown"]
+
     item.base_stats = base.get("base_stats", {})
     item.item_lvl = item_level
     item.xp = base.get("xp", 0)

@@ -43,7 +43,7 @@ class Weapon(Item):
 
     @staticmethod
     def skill_tree_bonus(item, stat):
-        nodes = item["skill_tree"]["nodes"].values()
+        nodes = item.skill_tree["nodes"].values()
 
         total = 0
 
@@ -65,9 +65,9 @@ class Weapon(Item):
         if not item:
             return 0
 
-        total = item.get("base_stats", {}).get(stat, 0)
+        total = item.base_stats.get(stat, 0)
 
-        for affix_id in item.get("affixes", []):
+        for affix_id in item.affixes:
             affix_data = UNCOMMON_AFFIXES.get(affix_id, {})
             total += affix_data.get("affix_stats", {}).get(stat, 0)
 
@@ -82,7 +82,7 @@ class Weapon(Item):
 
         average_attack_cooldown = 1.0
 
-        weapon_speed = item["attack_cooldown"]
+        weapon_speed = item.attack_cooldown
 
         xp_requirement = (average_attack_cooldown / weapon_speed) * 100
 
@@ -90,22 +90,22 @@ class Weapon(Item):
 
     @staticmethod
     def level_up_item(item):
-        item["xp"] -= item["max_xp"]
-        item["lvl"] += 1
-        item["skill_points"] += 1
-        item["max_xp"] = Weapon.calculate_item_xp_requirement(item)
+        item.xp -= item.max_xp
+        item.lvl += 1
+        item.skill_points += 1
+        item.max_xp = Weapon.calculate_item_xp_requirement(item)
 
-        if item["lvl"] >= item["max_lvl"]:
-            item["xp"] = 0
+        if item.lvl >= item.max_lvl:
+            item.xp = 0
 
     @staticmethod
     def gain_item_xp(item, amount):
-        if item["lvl"] >= item["max_lvl"]:
+        if item.lvl >= item.max_lvl:
             return
 
-        item["xp"] += amount
+        item.xp += amount
 
-        while item["xp"] >= item["max_xp"]:
+        while item.xp >= item.max_xp:
             Weapon.level_up_item(item)
 
 

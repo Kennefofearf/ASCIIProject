@@ -8,9 +8,9 @@ def get_item_stat_bonus(item, stat):
     if not item:
         return 0
 
-    total = item.get("base_stats", {}).get(stat, 0)
+    total = item.base_stats.get(stat, 0)
 
-    for affix_id in item.get("affixes", []):
+    for affix_id in item.affixes:
         affix_data = UNCOMMON_AFFIXES[affix_id]
         total += affix_data.get("affix_stats", {}).get(stat, 0)
 
@@ -42,7 +42,7 @@ def open_inventory_window(stdscr, player):
 
         for index, item in enumerate(inventory):
 
-            display_name = item["name"]
+            display_name = item.name
 
             if item == player.weapon:
                 display_name = "* " + display_name
@@ -59,11 +59,11 @@ def open_inventory_window(stdscr, player):
 
         if selected_item:
 
-            lvl = selected_item["lvl"]
-            max_lvl = selected_item["max_lvl"]
-            xp = selected_item["xp"]
-            max_xp = selected_item["max_xp"]
-            skill_points = selected_item["skill_points"]
+            lvl = selected_item.lvl
+            max_lvl = selected_item.max_lvl
+            xp = selected_item.xp
+            max_xp = selected_item.max_xp
+            skill_points = selected_item.skill_points
 
             progress = xp / max_xp if max_xp > 0 else 0
             filled = int(progress * 10)
@@ -92,7 +92,7 @@ def open_inventory_window(stdscr, player):
             detail_x = description_width // 9
             row = 5
 
-            item_description_window.addstr(row, detail_x, selected_item["name"], curses.color_pair(item_color))
+            item_description_window.addstr(row, detail_x, selected_item.name, curses.color_pair(item_color))
             row += 2
 
             item_description_window.addstr(row, detail_x, f"Lvl: {lvl} / {max_lvl}")
@@ -107,10 +107,10 @@ def open_inventory_window(stdscr, player):
             item_description_window.addstr(row, detail_x, f"Skill Points: {skill_points}")
             row += 2
 
-            min_dmg = selected_item["min_dmg"]
-            max_dmg = selected_item["max_dmg"]
+            min_dmg = selected_item.min_dmg
+            max_dmg = selected_item.max_dmg
 
-            for affix_id in selected_item.get("affixes", []):
+            for affix_id in selected_item.affixes:
                 affix_data = UNCOMMON_AFFIXES[affix_id]
                 min_dmg += affix_data.get("min_dmg", 0)
                 max_dmg += affix_data.get("max_dmg", 0)
@@ -118,7 +118,7 @@ def open_inventory_window(stdscr, player):
             item_description_window.addstr(row, detail_x, f"DMG: {min_dmg} - {max_dmg}")
             row += 1
 
-            for affix_id in selected_item.get("affixes", []):
+            for affix_id in selected_item.affixes:
                 affix_data = UNCOMMON_AFFIXES[affix_id]
 
                 for stat, value in affix_data.get("affix_stats", {}).items():

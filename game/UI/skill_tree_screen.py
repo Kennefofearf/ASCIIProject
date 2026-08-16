@@ -75,7 +75,7 @@ def draw_item_name(window, item, width):
 
 
 def draw_skill_tree_nodes(window, item, selected_slot, scroll):
-    layout = item["skill_tree"]["layout"]
+    layout = item.skill_tree["layout"]
 
     for slot_index, position in enumerate(layout["slots"]):
         if position is None:
@@ -84,7 +84,7 @@ def draw_skill_tree_nodes(window, item, selected_slot, scroll):
         y, x = position
         y -= scroll
 
-        node = item["skill_tree"]["nodes"].get(slot_index)
+        node = item.skill_tree["nodes"].get(slot_index)
         if not node:
             continue
 

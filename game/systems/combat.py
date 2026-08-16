@@ -26,8 +26,8 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
         if now - player.last_attack_time >= player.attack_cooldown:
 
             if player.weapon:
-                dmg = (random.randint((player.weapon.get('min_dmg') + player.st),
-                       (player.weapon.get('max_dmg') + player.st))) - target.df
+                dmg = (random.randint((player.weapon.min_dmg + player.st),
+                       (player.weapon.max_dmg + player.st))) - target.df
             else:
                 dmg = player.st - target.df
 
@@ -55,7 +55,7 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
                 item_color = get_rarity_color(dropped_item)
 
                 add_log_messages(combat_messages, [(f"Picked up: ", 0),
-                                                   (f"{dropped_item['name']}", item_color)])
+                                                   (f"{dropped_item.name}", item_color)])
 
             player.target = None
 
