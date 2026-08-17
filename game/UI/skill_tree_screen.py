@@ -105,7 +105,7 @@ def draw_skill_tree_nodes(window, item, selected_slot, scroll):
 
 
 def unlock_adjacent_nodes(selected_item, selected_slot):
-    skill_tree = selected_item["skill_tree"]
+    skill_tree = selected_item.skill_tree
     nodes = skill_tree["nodes"]
     connections = skill_tree["layout"]["connections"]
     layout = skill_tree["layout"]
@@ -146,7 +146,7 @@ def open_skill_tree(stdscr, selected_item):
 
         key = stdscr.getch()
 
-        if key == ord("k"):
+        if key == ord("q"):
             skill_tree_window.erase()
             skill_tree_window.refresh()
             break
@@ -161,7 +161,7 @@ def open_skill_tree(stdscr, selected_item):
 
             elif bstate & curses.BUTTON1_CLICKED:
 
-                layout = selected_item["skill_tree"]["layout"]
+                layout = selected_item.skill_tree["layout"]
                 selected_slot = None
 
                 mouse_y = my - skill_tree_window_y
@@ -184,7 +184,7 @@ def open_skill_tree(stdscr, selected_item):
 
 def open_skill_tree_node_window(stdscr, selected_item, selected_slot):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
-    node = selected_item["skill_tree"]["nodes"][selected_slot]
+    node = selected_item.skill_tree["nodes"][selected_slot]
 
     if node.get("node_type") == "capstone":
         capstone_rarity = node["capstone_rarity"]
@@ -200,7 +200,7 @@ def open_skill_tree_node_window(stdscr, selected_item, selected_slot):
     node_rank = node["points"]
     max_node_rank = node_data["max_points"]
 
-    available_skill_points = selected_item["skill_points"]
+    available_skill_points = selected_item.skill_points
 
     dbg(node)
 
@@ -245,10 +245,10 @@ def open_skill_tree_node_window(stdscr, selected_item, selected_slot):
         if key == ord("a"):
             if node_rank < max_node_rank and available_skill_points > 0 and node["available"]:
                 node["points"] += 1
-                selected_item["skill_points"] -= 1
+                selected_item.skill_points -= 1
 
                 node_rank = node["points"]
-                available_skill_points = selected_item["skill_points"]
+                available_skill_points = selected_item.skill_points
 
                 unlock_adjacent_nodes(selected_item, selected_slot)
 
