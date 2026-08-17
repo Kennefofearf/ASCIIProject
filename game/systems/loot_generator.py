@@ -5,6 +5,7 @@ import json
 from item_module import Item
 from data.weapon import Weapon
 from data.weapons_data import EQUIPMENT
+from data.affix_module import Affix
 from data.affix_data import UNCOMMON_AFFIXES
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
 from systems.weapon_skill_tree import generate_rarity_layout
@@ -74,15 +75,15 @@ def choose_affixes(item_level, item_type):
 
     for affix_id, affix_data in available_affixes.items():
 
-        allowed = affix_data.get("item_type", [])
+        allowed = affix_data.item_type
 
         if item_type not in allowed:
             continue
 
-        if affix_data.get("type") == "prefix":
+        if affix_data.affix_type == "prefix":
             prefixes.append(affix_id)
 
-        elif affix_data.get("type") == "suffix":
+        elif affix_data.affix_type == "suffix":
             suffixes.append(affix_id)
 
     rolled_affixes = []
@@ -119,11 +120,11 @@ def build_item_name(base_name, affix_ids, affix_pool):
     for affix_id in affix_ids:
         affix = affix_pool[affix_id]
 
-        if affix.get("type") == "prefix":
-            prefixes.append(affix["name"])
+        if affix.affix_type == "prefix":
+            prefixes.append(affix.name)
 
-        elif affix.get("type") == "suffix":
-            suffixes.append(affix["name"])
+        elif affix.affix_type == "suffix":
+            suffixes.append(affix.name)
 
     name_parts = []
 
@@ -251,7 +252,7 @@ def generate_item(base_id, item_level):
 
     for affix_id in item.affixes:
         affix = available_affixes[affix_id]
-        apply_affix_stats(item, affix.get("affix_stats", {}))
+        apply_affix_stats(item, affix.affix_stats)
 
     item.name = build_item_name(base["name"], item.affixes, available_affixes)
 
