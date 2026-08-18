@@ -17,7 +17,7 @@ class Weapon(Item):
 
         for affix_id in self.affixes:
             affix = UNCOMMON_AFFIXES.get(affix_id, {})
-            bonus += affix.get("affix_stats", {}).get("min_dmg", 0)
+            bonus += affix.min_dmg
 
         return self._min_dmg + bonus
 
@@ -31,7 +31,7 @@ class Weapon(Item):
 
         for affix_id in self.affixes:
             affix = UNCOMMON_AFFIXES.get(affix_id, {})
-            bonus += affix.get("affix_stats", {}).get("max_dmg", 0)
+            bonus += affix.max_dmg
 
         return self._max_dmg + bonus
 
@@ -69,7 +69,7 @@ class Weapon(Item):
 
         for affix_id in item.affixes:
             affix_data = UNCOMMON_AFFIXES.get(affix_id, {})
-            total += affix_data.get("affix_stats", {}).get(stat, 0)
+            total += affix_data.affix_stats.get(stat, 0)
 
         total += Weapon.skill_tree_bonus(item, stat)
 

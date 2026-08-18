@@ -12,7 +12,7 @@ def get_item_stat_bonus(item, stat):
 
     for affix_id in item.affixes:
         affix_data = UNCOMMON_AFFIXES[affix_id]
-        total += affix_data.get("affix_stats", {}).get(stat, 0)
+        total += affix_data.affix_stats.get(stat, 0)
 
     return total
 
@@ -112,8 +112,8 @@ def open_inventory_window(stdscr, player):
 
             for affix_id in selected_item.affixes:
                 affix_data = UNCOMMON_AFFIXES[affix_id]
-                min_dmg += affix_data.get("min_dmg", 0)
-                max_dmg += affix_data.get("max_dmg", 0)
+                min_dmg += affix_data.min_dmg
+                max_dmg += affix_data.max_dmg
 
             item_description_window.addstr(row, detail_x, f"DMG: {min_dmg} - {max_dmg}")
             row += 1
@@ -121,7 +121,7 @@ def open_inventory_window(stdscr, player):
             for affix_id in selected_item.affixes:
                 affix_data = UNCOMMON_AFFIXES[affix_id]
 
-                for stat, value in affix_data.get("affix_stats", {}).items():
+                for stat, value in affix_data.affix_stats.items():
                     item_description_window.addstr(row, detail_x, f"{stat.upper()}: {value}")
                     row += 1
 
