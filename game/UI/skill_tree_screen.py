@@ -98,7 +98,7 @@ def draw_skill_tree_nodes(window, item, selected_slot, scroll):
         else:
             node_data = COMMON_NODES[node["node_id"]]
 
-        label = node_data["name"][:5]
+        label = node_data.name[:5]
         is_selected = slot_index == selected_slot
 
         draw_node(window, y, x, label, node, is_selected, border_color)
@@ -192,13 +192,13 @@ def open_skill_tree_node_window(stdscr, selected_item, selected_slot):
     else:
         node_data = COMMON_NODES[node["node_id"]]
 
-    node_name = node_data["name"]
-    node_tooltip = node_data["tooltip"]
+    node_name = node_data.name
+    node_tooltip = node_data.tooltip
 
     wrapped_tooltip = textwrap.wrap(node_tooltip, 34, break_long_words=True, break_on_hyphens=True)
 
     node_rank = node["points"]
-    max_node_rank = node_data["max_points"]
+    max_node_rank = node_data.max_points
 
     available_skill_points = selected_item.skill_points
 
@@ -223,7 +223,7 @@ def open_skill_tree_node_window(stdscr, selected_item, selected_slot):
             node_description_window.addstr(row, 2, f"{line}")
             row += 1
 
-        for stat, value in node_data.get("stats").items():
+        for stat, value in node_data.stats.items():
             display_name = STAT_NAMES.get(stat, stat)
 
             row += 1

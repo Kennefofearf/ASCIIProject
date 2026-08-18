@@ -55,7 +55,7 @@ class Weapon(Item):
             else:
                 node_data = COMMON_NODES[node["node_id"]]
 
-            stat_value = node_data["stats"].get(stat, 0)
+            stat_value = node_data.stats.get(stat, 0)
             total += stat_value * node["points"]
 
         return total

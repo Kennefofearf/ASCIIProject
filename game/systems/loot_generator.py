@@ -168,7 +168,7 @@ def generate_item_skill_tree(base, layout):
     item_tags = base.get("skill_tags", [])
 
     for node_id, node_data in COMMON_NODES.items():
-        node_tags = node_data.get("skill_tags", [])
+        node_tags = node_data.skill_tags
 
         if any(tag in item_tags for tag in node_tags):
             possible_nodes[node_id] = node_data
@@ -199,7 +199,7 @@ def generate_item_skill_tree(base, layout):
             "node_type": node_type,
             "capstone_rarity": capstone_rarity,
             "points": 0,
-            "max_points": node_pool[node_id].get("max_points", 1),
+            "max_points": node_pool[node_id].max_points,
             "available": slot_index in entry_slots
 
         }
