@@ -1,4 +1,4 @@
-from data.skill_node_module import Node
+from skill_node_module import Node
 
 STAT_NAMES = {
     "max_hp": "HP",

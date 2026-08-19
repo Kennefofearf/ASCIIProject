@@ -1,11 +1,9 @@
-import curses
 import random
 import json
 
 from item_module import Item
 from data.weapon import Weapon
 from data.weapons_data import EQUIPMENT
-from data.affix_module import Affix
 from data.affix_data import UNCOMMON_AFFIXES
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
 from systems.weapon_skill_tree import generate_rarity_layout

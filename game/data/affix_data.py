@@ -1,5 +1,5 @@
 import random
-from data.affix_module import Affix
+from affix_module import Affix
 
 UNCOMMON_AFFIXES = {
         "of_balance": Affix(

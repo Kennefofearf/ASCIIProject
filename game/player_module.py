@@ -9,7 +9,8 @@ import time
 
 
 class Player:
-    def __init__(self, name, icon, max_hp, hp, st, df, req_xp, total_req_xp, xp_bar_text, lvl):
+    def __init__(self, name, max_hp, hp, st, df, mp, evasion, crit_rate, crit_dmg, hp_rr, hp_ra, req_xp, total_req_xp,
+                 xp_bar_text, lvl):
         self.name = name
         self.icon = "@"
         self._max_hp = max_hp
@@ -19,6 +20,19 @@ class Player:
         self.base_max_hp = 50
         self.base_st = 21
         self.base_df = 3
+        self.base_mp = 0
+        self.mp = mp
+        self.base_evasion = 0
+        self.evasion = evasion
+        self.base_crit_rate = 3
+        self.crit_rate = crit_rate
+        self.base_crit_dmg = 50
+        self.crit_dmg = crit_dmg
+        self.base_hp_rr = 5.0
+        self.hp_rr = hp_rr
+        self.base_hp_ra = 1
+        self.hp_ra = hp_ra
+        self.attack_cooldown = 1.0
         self.weapon_dmg = [0, 0]
         self.position = [0, 0]
         self.req_xp = req_xp
@@ -34,7 +48,6 @@ class Player:
         self.abilities = []
         self.damaged = False
         self.active_effects = []
-        self.attack_cooldown = 1.0
         self.last_attack_time = 0
         self.inventory = []
 
@@ -87,6 +100,15 @@ class Player:
     @df.setter
     def df(self, value):
         self._df = max(0, value)
+
+    @property
+    def mp(self):
+        bonus = 0
+
+        if self.weapon:
+            bonus += Weapon.total_bonus(self.weapon, "mp")
+
+        return self.base_mp + bonus
 
     def move(self, py, px):
         self.position[0] += py
