@@ -90,7 +90,7 @@ def open_inventory_window(stdscr, player):
             item_description_window.box()
 
             detail_x = description_width // 9
-            row = 5
+            row = 1
 
             item_description_window.addstr(row, detail_x, selected_item.name, curses.color_pair(item_color))
             row += 2

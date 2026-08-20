@@ -140,7 +140,7 @@ def gamestart(stdscr):
     stdscr.clear()
 
     y, x = stdscr.getmaxyx()
-    player = Player("Koe", "@", 50, 50, 3, 1, 5, 5, "", 5)
+    player = Player("Koe", 50, 50, 3, 1, 5, 5, "", 5)
     player.position = [20, 55]
 
     # Window rendering

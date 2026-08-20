@@ -202,8 +202,6 @@ def open_skill_tree_node_window(stdscr, selected_item, selected_slot):
 
     available_skill_points = selected_item.skill_points
 
-    dbg(node)
-
     while True:
 
         stdscr_y, stdscr_x = stdscr.getmaxyx()
@@ -224,6 +222,8 @@ def open_skill_tree_node_window(stdscr, selected_item, selected_slot):
             row += 1
 
         for stat, value in node_data.stats.items():
+            if value == 0:
+                continue
             display_name = STAT_NAMES.get(stat, stat)
 
             row += 1
