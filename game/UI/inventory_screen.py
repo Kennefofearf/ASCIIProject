@@ -1,8 +1,30 @@
 import curses
+import textwrap
 from player_module import Player
+from data.weapon import Weapon
 from data.affix_data import UNCOMMON_AFFIXES
 from UI.colors import get_rarity_color
 from UI.skill_tree_screen import open_skill_tree
+
+
+def add_wrapped_text(window, row, x, text, max_width, color=None):
+    height, width = window.getmaxyx()
+
+    wrapped_lines = textwrap.wrap(str(text), max_width, break_long_words=True, break_on_hyphens=True)
+
+    for line in wrapped_lines:
+        if row >= height - 1:
+            break
+
+        if color:
+            window.addstr(row, x, line, color)
+        else:
+            window.addstr(row, x, line)
+
+        row += 1
+
+    return row
+
 
 def get_item_stat_bonus(item, stat):
     if not item:
@@ -15,6 +37,7 @@ def get_item_stat_bonus(item, stat):
         total += affix_data.affix_stats.get(stat, 0)
 
     return total
+
 
 def open_inventory_window(stdscr, player):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
@@ -90,19 +113,19 @@ def open_inventory_window(stdscr, player):
             item_description_window.box()
 
             detail_x = description_width // 9
+            max_width = description_width - detail_x - 2
+
             row = 1
 
-            item_description_window.addstr(row, detail_x, selected_item.name, curses.color_pair(item_color))
-            row += 2
+            row = add_wrapped_text(item_description_window, row, detail_x, selected_item.name, max_width,
+                                   curses.color_pair(item_color))
 
+            row += 1
             item_description_window.addstr(row, detail_x, f"Lvl: {lvl} / {max_lvl}")
             row += 1
 
             item_description_window.addstr(row, detail_x, f"XP: {xp} / {max_xp}")
             row += 1
-
-            # item_description_window.addstr(row, detail_x, f"[{xp_bar}]")
-            # row += 1
 
             item_description_window.addstr(row, detail_x, f"Skill Points: {skill_points}")
             row += 2
@@ -118,12 +141,20 @@ def open_inventory_window(stdscr, player):
             item_description_window.addstr(row, detail_x, f"DMG: {min_dmg} - {max_dmg}")
             row += 1
 
+            stats_listed = []
+
             for affix_id in selected_item.affixes:
                 affix_data = UNCOMMON_AFFIXES[affix_id]
 
-                for stat, value in affix_data.affix_stats.items():
-                    item_description_window.addstr(row, detail_x, f"{stat.upper()}: {value}")
-                    row += 1
+                for stat in affix_data.affix_stats:
+                    if stat not in stats_listed:
+                        stats_listed.append(stat)
+
+            for stat in stats_listed:
+                stat_total = Weapon.total_bonus(selected_item, stat)
+
+                item_description_window.addstr(row, detail_x, f"{stat.upper()}: {stat_total}")
+                row += 1
 
             row += 1
 
@@ -137,11 +168,7 @@ def open_inventory_window(stdscr, player):
                                                f"DEF: {player.df} --> {stat_forecast_df}")
 
             row += 3
-            item_description_window.addstr(row, detail_x, f"(E)quip")
-            row += 1
-            item_description_window.addstr(row, detail_x, f"(R)emove")
-            row += 1
-            item_description_window.addstr(row, detail_x, f"S(k)ill Tree")
+            item_description_window.addstr(row, detail_x, f"(E)quip | (R)emove | S(k)ill Tree")
 
             if key == ord("e"):
                 player.weapon = selected_item

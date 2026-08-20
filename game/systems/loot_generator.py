@@ -105,7 +105,7 @@ def calculate_rarity(possible_affixes):
     elif affix_count == 1:
         return "green"
 
-    return "rare"
+    return "green"
 
 def apply_affix_stats(item, affix_stats):
     for stat_name, value in affix_stats.get("affix_stats", {}).items():

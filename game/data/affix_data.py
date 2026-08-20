@@ -7,7 +7,7 @@ UNCOMMON_AFFIXES = {
         "of_balance": Affix(
             name="of Balance",
             affix_type="suffix",
-            affix_stats={"max_hp": 5, "st": 5, "df": 5, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+            affix_stats={"max_hp": 5, "st": 5, "df": 5},
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([0, 1, 2]),
             item_type=["weapon", "armor"]
@@ -15,7 +15,7 @@ UNCOMMON_AFFIXES = {
         "of_minor_constitution": Affix(
             name="of Minor Constitution",
             affix_type="suffix",
-            affix_stats={"max_hp": 15, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+            affix_stats={"max_hp": 15},
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([0, 1, 2]),
             item_type=["weapon", "armor"]
@@ -23,7 +23,7 @@ UNCOMMON_AFFIXES = {
         "of_perseverance": Affix(
             name="of Perseverance",
             affix_type="suffix",
-            affix_stats={"max_hp": 9, "st": 0, "df": 7, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+            affix_stats={"max_hp": 9, "df": 7},
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([0, 1, 2]),
             item_type=["weapon", "armor"]
@@ -31,7 +31,7 @@ UNCOMMON_AFFIXES = {
         "of_the_rotund_fool": Affix(
             name="of the Rotund Fool",
             affix_type="suffix",
-            affix_stats={"max_hp": 20, "st": -10, "df": -7, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+            affix_stats={"max_hp": 20, "st": -10},
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([0, 1, 2]),
             item_type=["weapon", "armor"]
@@ -39,7 +39,7 @@ UNCOMMON_AFFIXES = {
         "sharp": Affix(
             name="Sharp",
             affix_type="prefix",
-            affix_stats={"max_hp": 0, "st": 1, "df": 0, "mp": 0, "ev": 0, "cr": 3, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+            affix_stats={"st": 1},
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([0, 1, 2]),
             item_type=["weapon"]
@@ -47,7 +47,7 @@ UNCOMMON_AFFIXES = {
         "agile": Affix(
             name="Agile",
             affix_type="prefix",
-            affix_stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 2, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+            affix_stats={"ev": 2},
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([0, 1, 2]),
             item_type=["weapon", "armor"]
@@ -55,7 +55,7 @@ UNCOMMON_AFFIXES = {
         "genius's": Affix(
             name="Genius's",
             affix_type="prefix",
-            affix_stats={"max_hp": 0, "st": 0, "df": 0, "mp": 5, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+            affix_stats={"mp": 5},
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([0, 1, 2]),
             item_type=["weapon", "armor"]
