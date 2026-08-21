@@ -61,16 +61,43 @@ class Weapon(Item):
         return total
 
     @staticmethod
-    def total_bonus(item, stat):
-        if not item:
-            return 0
+    def skill_tree_stats(item):
+        stats = []
 
+        nodes = item.skill_tree["nodes"].values()
+
+        for node in nodes:
+            if node["points"] <= 0:
+                continue
+
+        if node.get("node_type") == "capstone":
+            rarity = node["capstone_rarity"]
+            node_data = CAPSTONE_NODES[rarity][node["node_id"]]
+        else:
+            node_data = COMMON_NODES[node["node_id"]]
+
+        for stat in node_data.stats:
+            if stat not in stats:
+                stats.append(stat)
+
+        return stats
+
+    @staticmethod
+    def affix_base_total(item, stat):
         total = item.base_stats.get(stat, 0)
 
         for affix_id in item.affixes:
             affix_data = UNCOMMON_AFFIXES.get(affix_id, {})
             total += affix_data.affix_stats.get(stat, 0)
 
+        return total
+
+    @staticmethod
+    def total_bonus(item, stat):
+        if not item:
+            return 0
+
+        total = Weapon.affix_base_total(item, stat)
         total += Weapon.skill_tree_bonus(item, stat)
 
         return total
