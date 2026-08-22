@@ -224,6 +224,7 @@ def generate_item(base_id, item_level):
     item.type = base["type"]
 
     if item.type == "weapon":
+
         item.min_dmg = base["min_dmg"]
         item.max_dmg = base["max_dmg"]
         item.attack_cooldown = base["attack_cooldown"]
@@ -238,6 +239,11 @@ def generate_item(base_id, item_level):
     item.abilities = base.get("abilities", [])
 
     item.affixes, available_affixes = choose_affixes(item_level=item_level, item_type=item.type)
+
+    if item.type == "weapon" and item.affixes:
+        dmg_bonus = random.choice([0, 1, 2])
+        item.min_dmg += dmg_bonus
+        item.max_dmg += dmg_bonus
 
     item.rarity = calculate_rarity(item.affixes)
 

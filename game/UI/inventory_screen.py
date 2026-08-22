@@ -181,7 +181,7 @@ def open_inventory_window(stdscr, player):
                                                    curses.color_pair(3))
                 elif tree_bonus < 0:
                     item_description_window.addstr(row, detail_x + len(stat_text), f" {tree_bonus}",
-                                                   curses.color_pair(3))
+                                                   curses.color_pair(1))
                 row += 1
 
             row += 1
