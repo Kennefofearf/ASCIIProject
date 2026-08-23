@@ -20,9 +20,9 @@ class Player:
         self.base_st = 21
         self.base_df = 3
         self.base_mp = 0
-        self.base_evasion = 0
+        self.base_evasion = 3
         self.base_crit_rate = 3
-        self.base_crit_dmg = 50
+        self.base_crit_dmg = 150
         self.base_hp_rr = 5.0
         self.base_hp_ra = 1
         self.attack_cooldown = 1.0
@@ -110,7 +110,7 @@ class Player:
         if self.weapon:
             bonus += Weapon.total_bonus(self.weapon, "ev")
 
-        return self.base_evasion + bonus
+        return min(80, max(0, self.base_evasion + bonus))
 
     @property
     def crit_rate(self):
@@ -119,7 +119,7 @@ class Player:
         if self.weapon:
             bonus += Weapon.total_bonus(self.weapon, "cr")
 
-        return self.base_crit_rate + bonus
+        return min(100, max(0, self.base_crit_rate + bonus))
 
     @property
     def crit_dmg(self):
@@ -128,7 +128,7 @@ class Player:
         if self.weapon:
             bonus += Weapon.total_bonus(self.weapon, "cd")
 
-        return self.base_crit_dmg + bonus
+        return max(0, self.base_crit_dmg + bonus)
 
     @property
     def hp_rr(self):

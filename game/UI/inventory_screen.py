@@ -2,6 +2,7 @@ import curses
 import textwrap
 import json
 from player_module import Player
+from data.skill_node_data import STAT_NAMES
 from data.weapon import Weapon
 from data.affix_data import UNCOMMON_AFFIXES
 from UI.colors import get_rarity_color
@@ -149,6 +150,7 @@ def open_inventory_window(stdscr, player):
             row += 1
 
             STAT_ORDER = ["max_hp", "st", "df", "mp", "ev", "cr", "cd", "hp_rr", "hp_ra"]
+
             stats_listed = []
 
             for affix_id in selected_item.affixes:
@@ -169,10 +171,11 @@ def open_inventory_window(stdscr, player):
             for stat in stats_listed:
                 base_total = Weapon.affix_base_total(selected_item, stat)
                 tree_bonus = Weapon.skill_tree_bonus(selected_item, stat)
+                stat_display_name = STAT_NAMES[stat]
                 if base_total != 0:
-                    stat_text = f"{stat.upper()}: {base_total}"
+                    stat_text = f"{stat_display_name}: {base_total}"
                 else:
-                    stat_text = f"{stat.upper()}:"
+                    stat_text = f"{stat_display_name}:"
 
                 item_description_window.addstr(row, detail_x, stat_text)
 

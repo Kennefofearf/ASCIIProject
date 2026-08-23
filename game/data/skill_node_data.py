@@ -3,7 +3,13 @@ from skill_node_module import Node
 STAT_NAMES = {
     "max_hp": "HP",
     "st": "STR",
-    "df": "DEF"
+    "df": "DEF",
+    "mp": "MGP",
+    "ev": "EVA",
+    "cr": "CRT",
+    "cd": "CRD",
+    "hp_rr": "HRR",
+    "hp_ra": "HRA"
 }
 
 COMMON_NODES = {

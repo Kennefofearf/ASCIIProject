@@ -31,18 +31,27 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
             else:
                 dmg = player.st - target.df
 
-            if dmg <= 0:
-                dmg = 0
+            crit_roll = random.randint(1, 100)
+            is_crit = player.crit_rate >= crit_roll
 
-            target.take_dmg(max(0, dmg))
+            if is_crit:
+                dmg *= 1 + (player.crit_dmg * 0.01)
+
+            dmg = max(0, round(dmg))
+
+            target.take_dmg(dmg)
             player.last_attack_time = now
+
+            if is_crit:
+                add_log_messages(combat_messages, [("+++++", 0), (f"{player.name} ", 2), ("crits ", 0), (f"{target.name} ", 1),
+                                                   (f"for ", 0), (f"{dmg}", 2), ("!!!", 0), ("+++++", 0)])
+            else:
+                add_log_messages(combat_messages, [(f"{target.name} ", 1), ("is hit for ", 0), (f"{dmg}", 2),
+                                                   ("!", 0)])
 
             if player.weapon:
                 amount = 20
                 Weapon.gain_item_xp(player.weapon, amount)
-
-            add_log_messages(combat_messages, [(f"{target.name} ", 1), ("is hit for ", 0), (f"{dmg}", 2),
-                                               ("!", 0)])
 
         if not target.alive:
             player.xp_gain(target.xp)
@@ -70,6 +79,14 @@ def enemy_auto_attack_logic(enemies, player, add_log_messages, combat_messages):
             enemy.is_attacking = True
             now = time.time()
             if now - enemy.last_attack_time >= enemy.attack_cooldown:
+                evasion_roll = random.randint(1, 100)
+                crit_roll = random.randint(1, 100)
+                if player.evasion >= evasion_roll:
+                    add_log_messages(combat_messages,
+                                     [(f"{player.name} ", 2), ("evades the attack!", 0)])
+                    enemy.last_attack_time = now
+                    continue
+
                 dmg = enemy.st - player.df
 
                 if dmg <= 0:
@@ -79,8 +96,6 @@ def enemy_auto_attack_logic(enemies, player, add_log_messages, combat_messages):
                 enemy.last_attack_time = now
                 add_log_messages(combat_messages,
                                  [(f"{player.name} ", 2), ("is hit for ", 0), (f"{dmg}", 1), ("!", 0)])
-                # draw_log(inner, combat_messages, scroll_offset)
-                # player_window.erase()
-                # player_window.refresh()
+
         else:
             enemy.is_attacking = False
