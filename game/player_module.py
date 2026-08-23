@@ -22,9 +22,9 @@ class Player:
         self.base_mp = 0
         self.base_evasion = 3
         self.base_crit_rate = 3
-        self.base_crit_dmg = 150
-        self.base_hp_rr = 5.0
-        self.base_hp_ra = 1
+        self.base_crit_dmg = 50
+        self.base_hp_rr = 10.0
+        self.base_hp_ra = 5
         self.attack_cooldown = 1.0
         self.weapon_dmg = [0, 0]
         self.position = [0, 0]
@@ -42,6 +42,7 @@ class Player:
         self.damaged = False
         self.active_effects = []
         self.last_attack_time = 0
+        self.last_regen_time = 0
         self.inventory = []
 
     @property
@@ -147,6 +148,13 @@ class Player:
             bonus += Weapon.total_bonus(self.weapon, "hp_ra")
 
         return self.base_hp_ra + bonus
+
+    def regenerate_hp(self):
+        now = time.time()
+
+        if self.hp < self.max_hp and now - self.last_regen_time >= self.hp_rr:
+            self.hp += self.hp_ra
+            self.last_regen_time = now
 
     def move(self, py, px):
         self.position[0] += py

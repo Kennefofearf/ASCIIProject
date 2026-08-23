@@ -37,6 +37,7 @@ def draw_enemies(stdscr, enemies, selected, prev_positions):
 
 
 def world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_offset):
+    player.regenerate_hp()
     ny, nx = player.future_position(py, px)
     if not movement_area(stdscr, ny, nx):
         py = 0
