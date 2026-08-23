@@ -185,6 +185,9 @@ def open_inventory_window(stdscr, player):
                 elif tree_bonus < 0:
                     item_description_window.addstr(row, detail_x + len(stat_text), f" {tree_bonus}",
                                                    curses.color_pair(1))
+                elif stat == "hp_rr" and tree_bonus < 0:
+                    item_description_window.addstr(row, detail_x + len(stat_text), f" {tree_bonus}",
+                                                   curses.color_pair(3))
                 row += 1
 
             row += 1
