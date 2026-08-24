@@ -234,7 +234,7 @@ def generate_item(base_id, item_level):
     item.xp = base.get("xp", 0)
     item.max_xp = base.get("max_xp", 100)
     item.lvl = base.get("lvl", 1)
-    item.max_lvl = base.get("max_lvl", 7)
+    item.max_lvl = base.get("max_lvl", 10)
     item.skill_tags = base.get("skill_tags", [])
     item.abilities = base.get("abilities", [])
 
