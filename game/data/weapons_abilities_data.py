@@ -1,4 +1,5 @@
 from game.ability_module import Ability
+from systems.damage_effect import DamageEffect
 
 COMMON_WEAPON_ABILITIES = {
     # "gash": {
@@ -29,6 +30,13 @@ COMMON_WEAPON_ABILITIES = {
         cooldown=10,
         range=1,
         target_type="enemy",
-        effects=[]
+        effects=[
+            DamageEffect(
+                base_dmg=10,
+                scaling_stat="st",
+                scaling=0.1,
+                dmg_type="blunt"
+            )
+        ]
     )
 }

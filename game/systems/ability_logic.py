@@ -14,7 +14,7 @@ def rebuild_abilities(unit):
     unit.abilities = list(usable)
 
 def can_use_ability(user, ability_id, now):
-    if ability_id not in user.abilities:
+    if ability_id not in user.ability_slots:
         return False, "Ability no longer equipped..."
 
     if ability_id in user.cooldowns and now < user.cooldowns[ability_id]:
@@ -26,7 +26,7 @@ def in_range(user, target, ability_data):
     uy, ux = user.position
     ty, tx = target.position
     dist = abs(uy - ty) + abs(ux - tx)
-    return dist <= ability_data["range"]
+    return dist <= ability_data.range
 
 def calculate_ability_damage(user, target, ability_data):
     stat_name = ability_data.get("scaling_stat", "st")
@@ -40,6 +40,7 @@ def calculate_ability_damage(user, target, ability_data):
 
     return raw
 
+
 def use_ability(user, target, ability_id, now, combat_log=None):
     ability = COMMON_WEAPON_ABILITIES[ability_id]
 
@@ -47,24 +48,25 @@ def use_ability(user, target, ability_id, now, combat_log=None):
     if not ok:
         return False, reason
 
-    if ability["target"] == "enemy":
+    if ability.target_type == "enemy":
         if target is None or not target.alive:
             return False, "Invalid target."
 
         if not in_range(user, target, ability):
             return False, "Target out of range."
 
-    if ability["class"] == "attack":
-        dmg = calculate_ability_damage(user, target, ability)
-        target.take_dmg(dmg)
+    # if ability["class"] == "attack":
+    #     dmg = calculate_ability_damage(user, target, ability)
+    #     target.take_dmg(dmg)
 
-        if combat_log is not None:
-            combat_log.append(f"{user.name} uses {ability['name']} on {target.name} for {dmg} damage.")
-
-        for effect in ability.get("on_hit_effects", []):
-            apply_effect(target, effect, now)
+        for effect in ability.effects:
+            result = effect.apply(user, target)
             if combat_log is not None:
-                combat_log.append(f"{target.name} is afflicted with {effect['effect_id']}")
+                combat_log.append(f"{user.name} uses {ability.name} on {target.name} for {result} damage.")
+            # if combat_log is not None:
+            #     combat_log.append(f"{target.name} is afflicted with {effect['effect_id']}")
 
-    user.cooldowns[ability_id] = now + ability["cooldown"]
+    user.cooldowns[ability_id] = now + ability.cooldown
+
     return True, "ok"
+

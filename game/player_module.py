@@ -38,12 +38,16 @@ class Player:
         # self.helm = None
         self.target = None
         self.skill_tree = {}
-        self.abilities = []
+        self.unlocked_abilities = []
+        self.ability_slots = {"1": None, "2": None, "3": None, "4": None}
+        self.unlocked_magic = []
+        self.magic_slots = {}
         self.damaged = False
         self.active_effects = []
         self.last_attack_time = 0
         self.last_regen_time = 0
         self.inventory = []
+        self.cooldowns = {}
 
     @property
     def hp(self):
@@ -148,6 +152,17 @@ class Player:
             bonus += Weapon.total_bonus(self.weapon, "hp_ra")
 
         return self.base_hp_ra + bonus
+
+    def unlock_ability(self, ability_id):
+        if ability_id not in self.unlocked_abilities:
+            self.unlocked_abilities.append(ability_id)
+
+    def equip_ability(self, ability_id, slot):
+        if ability_id not in self.unlocked_abilities:
+            return False
+
+        self.ability_slots[slot] = ability_id
+        return True
 
     def regenerate_hp(self):
         now = time.time()

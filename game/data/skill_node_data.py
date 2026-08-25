@@ -143,26 +143,26 @@ COMMON_NODES = {
                 unlocks=[],
                 skill_tags=["weapon", "armor"]
             ),
-            "ability_bash": Node(
+            "bash": Node(
                 name="Bash",
-                tooltip="Hit the target with the hilt of your weapon.",
+                tooltip="Unlocks Bash",
                 points=0,
-                max_points=5,
+                max_points=1,
                 stats={},
                 requires=[],
                 unlocks=["bash"],
                 skill_tags=["weapon"]
             ),
-            "ability_gash": Node(
-                name="Gash",
-                tooltip="Give the target a deep cut. Dealing 10 damage over 5 seconds",
-                points=0,
-                max_points=3,
-                stats={},
-                requires=[],
-                unlocks=["gash"],
-                skill_tags=["weapon"]
-            )
+            # "gash": Node(
+            #     name="Gash",
+            #     tooltip="Give the target a deep cut. Dealing 10 damage over 5 seconds",
+            #     points=0,
+            #     max_points=3,
+            #     stats={},
+            #     requires=[],
+            #     unlocks=["gash"],
+            #     skill_tags=["weapon"]
+            # )
         }
 
 CAPSTONE_NODES = {

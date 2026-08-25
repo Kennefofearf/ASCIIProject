@@ -1,6 +1,7 @@
 import curses
 import random
 import textwrap
+from game.player_module import Player
 from systems.weapon_skill_tree import generate_rarity_layout
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, STAT_NAMES
 from UI.colors import get_rarity_color, get_color_from_rarity
