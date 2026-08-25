@@ -38,9 +38,7 @@ class Player:
         # self.helm = None
         self.target = None
         self.skill_tree = {}
-        self.unlocked_abilities = []
         self.ability_slots = {"1": None, "2": None, "3": None, "4": None}
-        self.unlocked_magic = []
         self.magic_slots = {}
         self.damaged = False
         self.active_effects = []
@@ -153,16 +151,29 @@ class Player:
 
         return self.base_hp_ra + bonus
 
-    def unlock_ability(self, ability_id):
-        if ability_id not in self.unlocked_abilities:
-            self.unlocked_abilities.append(ability_id)
-
     def equip_ability(self, ability_id, slot):
-        if ability_id not in self.unlocked_abilities:
+        if not self.weapon:
+            return False
+
+        if ability_id not in self.weapon.unlocked_abilities:
             return False
 
         self.ability_slots[slot] = ability_id
         return True
+
+    def auto_equip_ability(self, ability_id):
+        if not self.weapon:
+            return False
+
+        if ability_id not in self.weapon.unlocked_abilities:
+            return False
+
+        for slot, equipped_ability in self.ability_slots.items():
+            if equipped_ability is None:
+                self.ability_slots[slot] = ability_id
+                return True
+
+        return False
 
     def regenerate_hp(self):
         now = time.time()

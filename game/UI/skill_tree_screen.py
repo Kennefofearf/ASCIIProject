@@ -1,7 +1,6 @@
 import curses
 import random
 import textwrap
-from game.player_module import Player
 from systems.weapon_skill_tree import generate_rarity_layout
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, STAT_NAMES
 from UI.colors import get_rarity_color, get_color_from_rarity
@@ -123,7 +122,7 @@ def unlock_adjacent_nodes(selected_item, selected_slot):
 
 
 
-def open_skill_tree(stdscr, selected_item):
+def open_skill_tree(stdscr, selected_item, player):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
 
     selected_slot = 0
@@ -180,10 +179,10 @@ def open_skill_tree(stdscr, selected_item):
                         break
 
                 if selected_slot is not None:
-                    open_skill_tree_node_window(stdscr, selected_item, selected_slot)
+                    open_skill_tree_node_window(stdscr, selected_item, selected_slot, player)
 
 
-def open_skill_tree_node_window(stdscr, selected_item, selected_slot):
+def open_skill_tree_node_window(stdscr, selected_item, selected_slot, player):
     curses.mousemask(curses.ALL_MOUSE_EVENTS | curses.REPORT_MOUSE_POSITION)
     node = selected_item.skill_tree["nodes"][selected_slot]
 
@@ -247,6 +246,12 @@ def open_skill_tree_node_window(stdscr, selected_item, selected_slot):
             if node_rank < max_node_rank and available_skill_points > 0 and node["available"]:
                 node["points"] += 1
                 selected_item.skill_points -= 1
+
+                for ability_id in node_data.unlocks:
+                    selected_item.unlock_ability(ability_id)
+
+                    if selected_item == player.weapon:
+                        player.auto_equip_ability(ability_id)
 
                 node_rank = node["points"]
                 available_skill_points = selected_item.skill_points

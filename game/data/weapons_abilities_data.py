@@ -1,4 +1,4 @@
-from game.ability_module import Ability
+from ability_module import Ability
 from systems.damage_effect import DamageEffect
 
 COMMON_WEAPON_ABILITIES = {

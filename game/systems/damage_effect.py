@@ -10,7 +10,7 @@ class DamageEffect:
         stat_value = getattr(user, self.scaling_stat, 0)
 
         total_dmg = self.base_dmg + (stat_value * self.scaling)
-        round(total_dmg)
+        total_dmg = round(total_dmg)
 
         if self.dmg_type == "blunt":
             total_dmg = max(0, total_dmg - target.df)

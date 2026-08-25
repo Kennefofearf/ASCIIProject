@@ -1,5 +1,4 @@
-from game.data.weapons_abilities_data import COMMON_WEAPON_ABILITIES
-from game.systems.effect_logic import apply_effect
+from data.weapons_abilities_data import COMMON_WEAPON_ABILITIES
 
 def rebuild_abilities(unit):
     usable = set()
@@ -14,8 +13,11 @@ def rebuild_abilities(unit):
     unit.abilities = list(usable)
 
 def can_use_ability(user, ability_id, now):
-    if ability_id not in user.ability_slots:
-        return False, "Ability no longer equipped..."
+    if not user.weapon:
+        return False, "Required weapon not equipped..."
+
+    if ability_id not in user.ability_slots.values():
+        return False, "Ability not equipped..."
 
     if ability_id in user.cooldowns and now < user.cooldowns[ability_id]:
         return False, "That ability is on cooldown."
@@ -41,7 +43,7 @@ def calculate_ability_damage(user, target, ability_data):
     return raw
 
 
-def use_ability(user, target, ability_id, now, combat_log=None):
+def use_ability(user, target, ability_id, now, combat_messages=None):
     ability = COMMON_WEAPON_ABILITIES[ability_id]
 
     ok, reason = can_use_ability(user, ability_id, now)
@@ -50,19 +52,21 @@ def use_ability(user, target, ability_id, now, combat_log=None):
 
     if ability.target_type == "enemy":
         if target is None or not target.alive:
-            return False, "Invalid target."
+            return False, combat_messages.append("Invalid target.", 2)
 
         if not in_range(user, target, ability):
-            return False, "Target out of range."
+            return False, combat_messages.append("Target out of range.", 2)
 
     # if ability["class"] == "attack":
     #     dmg = calculate_ability_damage(user, target, ability)
     #     target.take_dmg(dmg)
 
-        for effect in ability.effects:
-            result = effect.apply(user, target)
-            if combat_log is not None:
-                combat_log.append(f"{user.name} uses {ability.name} on {target.name} for {result} damage.")
+    for effect in ability.effects:
+        result = effect.apply(user, target)
+
+        if combat_messages is not None:
+            combat_messages.append([(f"{user.name} ", 2), ("uses ", 0), (f"{ability.name} ", 2), ("on ", 0),
+                                    (f"{target.name} ", 1), ("for ", 0), (f"{result} ", 2), ("damage!", 0)])
             # if combat_log is not None:
             #     combat_log.append(f"{target.name} is afflicted with {effect['effect_id']}")
 

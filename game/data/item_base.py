@@ -11,7 +11,7 @@
 #         "lvl": 0,
 #         "max_lvl": 10,
 #         "skill_points": 0,
-#         "abilities": [],
+#         "unlocked_abilities": [],
 #         "affixes": [],
 #         "skill_tags": []
 #     }

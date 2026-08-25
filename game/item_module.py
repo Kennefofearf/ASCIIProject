@@ -14,6 +14,11 @@ class Item:
         self.max_lvl = 10
         self.skill_points = 0
         self.skill_tree = {}
-        self.abilities = []
+        self.unlocked_abilities = []
         self.affixes = []
         self.skill_tags = []
+
+    def unlock_ability(self, ability_id):
+        if ability_id not in self.unlocked_abilities:
+            self.unlocked_abilities.append(ability_id)
+

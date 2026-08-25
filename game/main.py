@@ -1,4 +1,7 @@
 import curses
+import time
+
+from systems.ability_logic import use_ability
 from curses import wrapper
 from systems.combat import player_auto_attack_logic, enemy_auto_attack_logic
 from UI.inventory_screen import open_inventory_window
@@ -6,6 +9,8 @@ from player_module import Player
 from monster_module import GiantAnt
 
 enemies = []
+
+ABILITY_KEYS = {ord("1"): "1", ord("2"): "2", ord("3"): "3", ord("4"): "4"}
 
 for enemy in range(3):
     e = GiantAnt()
@@ -206,7 +211,7 @@ def gamestart(stdscr):
         player_window.addstr(8, 12, f"]")
         player_window.refresh()
 
-        dbg.addstr(1, 1, f"")
+        dbg.addstr(1, 1, f"{player.ability_slots.items()}")
         dbg.refresh()
 
         key = stdscr.getch()
@@ -253,6 +258,16 @@ def gamestart(stdscr):
 
             max_scroll = max(0, len(combat_messages) - log_height)
             scroll_offset = min(scroll_offset, max_scroll)
+
+        if key in ABILITY_KEYS:
+            slot = ABILITY_KEYS[key]
+            ability_id = player.ability_slots[slot]
+
+            if ability_id:
+                success, message = use_ability(player, player.target, ability_id, time.time(), combat_messages)
+
+                if not success:
+                    add_log_messages(combat_messages, [(message, 0)])
 
         draw_log(inner, combat_messages, scroll_offset)
 

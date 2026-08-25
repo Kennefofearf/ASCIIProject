@@ -1,7 +1,6 @@
 import curses
 import textwrap
 import json
-from player_module import Player
 from data.skill_node_data import STAT_NAMES
 from data.weapon import Weapon
 from data.affix_data import UNCOMMON_AFFIXES
@@ -219,7 +218,7 @@ def open_inventory_window(stdscr, player):
             elif key == ord("k"):
                 item_description_window.erase()
                 item_description_window.refresh()
-                open_skill_tree(stdscr, selected_item)
+                open_skill_tree(stdscr, selected_item, player)
 
             item_description_window.refresh()
 
