@@ -45,7 +45,7 @@ def world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_off
     now = time.time()
 
     player.regenerate_hp(now)
-    update_active_effects(player, now)
+    update_active_effects(player, now, combat_messages)
     ny, nx = player.future_position(py, px)
     if not movement_area(stdscr, ny, nx):
         py = 0
@@ -59,7 +59,7 @@ def world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_off
 
     for e in enemies:
 
-        update_active_effects(e, now)
+        update_active_effects(e, now, combat_messages)
 
         e.respawn_timer(player)
         if e.alive == False:

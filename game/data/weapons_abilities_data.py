@@ -19,6 +19,8 @@ COMMON_WEAPON_ABILITIES = {
             ),
             DotEffect(
                 effect_id="bleed",
+                name="bleed_gash",
+                verb=f"bleeds for",
                 damage=2,
                 interval=1.0,
                 duration=5.0

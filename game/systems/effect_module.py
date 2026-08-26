@@ -21,8 +21,10 @@ class DamageEffect:
 
 
 class ActiveDot:
-    def __init__(self, effect_id, damage, interval, duration, source, now):
+    def __init__(self, effect_id, name, verb, damage, interval, duration, source, now):
         self.effect_id = effect_id
+        self.name = name
+        self.verb = verb
         self.damage = damage
         self.interval = interval
         self.expires_at = now + duration
@@ -31,8 +33,10 @@ class ActiveDot:
 
 
 class DotEffect:
-    def __init__(self, effect_id, damage, interval, duration):
+    def __init__(self, effect_id, name, verb, damage, interval, duration):
         self.effect_id = effect_id
+        self.name = name
+        self.verb = verb
         self.damage = damage
         self.interval = interval
         self.duration = duration
@@ -40,6 +44,8 @@ class DotEffect:
     def apply(self, user, target, now):
         active_dot = ActiveDot(
             effect_id=self.effect_id,
+            name=self.name,
+            verb=self.verb,
             damage=self.damage,
             interval=self.interval,
             duration=self.duration,

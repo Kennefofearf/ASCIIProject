@@ -35,12 +35,15 @@ def in_range(user, target, ability_data):
     return dist <= ability_data.range
 
 
-def update_active_effects(unit, now):
+def update_active_effects(unit, now, combat_messages=None):
     for effect in unit.active_effects[:]:
         if now < effect.expires_at:
             if now >= effect.next_tick:
                 dmg = effect.damage
                 unit.take_dmg(dmg)
+                if combat_messages is not None:
+                    combat_messages.append([(f"{unit.name} ", 1), (f"{effect.verb} ", 0), (f"{effect.damage} ", 2),
+                                            ("damage.", 0)])
                 effect.next_tick += effect.interval
 
         else:
