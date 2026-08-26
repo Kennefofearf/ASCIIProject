@@ -3,6 +3,7 @@ import time
 import random
 import pdb
 
+
 class Monster:
 
     def __init__(self, name, icon, level, max_hp, hp, st, df, xp, respawn_delay, attack_cooldown, drop_chance):
@@ -21,6 +22,7 @@ class Monster:
         self.last_attack_time = 0
         self.is_attacking = False
         self.damaged = False
+        self.active_effects = []
         self.ey = 0
         self.ex = 0
         self.random_movement = random.randint(1, 10)
@@ -55,7 +57,7 @@ class Monster:
         return
 
     def future_position(self, ey, ex):
-        return (self.position[0] + ey, self.position[1] - ex)
+        return self.position[0] + ey, self.position[1] - ex
 
     def take_dmg(self, dmg):
         self.hp -= dmg

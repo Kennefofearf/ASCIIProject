@@ -46,6 +46,7 @@ class Player:
         self.last_regen_time = 0
         self.inventory = []
         self.cooldowns = {}
+        self.active_effects = []
 
     @property
     def hp(self):
@@ -175,9 +176,7 @@ class Player:
 
         return False
 
-    def regenerate_hp(self):
-        now = time.time()
-
+    def regenerate_hp(self, now):
         if self.hp < self.max_hp and now - self.last_regen_time >= self.hp_rr:
             self.hp += self.hp_ra
             self.last_regen_time = now

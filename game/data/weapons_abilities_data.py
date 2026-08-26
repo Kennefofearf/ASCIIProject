@@ -1,28 +1,30 @@
 from ability_module import Ability
-from systems.damage_effect import DamageEffect
+from systems.effect_module import DamageEffect, DotEffect
+
 
 COMMON_WEAPON_ABILITIES = {
-    # "gash": {
-    #     "name": "Gash",
-    #     "class": "attack",
-    #     "tooltip": "Give the target a deep cut that inflicts 10 damage over 5 seconds.",
-    #     "cooldown": 8,
-    #     "buff": None,
-    #     "debuff": None,
-    #     "damage": 3,
-    #     "damage_type": "physical",
-    #     "on_hit_effects": "bleed",
-    #     "range": 1,
-    #     "target": "enemy",
-    #     "effect": [
-    #         {
-    #             "EFFECT": "bleed",
-    #             "duration": 5,
-    #             "value": 2
-    #         }
-    #     ],
-    #     "scaling_stat": "st"
-    # },
+    "gash": Ability(
+        ability_id="gash",
+        name="Gash",
+        tooltip="Give the target a deep cut that bleeds 2 damage/1 secs for 5 seconds.",
+        cooldown=16,
+        range=1,
+        target_type="enemy",
+        effects=[
+            DamageEffect(
+                base_dmg=3,
+                scaling_stat="st",
+                scaling=0.1,
+                dmg_type=["physical", "slash"]
+            ),
+            DotEffect(
+                effect_id="bleed",
+                damage=2,
+                interval=1.0,
+                duration=5.0
+            )
+        ]
+    ),
     "bash": Ability(
         ability_id="bash",
         name="Bash",
@@ -35,7 +37,7 @@ COMMON_WEAPON_ABILITIES = {
                 base_dmg=10,
                 scaling_stat="st",
                 scaling=0.1,
-                dmg_type="blunt"
+                dmg_type=["physical", "blunt"]
             )
         ]
     )

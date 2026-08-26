@@ -1,7 +1,7 @@
 import curses
 import time
 
-from systems.ability_logic import use_ability
+from systems.ability_logic import use_ability, update_active_effects
 from curses import wrapper
 from systems.combat import player_auto_attack_logic, enemy_auto_attack_logic
 from UI.inventory_screen import open_inventory_window
@@ -42,7 +42,10 @@ def draw_enemies(stdscr, enemies, selected, prev_positions):
 
 
 def world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_offset):
-    player.regenerate_hp()
+    now = time.time()
+
+    player.regenerate_hp(now)
+    update_active_effects(player, now)
     ny, nx = player.future_position(py, px)
     if not movement_area(stdscr, ny, nx):
         py = 0
@@ -55,6 +58,9 @@ def world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_off
         draw_log(inner, combat_messages, scroll_offset)
 
     for e in enemies:
+
+        update_active_effects(e, now)
+
         e.respawn_timer(player)
         if e.alive == False:
             continue
