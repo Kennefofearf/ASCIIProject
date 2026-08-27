@@ -3,6 +3,7 @@ import json
 
 from item_module import Item
 from data.weapon import Weapon
+from game.armor_module import Armor
 from data.weapons_data import EQUIPMENT
 from data.affix_data import UNCOMMON_AFFIXES
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
@@ -209,6 +210,9 @@ def create_item_instance(base):
     if base["type"] == "weapon":
         return Weapon()
 
+    if base["type"] == "armor":
+        return Armor()
+
     return Item()
 
 
@@ -228,6 +232,10 @@ def generate_item(base_id, item_level):
         item.min_dmg = base["min_dmg"]
         item.max_dmg = base["max_dmg"]
         item.attack_cooldown = base["attack_cooldown"]
+
+    if item.type == "armor":
+        item.ac = base["ac"]
+        item.slot = base["slot"]
 
     item.base_stats = base.get("base_stats", {})
     item.item_lvl = item_level

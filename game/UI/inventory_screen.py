@@ -1,12 +1,12 @@
 import curses
 import textwrap
+import re
 import json
 from data.skill_node_data import STAT_NAMES
 from data.weapon import Weapon
 from data.affix_data import UNCOMMON_AFFIXES
 from UI.colors import get_rarity_color
 from UI.skill_tree_screen import open_skill_tree
-
 
 def dbg(data):
     with open("debug.txt", "a") as f:
@@ -76,6 +76,9 @@ def open_inventory_window(stdscr, player):
 
             if item == player.weapon:
                 display_name = "* " + display_name
+            elif item.type == "armor":
+                if item == getattr(player, item.slot):
+                    display_name = "* " + display_name
 
             item_color = get_rarity_color(item)
             row = 3 + index
@@ -97,22 +100,25 @@ def open_inventory_window(stdscr, player):
 
             progress = xp / max_xp if max_xp > 0 else 0
             filled = int(progress * 10)
-            # xp_bar = "=" * filled + "-" * (10 - filled)
 
-            old_weapon = player.weapon
-            new_weapon = selected_item
+            new_item = selected_item
+
+            if selected_item.type == "weapon":
+                old_item = player.weapon
+            elif selected_item.type == "armor":
+                old_item = getattr(player, selected_item.slot)
 
             stat_forecast_hp = (
-                    player.max_hp - get_item_stat_bonus(old_weapon, "max_hp")
-                    + get_item_stat_bonus(new_weapon, "max_hp")
+                    player.max_hp - get_item_stat_bonus(old_item, "max_hp")
+                    + get_item_stat_bonus(new_item, "max_hp")
             )
             stat_forecast_st = (
-                    player.st - get_item_stat_bonus(old_weapon, "st")
-                    + get_item_stat_bonus(new_weapon, "st")
+                    player.st - get_item_stat_bonus(old_item, "st")
+                    + get_item_stat_bonus(new_item, "st")
             )
             stat_forecast_df = (
-                    player.df - get_item_stat_bonus(old_weapon, "df")
-                    + get_item_stat_bonus(new_weapon, "df")
+                    player.df - get_item_stat_bonus(old_item, "df")
+                    + get_item_stat_bonus(new_item, "df")
             )
 
             item_color = get_rarity_color(selected_item)
@@ -137,18 +143,23 @@ def open_inventory_window(stdscr, player):
             item_description_window.addstr(row, detail_x, f"Skill Points: {skill_points}")
             row += 2
 
-            min_dmg = selected_item.min_dmg
-            max_dmg = selected_item.max_dmg
+            if selected_item.type == "weapon":
+                min_dmg = selected_item.min_dmg
+                max_dmg = selected_item.max_dmg
+            elif selected_item.type == "armor":
+                ac = selected_item.ac
 
-            for affix_id in selected_item.affixes:
-                affix_data = UNCOMMON_AFFIXES[affix_id]
-                min_dmg += affix_data.min_dmg
-                max_dmg += affix_data.max_dmg
+                for affix_id in selected_item.affixes:
+                    affix_data = UNCOMMON_AFFIXES[affix_id]
+                    ac += affix_data.ac
 
-            item_description_window.addstr(row, detail_x, f"DMG: {min_dmg} - {max_dmg}")
+            if selected_item.type == "weapon":
+                item_description_window.addstr(row, detail_x, f"DMG: {min_dmg} - {max_dmg}")
+            elif selected_item.type == "armor":
+                item_description_window.addstr(row, detail_x, f"AC: {ac}")
             row += 1
 
-            STAT_ORDER = ["max_hp", "st", "df", "mp", "ev", "cr", "cd", "hp_rr", "hp_ra"]
+            stat_order = ["max_hp", "st", "df", "mp", "ev", "cr", "cd", "hp_rr", "hp_ra"]
 
             stats_listed = []
 
@@ -165,7 +176,7 @@ def open_inventory_window(stdscr, player):
                 if stat not in stats_listed:
                     stats_listed.append(stat)
 
-            stats_listed.sort(key=lambda stat: STAT_ORDER.index(stat))
+            stats_listed.sort(key=lambda stat: stat_order.index(stat))
 
             for stat in stats_listed:
                 base_total = Weapon.affix_base_total(selected_item, stat)
@@ -204,7 +215,10 @@ def open_inventory_window(stdscr, player):
             item_description_window.addstr(row, detail_x, f"(E)quip | (R)emove | S(k)ill Tree")
 
             if key == ord("e"):
-                player.weapon = selected_item
+                if selected_item.type == "weapon":
+                    player.weapon = selected_item
+                elif selected_item.type == "armor":
+                    setattr(player, selected_item.slot, selected_item)
                 item_description_window.erase()
                 item_description_window.refresh()
                 selected_item = None
@@ -212,7 +226,13 @@ def open_inventory_window(stdscr, player):
             elif key == ord("r"):
                 item_description_window.erase()
                 item_description_window.refresh()
-                player.weapon = None
+                if selected_item.type == "weapon":
+                    if player.weapon == selected_item:
+                        player.weapon = None
+                elif selected_item.type == "armor":
+                    if getattr(player, selected_item.slot) == selected_item:
+                        setattr(player, selected_item.slot, None)
+
                 selected_item = None
                 continue
             elif key == ord("k"):

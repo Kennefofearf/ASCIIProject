@@ -33,9 +33,9 @@ class Player:
         self.xp_bar_text = xp_bar_text
         self.lvl = lvl
         self.weapon = None
-        # self.armor = None
-        # self.boots = None
-        # self.helm = None
+        self.feet = None
+        self.chest = None
+        self.head = None
         self.target = None
         self.skill_tree = {}
         self.ability_slots = {"1": None, "2": None, "3": None, "4": None}
