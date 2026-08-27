@@ -19,6 +19,7 @@ class Player:
         self.base_max_hp = 50
         self.base_st = 21
         self.base_df = 3
+        self.base_ac = 0
         self.base_mp = 0
         self.base_evasion = 3
         self.base_crit_rate = 3
@@ -97,6 +98,20 @@ class Player:
     @df.setter
     def df(self, value):
         self._df = max(0, value)
+
+    @property
+    def ac(self):
+        total = 0
+
+        armor = [self.head, self.chest, self.feet]
+
+        for item in armor:
+            if item is None:
+                continue
+
+            total += item.ac
+
+        return total
 
     @property
     def mp(self):

@@ -149,10 +149,6 @@ def open_inventory_window(stdscr, player):
             elif selected_item.type == "armor":
                 ac = selected_item.ac
 
-                for affix_id in selected_item.affixes:
-                    affix_data = UNCOMMON_AFFIXES[affix_id]
-                    ac += affix_data.ac
-
             if selected_item.type == "weapon":
                 item_description_window.addstr(row, detail_x, f"DMG: {min_dmg} - {max_dmg}")
             elif selected_item.type == "armor":

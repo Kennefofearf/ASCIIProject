@@ -234,7 +234,7 @@ def generate_item(base_id, item_level):
         item.attack_cooldown = base["attack_cooldown"]
 
     if item.type == "armor":
-        item.ac = base["ac"]
+        item.base_ac = base["ac"]
         item.slot = base["slot"]
 
     item.base_stats = base.get("base_stats", {})
