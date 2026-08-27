@@ -1,6 +1,7 @@
 import curses
 import random
 from systems.loot_generator import roll_item_drop
+from item_module import Item
 from UI.colors import get_rarity_color
 from data.weapon import Weapon
 import time
@@ -50,8 +51,7 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
                                                    ("!", 0)])
 
             if player.weapon:
-                amount = 20
-                Weapon.gain_item_xp(player.weapon, amount)
+                Item.gain_item_xp(player.weapon, 20)
 
         if not target.alive:
             player.xp_gain(target.xp)
@@ -79,10 +79,19 @@ def enemy_auto_attack_logic(enemies, player, add_log_messages, combat_messages):
             enemy.is_attacking = True
             now = time.time()
             if now - enemy.last_attack_time >= enemy.attack_cooldown:
+
                 evasion_roll = random.randint(1, 100)
                 player_evasion_total = player.evasion + (player.ac // 5)
                 player_def_total = player.df + player.ac
+
                 if player_evasion_total >= evasion_roll:
+
+                    if player.feet:
+                        Item.gain_item_xp(player.feet, 5)
+
+                    if player.head:
+                        Item.gain_item_xp(player.head, 1)
+
                     add_log_messages(combat_messages,
                                      [(f"{player.name} ", 2), ("evades the attack!", 0)])
                     enemy.last_attack_time = now
@@ -94,6 +103,13 @@ def enemy_auto_attack_logic(enemies, player, add_log_messages, combat_messages):
                     dmg = 0
 
                 player.take_dmg(max(0, dmg))
+
+                if player.chest:
+                    Item.gain_item_xp(player.chest, 1)
+
+                if player.head:
+                    Item.gain_item_xp(player.head, 1)
+
                 enemy.last_attack_time = now
                 add_log_messages(combat_messages,
                                  [(f"{player.name} ", 2), ("is hit for ", 0), (f"{dmg}", 1), ("!", 0)])

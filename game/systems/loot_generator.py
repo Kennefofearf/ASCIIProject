@@ -3,8 +3,8 @@ import json
 
 from item_module import Item
 from data.weapon import Weapon
-from game.armor_module import Armor
-from data.weapons_data import EQUIPMENT
+from armor_module import Armor
+from data.equipment_data import EQUIPMENT
 from data.affix_data import UNCOMMON_AFFIXES
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
 from systems.weapon_skill_tree import generate_rarity_layout

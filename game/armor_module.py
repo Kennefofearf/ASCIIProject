@@ -7,7 +7,7 @@ class Armor(Item):
     def __init__(self):
         super().__init__()
 
-        self.ac = 0
+        self.base_ac = 0
         self.slot = ""
 
     @property
@@ -15,7 +15,7 @@ class Armor(Item):
         bonus = 0
 
         for affix_id in self.affixes:
-            affix = UNCOMMON_AFFIXES[Affix_id]
+            affix = UNCOMMON_AFFIXES[affix_id]
             bonus += affix.ac
 
         return self.base_ac + bonus

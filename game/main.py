@@ -210,7 +210,7 @@ def gamestart(stdscr):
 
         player_window.addstr(4, 1, f" HP:   {player.hp} / {player.max_hp}")
         player_window.addstr(5, 1, f"STR:   {player.st}")
-        player_window.addstr(6, 1, f"DEF:   {player.df}")
+        player_window.addstr(6, 1, f"DEF:   {player.df} (AC: {player.ac})")
         player_window.addstr(7, 1, f" XP: {player.total_req_xp - player.req_xp} / {player.total_req_xp}")
         player_window.addstr(8, 1, f"[")
         player_window.addstr(8, 2, f"{player.xp_bar_text:<10}")

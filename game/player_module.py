@@ -1,6 +1,7 @@
 import curses
 import monster_module
 import random
+from item_module import Item
 from data.skill_node_data import COMMON_NODES
 from data.affix_data import UNCOMMON_AFFIXES
 from data.weapon import Weapon
@@ -61,8 +62,12 @@ class Player:
     def max_hp(self):
         bonus = 0
 
-        if self.weapon:
-            bonus += Weapon.total_bonus(self.weapon, "max_hp")
+        equipment = [self.weapon, self.head, self.chest, self.feet]
+
+        for item in equipment:
+            if item is None:
+                continue
+            bonus += Item.total_bonus(item, "max_hp")
 
         return self._max_hp + bonus
 
@@ -77,8 +82,12 @@ class Player:
     def st(self):
         bonus = 0
 
-        if self.weapon:
-            bonus += Weapon.total_bonus(self.weapon, "st")
+        equipment = [self.weapon, self.head, self.chest, self.feet]
+
+        for item in equipment:
+            if item is None:
+                continue
+            bonus += Item.total_bonus(item, "st")
 
         return self._st + bonus
 
@@ -90,8 +99,13 @@ class Player:
     def df(self):
         bonus = 0
 
-        if self.weapon:
-            bonus += Weapon.total_bonus(self.weapon, "df")
+        equipment = [self.weapon, self.head, self.chest, self.feet]
+
+        for item in equipment:
+            if item is None:
+                continue
+
+            bonus += Item.total_bonus(item, "df")
 
         return self._df + bonus
 
@@ -117,8 +131,12 @@ class Player:
     def mp(self):
         bonus = 0
 
-        if self.weapon:
-            bonus += Weapon.total_bonus(self.weapon, "mp")
+        equipment = [self.weapon, self.head, self.chest, self.feet]
+
+        for item in equipment:
+            if item is None:
+                continue
+            bonus += Item.total_bonus(item, "mp")
 
         return self.base_mp + bonus
 
@@ -126,8 +144,12 @@ class Player:
     def evasion(self):
         bonus = 0
 
-        if self.weapon:
-            bonus += Weapon.total_bonus(self.weapon, "ev")
+        equipment = [self.weapon, self.head, self.chest, self.feet]
+
+        for item in equipment:
+            if item is None:
+                continue
+            bonus += Item.total_bonus(item, "ev")
 
         return min(80, max(0, self.base_evasion + bonus))
 
@@ -135,8 +157,12 @@ class Player:
     def crit_rate(self):
         bonus = 0
 
-        if self.weapon:
-            bonus += Weapon.total_bonus(self.weapon, "cr")
+        equipment = [self.weapon, self.head, self.chest, self.feet]
+
+        for item in equipment:
+            if item is None:
+                continue
+            bonus += Item.total_bonus(item, "cr")
 
         return min(100, max(0, self.base_crit_rate + bonus))
 
@@ -144,8 +170,12 @@ class Player:
     def crit_dmg(self):
         bonus = 0
 
-        if self.weapon:
-            bonus += Weapon.total_bonus(self.weapon, "cd")
+        equipment = [self.weapon, self.head, self.chest, self.feet]
+
+        for item in equipment:
+            if item is None:
+                continue
+            bonus += Item.total_bonus(item, "cd")
 
         return max(0, self.base_crit_dmg + bonus)
 
@@ -153,8 +183,12 @@ class Player:
     def hp_rr(self):
         bonus = 0
 
-        if self.weapon:
-            bonus += Weapon.total_bonus(self.weapon, "hp_rr")
+        equipment = [self.weapon, self.head, self.chest, self.feet]
+
+        for item in equipment:
+            if item is None:
+                continue
+            bonus += Item.total_bonus(item, "hp_rr")
 
         return max(1.0, self.base_hp_rr - bonus)
 
@@ -162,26 +196,32 @@ class Player:
     def hp_ra(self):
         bonus = 0
 
-        if self.weapon:
-            bonus += Weapon.total_bonus(self.weapon, "hp_ra")
+        equipment = [self.weapon, self.head, self.chest, self.feet]
+
+        for item in equipment:
+            if item is None:
+                continue
+            bonus += Item.total_bonus(item, "hp_ra")
 
         return self.base_hp_ra + bonus
 
-    def equip_ability(self, ability_id, slot):
-        if not self.weapon:
-            return False
+    def has_equipped_ability(self, ability_id):
 
-        if ability_id not in self.weapon.unlocked_abilities:
+        equipment = [self.weapon, self.head, self.chest, self.feet]
+
+        for item in equipment:
+            if item and ability_id in item.unlocked_abilities:
+                return True
+
+    def equip_ability(self, ability_id, slot):
+        if not self.has_equipped_ability(ability_id):
             return False
 
         self.ability_slots[slot] = ability_id
         return True
 
     def auto_equip_ability(self, ability_id):
-        if not self.weapon:
-            return False
-
-        if ability_id not in self.weapon.unlocked_abilities:
+        if not self.has_equipped_ability(ability_id):
             return False
 
         for slot, equipped_ability in self.ability_slots.items():
@@ -200,8 +240,15 @@ class Player:
         self.position[0] += py
         self.position[1] -= px
 
+        if py != 0 or px != 0:
+            if self.feet:
+                Item.gain_item_xp(self.feet, 1)
+
+            if self.head:
+                Item.gain_item_xp(self.head, 1)
+
     def future_position(self, py, px):
-        return (self.position[0] + py, self.position[1] - px)
+        return self.position[0] + py, self.position[1] - px
 
     def take_dmg(self, dmg):
         if dmg <= 0:
