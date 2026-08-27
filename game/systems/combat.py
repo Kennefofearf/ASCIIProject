@@ -80,14 +80,15 @@ def enemy_auto_attack_logic(enemies, player, add_log_messages, combat_messages):
             now = time.time()
             if now - enemy.last_attack_time >= enemy.attack_cooldown:
                 evasion_roll = random.randint(1, 100)
-                crit_roll = random.randint(1, 100)
-                if player.evasion >= evasion_roll:
+                player_evasion_total = player.evasion + (player.ac // 5)
+                player_def_total = player.df + player.ac
+                if player_evasion_total >= evasion_roll:
                     add_log_messages(combat_messages,
                                      [(f"{player.name} ", 2), ("evades the attack!", 0)])
                     enemy.last_attack_time = now
                     continue
 
-                dmg = enemy.st - player.df
+                dmg = enemy.st - player_def_total
 
                 if dmg <= 0:
                     dmg = 0
