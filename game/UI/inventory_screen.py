@@ -4,7 +4,7 @@ import re
 import json
 from data.skill_node_data import STAT_NAMES
 from data.weapon import Weapon
-from data.affix_data import UNCOMMON_AFFIXES
+from data.affix_data import GREEN_AFFIXES
 from UI.colors import get_rarity_color
 from UI.skill_tree_screen import open_skill_tree
 
@@ -40,7 +40,7 @@ def get_item_stat_bonus(item, stat):
     total = item.base_stats.get(stat, 0)
 
     for affix_id in item.affixes:
-        affix_data = UNCOMMON_AFFIXES[affix_id]
+        affix_data = GREEN_AFFIXES[affix_id]
         total += affix_data.affix_stats.get(stat, 0)
 
     return total
@@ -160,7 +160,7 @@ def open_inventory_window(stdscr, player):
             stats_listed = []
 
             for affix_id in selected_item.affixes:
-                affix_data = UNCOMMON_AFFIXES[affix_id]
+                affix_data = GREEN_AFFIXES[affix_id]
 
                 for stat in affix_data.affix_stats:
                     if stat not in stats_listed:

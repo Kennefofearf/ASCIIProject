@@ -3,7 +3,7 @@ from affix_module import Affix
 
 # "max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0
 
-UNCOMMON_AFFIXES = {
+GREEN_AFFIXES = {
         "of_balance": Affix(
             name="of Balance",
             affix_type="suffix",
@@ -68,3 +68,9 @@ UNCOMMON_AFFIXES = {
             item_type=["weapon", "armor"]
         )
     }
+
+BLUE_AFFIXES = {}
+
+YELLOW_AFFIXES = {}
+
+PURPLE_AFFIXES = {}

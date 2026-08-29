@@ -5,31 +5,9 @@ from item_module import Item
 from data.weapon import Weapon
 from armor_module import Armor
 from data.equipment_data import EQUIPMENT
-from data.affix_data import UNCOMMON_AFFIXES
+from data.affix_data import GREEN_AFFIXES, BLUE_AFFIXES, YELLOW_AFFIXES, PURPLE_AFFIXES
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
 from systems.weapon_skill_tree import generate_rarity_layout
-
-# def roll_value(value):
-#     if isinstance(value, list):
-#         return random.randint(value[0], value[1])
-#
-#     return value
-#
-# def roll_stats(stat_block, stat_multi):
-#     rolled = {}
-#
-#     for stat_name, value in stat_block.items():
-#         rolled_value = roll_value(value)
-#         rolled[stat_name] = max(0, int(rolled_value * stat_multi))
-#
-#     return rolled
-# import json
-#
-#
-# def dbg(data):
-#     with open("debug.txt", "a") as f:
-#         f.write(json.dumps(data, indent=4))
-#         f.write("\n\n")
 
 
 def dbg(data):
@@ -41,10 +19,17 @@ def dbg(data):
 def create_affix_pool(item_level):
     pools = []
 
-    if item_level >= 5:
-        pools.append(UNCOMMON_AFFIXES)
+    if item_level <= 20:
+        pools.append(GREEN_AFFIXES)
+    if item_level <= 40:
+        pools.append(BLUE_AFFIXES)
+    if item_level <= 50:
+        pools.append(YELLOW_AFFIXES)
+    if item_level <= 60:
+        pools.append(PURPLE_AFFIXES)
 
     return pools
+
 
 def merge_affix_pools(pools):
     merged = {}
@@ -53,6 +38,7 @@ def merge_affix_pools(pools):
         merged.update(pool)
 
     return merged
+
 
 def filter_affixes_by_item_type(affixes, item_type):
     filtered = {}
@@ -64,6 +50,7 @@ def filter_affixes_by_item_type(affixes, item_type):
             filtered[affix_id] = affix_data
 
     return filtered
+
 
 def choose_affixes(item_level, item_type):
     pools = create_affix_pool(item_level)
@@ -98,15 +85,21 @@ def choose_affixes(item_level, item_type):
 
     return rolled_affixes, available_affixes
 
-def calculate_rarity(possible_affixes):
-    affix_count = len(possible_affixes)
 
-    if affix_count <= 0:
-        return "white"
-    elif affix_count == 1:
-        return "green"
+RARITY_ORDER = ["white", "green", "blue", "yellow", "purple"]
 
-    return "green"
+
+def calculate_rarity(item, available_affixes):
+    highest_rarity = "white"
+
+    for affix_id in item.affixes:
+        affix = available_affixes[affix_id]
+
+        if RARITY_ORDER.index(affix.rarity) > RARITY_ORDER.index(highest_rarity):
+            highest_rarity = affix.rarity
+
+    return highest_rarity
+
 
 def apply_affix_stats(item, affix_stats):
     for stat_name, value in affix_stats.get("affix_stats", {}).items():
