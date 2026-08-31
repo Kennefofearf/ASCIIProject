@@ -19,13 +19,16 @@ def dbg(data):
 def create_affix_pool(item_level):
     pools = []
 
-    if item_level <= 20:
+    if item_level >= 1:
         pools.append(GREEN_AFFIXES)
-    if item_level <= 40:
+
+    if item_level >= 21:
         pools.append(BLUE_AFFIXES)
-    if item_level <= 50:
+
+    if item_level >= 41:
         pools.append(YELLOW_AFFIXES)
-    if item_level <= 60:
+
+    if item_level >= 51:
         pools.append(PURPLE_AFFIXES)
 
     return pools
@@ -56,32 +59,77 @@ def choose_affixes(item_level, item_type):
     pools = create_affix_pool(item_level)
     available_affixes = merge_affix_pools(pools)
 
-    prefixes = []
-    suffixes = []
+    prefixes = {"green": [], "blue": [], "yellow": [], "purple": []}
+    suffixes = {"green": [], "blue": [], "yellow": [], "purple": []}
 
     for affix_id, affix_data in available_affixes.items():
 
-        allowed = affix_data.item_type
-
-        if item_type not in allowed:
+        if item_type not in affix_data.item_type:
             continue
 
         if affix_data.affix_type == "prefix":
-            prefixes.append(affix_id)
+            prefixes[affix_data.rarity].append(affix_id)
 
         elif affix_data.affix_type == "suffix":
-            suffixes.append(affix_id)
+            suffixes[affix_data.rarity].append(affix_id)
 
     rolled_affixes = []
 
-    has_suffix = random.random() <= 0.2
-    has_prefix = random.random() <= 0.2
+    # has_suffix = random.random() <= 0.2
+    # has_prefix = random.random() <= 0.2
 
-    if has_prefix and prefixes:
-        rolled_affixes.append(random.choice(prefixes))
+    roll = random.random()
 
-    if has_suffix and suffixes:
-        rolled_affixes.append(random.choice(suffixes))
+    if roll <= 0.01:
+        rarity = "purple"
+    elif roll <= 0.06:
+        rarity = "yellow"
+    elif roll <= 0.21:
+        rarity = "blue"
+    else:
+        rarity = None
+
+    green_roll_1 = random.random()
+    green_roll_2 = random.random()
+
+    if green_roll_1 <= 0.25:
+        choices = []
+
+        if prefixes["green"]:
+            choices.append(prefixes["green"])
+        if suffixes["green"]:
+            choices.append(suffixes["green"])
+
+        if choices:
+            chosen_pool = random.choice(choices)
+            chosen_affix = random.choice(chosen_pool)
+            rolled_affixes.append(chosen_affix)
+
+    if green_roll_2 <= 0.25:
+        choices = []
+
+        if prefixes["green"]:
+            choices.append(prefixes["green"])
+        if suffixes["green"]:
+            choices.append(suffixes["green"])
+
+        if choices:
+            chosen_pool = random.choice(choices)
+            chosen_affix = random.choice(chosen_pool)
+            if chosen_affix not in rolled_affixes:
+                rolled_affixes.append(chosen_affix)
+
+    choices = []
+
+    if rarity and prefixes[rarity]:
+        choices.append(prefixes[rarity])
+    if rarity and suffixes[rarity]:
+        choices.append(suffixes[rarity])
+
+    if choices:
+        chosen_pool = random.choice(choices)
+        chosen_affix = random.choice(chosen_pool)
+        rolled_affixes.append(chosen_affix)
 
     return rolled_affixes, available_affixes
 

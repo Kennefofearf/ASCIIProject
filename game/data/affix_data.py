@@ -11,7 +11,8 @@ GREEN_AFFIXES = {
             ac=random.choice([0, 1]),
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([1, 2, 3]),
-            item_type=["weapon", "armor"]
+            item_type=["weapon", "armor"],
+            rarity="green"
         ),
         "of_minor_constitution": Affix(
             name="of Minor Constitution",
@@ -20,7 +21,8 @@ GREEN_AFFIXES = {
             ac=random.choice([0, 1]),
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([1, 2, 3]),
-            item_type=["weapon", "armor"]
+            item_type=["weapon", "armor"],
+            rarity="green"
         ),
         "of_perseverance": Affix(
             name="of Perseverance",
@@ -29,7 +31,8 @@ GREEN_AFFIXES = {
             ac=random.choice([0, 1]),
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([1, 2, 3]),
-            item_type=["weapon", "armor"]
+            item_type=["weapon", "armor"],
+            rarity="green"
         ),
         "of_the_rotund_fool": Affix(
             name="of the Rotund Fool",
@@ -38,7 +41,8 @@ GREEN_AFFIXES = {
             ac=1,
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([1, 2, 3]),
-            item_type=["weapon", "armor"]
+            item_type=["weapon", "armor"],
+            rarity="green"
         ),
         "sharp": Affix(
             name="Sharp",
@@ -47,7 +51,8 @@ GREEN_AFFIXES = {
             ac=0,
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([1, 2, 3]),
-            item_type=["weapon"]
+            item_type=["weapon"],
+            rarity="green"
         ),
         "agile": Affix(
             name="Agile",
@@ -56,7 +61,8 @@ GREEN_AFFIXES = {
             ac=random.choice([0, 1]),
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([1, 2, 3]),
-            item_type=["weapon", "armor"]
+            item_type=["weapon", "armor"],
+            rarity="green"
         ),
         "genius's": Affix(
             name="Genius's",
@@ -65,7 +71,8 @@ GREEN_AFFIXES = {
             ac=0,
             min_dmg=random.choice([0, 1, 2]),
             max_dmg=random.choice([1, 2, 3]),
-            item_type=["weapon", "armor"]
+            item_type=["weapon", "armor"],
+            rarity="green"
         )
     }
 
