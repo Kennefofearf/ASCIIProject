@@ -76,8 +76,45 @@ GREEN_AFFIXES = {
         )
     }
 
-BLUE_AFFIXES = {}
+BLUE_AFFIXES = {
+    "sir_lloyd's": Affix(
+            name="Sir Lloyd's ",
+            affix_type="prefix",
+            affix_stats={"st": 15},
+            ac=0,
+            min_dmg=random.choice([3, 4, 5]),
+            max_dmg=random.choice([4, 5, 6]),
+            item_type=["weapon"],
+            rarity="blue"
+        )}
 
-YELLOW_AFFIXES = {}
+YELLOW_AFFIXES = {
+    "of_the_burning_moonlight": Affix(
+            name=" of the Burning Moonlight",
+            affix_type="prefix",
+            affix_stats={"max_hp": 200, "st": 26, "df": 15},
+            ac=8,
+            min_dmg=random.choice([8, 9, 10]),
+            max_dmg=random.choice([9, 10, 11]),
+            item_type=["weapon", "armor"],
+            rarity="yellow"
+        )}
 
-PURPLE_AFFIXES = {}
+PURPLE_AFFIXES = {
+    "ancient_being's": Affix(
+            name="Ancient Being's ",
+            affix_type="prefix",
+            affix_stats={"hp_max": 350, "mp": 55, "ev": 5, "hp_rr": 2.0, "hp_ra": 15},
+            ac=3,
+            min_dmg=random.choice([23, 24, 25]),
+            max_dmg=random.choice([24, 25, 26]),
+            item_type=["weapon", "head"],
+            rarity="purple"
+        )}
+
+ALL_AFFIXES = {
+    **GREEN_AFFIXES,
+    **BLUE_AFFIXES,
+    **YELLOW_AFFIXES,
+    **PURPLE_AFFIXES
+}

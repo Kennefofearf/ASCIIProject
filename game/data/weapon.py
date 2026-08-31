@@ -1,4 +1,4 @@
-from data.affix_data import GREEN_AFFIXES
+from data.affix_data import ALL_AFFIXES
 from item_module import Item
 
 
@@ -16,7 +16,7 @@ class Weapon(Item):
         bonus = 0
 
         for affix_id in self.affixes:
-            affix = GREEN_AFFIXES.get(affix_id, {})
+            affix = ALL_AFFIXES.get(affix_id)
             bonus += affix.min_dmg
 
         return self._min_dmg + bonus
@@ -30,7 +30,7 @@ class Weapon(Item):
         bonus = 0
 
         for affix_id in self.affixes:
-            affix = GREEN_AFFIXES.get(affix_id, {})
+            affix = ALL_AFFIXES.get(affix_id, {})
             bonus += affix.max_dmg
 
         return self._max_dmg + bonus

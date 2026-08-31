@@ -294,7 +294,7 @@ def generate_item(base_id, item_level):
         item.min_dmg += dmg_bonus
         item.max_dmg += dmg_bonus
 
-    item.rarity = calculate_rarity(item.affixes)
+    item.rarity = calculate_rarity(item, available_affixes)
 
     layout = generate_rarity_layout(item.rarity)
 
