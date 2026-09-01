@@ -1,4 +1,4 @@
-from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
+from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, NODE_POOLS
 from data.affix_data import ALL_AFFIXES
 
 
@@ -38,7 +38,8 @@ class Item:
                 rarity = node["capstone_rarity"]
                 node_data = CAPSTONE_NODES[rarity][node["node_id"]]
             else:
-                node_data = COMMON_NODES[node["node_id"]]
+                node_pool = NODE_POOLS[node["node_rarity"]]
+                node_data = node_pool[node["node_id"]]
 
             stat_value = node_data.stats.get(stat, 0)
             total += stat_value * node["points"]

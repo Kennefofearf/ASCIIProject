@@ -53,6 +53,7 @@ def generate_rarity_layout(rarity):
     previous_exits = []
     initial_entries = []
     capstones = {}
+    slot_rarities = {}
 
     rarity_index = RARITY_ORDER.index(rarity)
 
@@ -61,11 +62,16 @@ def generate_rarity_layout(rarity):
 
         offset = len(slots)
 
-        # y_offset = tier_index * 10
-
         global_capstone = piece["capstone_slot"] + offset
 
         slots.extend(piece["slots"])
+
+        for local_index, position in enumerate(piece["slots"]):
+            if position is None:
+                continue
+
+            global_index = local_index + offset
+            slot_rarities[global_index] = rarity_name
 
         if piece["slots"][piece["capstone_slot"]] is not None:
             capstones[global_capstone] = rarity_name
@@ -90,5 +96,6 @@ def generate_rarity_layout(rarity):
         "connections": connections,
         "entry_slots": initial_entries,
         "exit_slots": previous_exits,
-        "capstones": capstones
+        "capstones": capstones,
+        "slot_rarities": slot_rarities
     }

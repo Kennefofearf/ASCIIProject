@@ -165,11 +165,44 @@ COMMON_NODES = {
             )
         }
 
-BLUE_NODES = {}
+BLUE_NODES = {
+            "fluid swings": Node(
+                name="Fluid Swings",
+                tooltip="Your swings are practiced and professional.",
+                points=0,
+                max_points=3,
+                stats={"st": 3},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            )
+}
 
-YELLOW_NODES = {}
+YELLOW_NODES = {
+            "evasive maneuvers": Node(
+                name="Evasive Maneuvers",
+                tooltip="Your agility improves.",
+                points=0,
+                max_points=3,
+                stats={"ev": 1},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            )
+}
 
-PURPLE_NODES = {}
+PURPLE_NODES = {
+            "captain's vigor": Node(
+                name="Captain's Vigor",
+                tooltip="Your vigor matches that of a captain in an army.",
+                points=0,
+                max_points=3,
+                stats={"max_hp": 150, "st": 8, "df": 4},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            )
+}
 
 CAPSTONE_NODES = {
     "white": {
@@ -234,7 +267,7 @@ CAPSTONE_NODES = {
     }
 }
 
-NODE_POOLS = {"white": COMMON_NODES, "green": CAPSTONE_NODES, "blue": BLUE_NODES, "yellow": YELLOW_NODES,
+NODE_POOLS = {"white": COMMON_NODES, "green": COMMON_NODES, "blue": BLUE_NODES, "yellow": YELLOW_NODES,
               "purple": PURPLE_NODES}
 
 

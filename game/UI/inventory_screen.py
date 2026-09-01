@@ -157,7 +157,7 @@ def open_inventory_window(stdscr, player):
 
             stat_order = ["max_hp", "st", "df", "mp", "ev", "cr", "cd", "hp_rr", "hp_ra"]
 
-            stats_listed = []
+            stats_listed = stat_order.copy()
 
             for affix_id in selected_item.affixes:
                 affix_data = ALL_AFFIXES[affix_id]

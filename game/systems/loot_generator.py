@@ -6,7 +6,7 @@ from data.weapon import Weapon
 from armor_module import Armor
 from data.equipment_data import EQUIPMENT
 from data.affix_data import GREEN_AFFIXES, BLUE_AFFIXES, YELLOW_AFFIXES, PURPLE_AFFIXES
-from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
+from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, NODE_POOLS
 from systems.weapon_skill_tree import generate_rarity_layout
 
 RARITY_MAX_LEVEL = {"white": 10, "green": 20, "blue": 30, "yellow": 40, "purple": 50}
@@ -206,32 +206,28 @@ def generate_item_skill_tree(base, layout):
         if position is not None:
             valid_slot_indexes.append(index)
 
-    node_count = len(valid_slot_indexes)
-
-    possible_nodes = {}
-
     item_tags = base.get("skill_tags", [])
-
-    for node_id, node_data in COMMON_NODES.items():
-        node_tags = node_data.skill_tags
-
-        if any(tag in item_tags for tag in node_tags):
-            possible_nodes[node_id] = node_data
-
-    # chosen_node_ids = random.sample(
-    #     list(possible_nodes.keys()),
-    #     min(node_count, len(possible_nodes))
-    # )
 
     nodes = {}
 
     for slot_index in valid_slot_indexes:
         capstone_rarity = layout["capstones"].get(slot_index)
+        slot_rarity = layout["slot_rarities"][slot_index]
 
         if capstone_rarity:
             node_pool = CAPSTONE_NODES[capstone_rarity]
             node_type = "capstone"
         else:
+            base_pool = NODE_POOLS[slot_rarity]
+
+            possible_nodes = {}
+
+            for node_id, node_data in base_pool.items():
+                node_tags = node_data.skill_tags
+
+                if any(tag in item_tags for tag in node_tags):
+                    possible_nodes[node_id] = node_data
+
             node_pool = possible_nodes
             node_type = "common"
 
@@ -243,6 +239,7 @@ def generate_item_skill_tree(base, layout):
             "node_id": node_id,
             "node_type": node_type,
             "capstone_rarity": capstone_rarity,
+            "node_rarity": slot_rarity,
             "points": 0,
             "max_points": node_pool[node_id].max_points,
             "available": slot_index in entry_slots

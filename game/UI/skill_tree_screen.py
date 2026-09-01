@@ -2,7 +2,7 @@ import curses
 import random
 import textwrap
 from systems.weapon_skill_tree import generate_rarity_layout
-from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, STAT_NAMES
+from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, STAT_NAMES, NODE_POOLS
 from UI.colors import get_rarity_color, get_color_from_rarity
 import json
 
@@ -96,7 +96,8 @@ def draw_skill_tree_nodes(window, item, selected_slot, scroll):
         if capstone_rarity:
             node_data = CAPSTONE_NODES[capstone_rarity][node["node_id"]]
         else:
-            node_data = COMMON_NODES[node["node_id"]]
+            node_pool = NODE_POOLS[node["node_rarity"]]
+            node_data = node_pool[node["node_id"]]
 
         label = node_data.name[:5]
         is_selected = slot_index == selected_slot
@@ -190,7 +191,8 @@ def open_skill_tree_node_window(stdscr, selected_item, selected_slot, player):
         capstone_rarity = node["capstone_rarity"]
         node_data = CAPSTONE_NODES[capstone_rarity][node["node_id"]]
     else:
-        node_data = COMMON_NODES[node["node_id"]]
+        node_pool = NODE_POOLS[node["node_rarity"]]
+        node_data = node_pool[node["node_id"]]
 
     node_name = node_data.name
     node_tooltip = node_data.tooltip
