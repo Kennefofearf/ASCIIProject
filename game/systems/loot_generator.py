@@ -9,6 +9,8 @@ from data.affix_data import GREEN_AFFIXES, BLUE_AFFIXES, YELLOW_AFFIXES, PURPLE_
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
 from systems.weapon_skill_tree import generate_rarity_layout
 
+RARITY_MAX_LEVEL = {"white": 10, "green": 20, "blue": 30, "yellow": 40, "purple": 50}
+
 
 def dbg(data):
     with open("debug.txt", "a") as f:
@@ -89,35 +91,36 @@ def choose_affixes(item_level, item_type):
     else:
         rarity = None
 
-    green_roll_1 = random.random()
-    green_roll_2 = random.random()
+    if rarity is None:
+        green_roll_1 = random.random()
+        green_roll_2 = random.random()
 
-    if green_roll_1 <= 0.25:
-        choices = []
+        if green_roll_1 <= 0.25:
+            choices = []
 
-        if prefixes["green"]:
-            choices.append(prefixes["green"])
-        if suffixes["green"]:
-            choices.append(suffixes["green"])
+            if prefixes["green"]:
+                choices.append(prefixes["green"])
+            if suffixes["green"]:
+                choices.append(suffixes["green"])
 
-        if choices:
-            chosen_pool = random.choice(choices)
-            chosen_affix = random.choice(chosen_pool)
-            rolled_affixes.append(chosen_affix)
-
-    if green_roll_2 <= 0.25:
-        choices = []
-
-        if prefixes["green"]:
-            choices.append(prefixes["green"])
-        if suffixes["green"]:
-            choices.append(suffixes["green"])
-
-        if choices:
-            chosen_pool = random.choice(choices)
-            chosen_affix = random.choice(chosen_pool)
-            if chosen_affix not in rolled_affixes:
+            if choices:
+                chosen_pool = random.choice(choices)
+                chosen_affix = random.choice(chosen_pool)
                 rolled_affixes.append(chosen_affix)
+
+        if green_roll_2 <= 0.25:
+            choices = []
+
+            if prefixes["green"]:
+                choices.append(prefixes["green"])
+            if suffixes["green"]:
+                choices.append(suffixes["green"])
+
+            if choices:
+                chosen_pool = random.choice(choices)
+                chosen_affix = random.choice(chosen_pool)
+                if chosen_affix not in rolled_affixes:
+                    rolled_affixes.append(chosen_affix)
 
     choices = []
 
@@ -153,6 +156,7 @@ def apply_affix_stats(item, affix_stats):
     for stat_name, value in affix_stats.get("affix_stats", {}).items():
         item["base_stats"][stat_name] = item["base_stats"].get(stat_name, 0) + value
 
+
 def build_item_name(base_name, affix_ids, affix_pool):
     prefixes = []
     suffixes = []
@@ -177,6 +181,7 @@ def build_item_name(base_name, affix_ids, affix_pool):
         name_parts.extend(suffixes)
 
     return " ".join(name_parts)
+
 
 def get_skill_node_count(item):
     rarity = item.get("rarity", "white")
@@ -282,8 +287,6 @@ def generate_item(base_id, item_level):
     item.item_lvl = item_level
     item.xp = base.get("xp", 0)
     item.max_xp = base.get("max_xp", 100)
-    item.lvl = base.get("lvl", 1)
-    item.max_lvl = base.get("max_lvl", 10)
     item.skill_tags = base.get("skill_tags", [])
     item.abilities = base.get("abilities", [])
 
@@ -295,6 +298,9 @@ def generate_item(base_id, item_level):
         item.max_dmg += dmg_bonus
 
     item.rarity = calculate_rarity(item, available_affixes)
+
+    item.lvl = base.get("lvl", 1)
+    item.max_lvl = RARITY_MAX_LEVEL[item.rarity]
 
     layout = generate_rarity_layout(item.rarity)
 
@@ -310,6 +316,7 @@ def generate_item(base_id, item_level):
     item.name = build_item_name(base["name"], item.affixes, available_affixes)
 
     return item
+
 
 def roll_item_drop(enemy):
     drop_chance = getattr(enemy, "drop_chance", 0.25)

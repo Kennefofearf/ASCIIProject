@@ -165,6 +165,12 @@ COMMON_NODES = {
             )
         }
 
+BLUE_NODES = {}
+
+YELLOW_NODES = {}
+
+PURPLE_NODES = {}
+
 CAPSTONE_NODES = {
     "white": {
             "constitution boost": Node(
@@ -189,8 +195,47 @@ CAPSTONE_NODES = {
                 unlocks=[],
                 skill_tags=["weapon", "armor"]
             ),
+    },
+    "blue": {
+            "troll dna": Node(
+                name="Troll DNA",
+                tooltip="Your regeneration is not natural.",
+                points=0,
+                max_points=1,
+                stats={"hp_rr": 2.0, "hp_ra": 15},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            ),
+    },
+    "yellow": {
+            "curse of dwarfism": Node(
+                name="Curse of Dwarfism",
+                tooltip="You shrink to a smaller size affecting HP and EVA.",
+                points=0,
+                max_points=1,
+                stats={"max_hp": -100, "ev": 20},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            ),
+    },
+    "purple": {
+            "effortless destruction": Node(
+                name="Effortless Destruction",
+                tooltip="Your blows can be devastating without you breaking a sweat.",
+                points=0,
+                max_points=1,
+                stats={"cr": 30, "cd": 25},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            ),
     }
 }
+
+NODE_POOLS = {"white": COMMON_NODES, "green": CAPSTONE_NODES, "blue": BLUE_NODES, "yellow": YELLOW_NODES,
+              "purple": PURPLE_NODES}
 
 
 

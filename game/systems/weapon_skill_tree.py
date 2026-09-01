@@ -61,6 +61,8 @@ def generate_rarity_layout(rarity):
 
         offset = len(slots)
 
+        # y_offset = tier_index * 10
+
         global_capstone = piece["capstone_slot"] + offset
 
         slots.extend(piece["slots"])
@@ -77,9 +79,6 @@ def generate_rarity_layout(rarity):
         # Only the first tier starts available
         if tier_index == 0:
             initial_entries = current_entries
-
-        # for previous_slots, current_slot in zip(previous_exits, current_entries):
-        #     connections.append((previous_slots, current_slot))
 
         if previous_exits:
             connect_tiers(connections, slots, previous_exits, current_entries)

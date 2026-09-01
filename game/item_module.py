@@ -1,5 +1,5 @@
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES
-from data.affix_data import GREEN_AFFIXES
+from data.affix_data import ALL_AFFIXES
 
 
 class Item:
@@ -72,7 +72,7 @@ class Item:
         total = item.base_stats.get(stat, 0)
 
         for affix_id in item.affixes:
-            affix_data = GREEN_AFFIXES.get(affix_id, {})
+            affix_data = ALL_AFFIXES.get(affix_id)
             total += affix_data.affix_stats.get(stat, 0)
 
         return total
