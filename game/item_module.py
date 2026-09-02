@@ -1,5 +1,6 @@
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, NODE_POOLS
 from data.affix_data import ALL_AFFIXES
+from systems.item_scaling import get_item_level_multiplier
 
 
 class Item:
@@ -74,7 +75,10 @@ class Item:
 
         for affix_id in item.affixes:
             affix_data = ALL_AFFIXES.get(affix_id)
-            total += affix_data.affix_stats.get(stat, 0)
+            base_value = affix_data.affix_stats.get(stat, 0)
+            multiplier = get_item_level_multiplier(item.item_lvl, affix_data.rarity)
+            scaled_value = round(base_value * multiplier)
+            total += scaled_value
 
         return total
 

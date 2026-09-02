@@ -5,8 +5,8 @@ from item_module import Item
 from data.weapon import Weapon
 from armor_module import Armor
 from data.equipment_data import EQUIPMENT
-from data.affix_data import GREEN_AFFIXES, BLUE_AFFIXES, YELLOW_AFFIXES, PURPLE_AFFIXES
-from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, NODE_POOLS
+from data.affix_data import GREEN_AFFIXES, BLUE_AFFIXES, YELLOW_AFFIXES, PURPLE_AFFIXES, ALL_AFFIXES
+from data.skill_node_data import CAPSTONE_NODES, NODE_POOLS
 from systems.weapon_skill_tree import generate_rarity_layout
 
 RARITY_MAX_LEVEL = {"white": 10, "green": 20, "blue": 30, "yellow": 40, "purple": 50}
@@ -111,16 +111,19 @@ def choose_affixes(item_level, item_type):
         if green_roll_2 <= 0.25:
             choices = []
 
-            if prefixes["green"]:
-                choices.append(prefixes["green"])
-            if suffixes["green"]:
-                choices.append(suffixes["green"])
+            if rolled_affixes:
+                first_affix_type = ALL_AFFIXES[rolled_affixes[0]].affix_type
 
-            if choices:
-                chosen_pool = random.choice(choices)
-                chosen_affix = random.choice(chosen_pool)
-                if chosen_affix not in rolled_affixes:
-                    rolled_affixes.append(chosen_affix)
+                if first_affix_type != "prefix" and prefixes["green"]:
+                    choices.append(prefixes["green"])
+                if first_affix_type != "suffix" and suffixes["green"]:
+                    choices.append(suffixes["green"])
+
+                if choices:
+                    chosen_pool = random.choice(choices)
+                    chosen_affix = random.choice(chosen_pool)
+                    if chosen_affix not in rolled_affixes:
+                        rolled_affixes.append(chosen_affix)
 
     choices = []
 
@@ -291,8 +294,8 @@ def generate_item(base_id, item_level):
 
     if item.type == "weapon" and item.affixes:
         dmg_bonus = random.choice([0, 1, 2])
-        item.min_dmg += dmg_bonus
-        item.max_dmg += dmg_bonus
+        item._min_dmg += dmg_bonus
+        item._max_dmg += dmg_bonus
 
     item.rarity = calculate_rarity(item, available_affixes)
 

@@ -1,5 +1,6 @@
 from data.affix_data import ALL_AFFIXES
 from item_module import Item
+from systems.item_scaling import get_item_level_multiplier, get_base_dmg_multiplier
 
 
 class Weapon(Item):
@@ -17,9 +18,13 @@ class Weapon(Item):
 
         for affix_id in self.affixes:
             affix = ALL_AFFIXES.get(affix_id)
-            bonus += affix.min_dmg
+            multiplier = get_item_level_multiplier(self.item_lvl, affix.rarity)
+            bonus += round(affix.min_dmg * multiplier)
 
-        return self._min_dmg + bonus
+        base_multiplier = get_base_dmg_multiplier(self.item_lvl)
+        scaled_base = round(self._min_dmg * base_multiplier)
+
+        return scaled_base + bonus
 
     @min_dmg.setter
     def min_dmg(self, value):
@@ -30,10 +35,14 @@ class Weapon(Item):
         bonus = 0
 
         for affix_id in self.affixes:
-            affix = ALL_AFFIXES.get(affix_id, {})
-            bonus += affix.max_dmg
+            affix = ALL_AFFIXES.get(affix_id)
+            multiplier = get_item_level_multiplier(self.item_lvl, affix.rarity)
+            bonus += round(affix.max_dmg * multiplier)
 
-        return self._max_dmg + bonus
+        base_multiplier = get_base_dmg_multiplier(self.item_lvl)
+        scaled_base = round(self._max_dmg * base_multiplier)
+
+        return scaled_base + bonus
 
     @max_dmg.setter
     def max_dmg(self, value):

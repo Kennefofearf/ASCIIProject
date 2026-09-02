@@ -115,20 +115,6 @@ EQUIPMENT = {
                 "slot": "feet",
                 "skill_tags": ["armor", "feet"]
             },
-            "leather cap": {
-                "name": "Leather Cap",
-                "type": "armor",
-                "ac": 1,
-                "base_stats": {"max_hp": 0, "st": 0, "df": 0},
-                "skill_nodes": 7,
-                "item_level": 1,
-                "xp": 0,
-                "max_xp": 1000,
-                "lvl": 0,
-                "max_lvl": 10,
-                "slot": "head",
-                "skill_tags": ["armor", "head"]
-            },
             "iron helm": {
                 "name": "Iron Helm",
                 "type": "armor",
