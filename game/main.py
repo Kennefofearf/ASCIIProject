@@ -5,6 +5,7 @@ from systems.ability_logic import use_ability, update_active_effects
 from curses import wrapper
 from systems.combat import player_auto_attack_logic, enemy_auto_attack_logic
 from UI.inventory_screen import open_inventory_window
+from UI.enemy_window import draw_enemy_window, create_enemy_window
 from player_module import Player
 from monster_module import GiantAnt
 
@@ -159,10 +160,12 @@ def gamestart(stdscr):
 
     stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
     stdscr.refresh()
-    targetwin_h, targetwin_w = 10, 20
+
     playerwin_h, playerwin_w = 10, 20
-    target_window = curses.newwin(targetwin_h, targetwin_w, int(y * 0.73), int(x * 0.83))
     player_window = curses.newwin(playerwin_h, playerwin_w, int(y * 0.73), int(x * 0.01))
+
+    enemy_window = create_enemy_window(stdscr)
+
     dbg_h, dbg_w = 15, 30
     dbg = curses.newwin(dbg_h, dbg_w, y - (y - 1), x - (x - 89))
 
@@ -179,26 +182,15 @@ def gamestart(stdscr):
 
         prev_positions = []
 
-        target_window.box()
         player_window.box()
         dbg.box()
+
+        draw_enemy_window(enemy_window, selected)
 
         player.player_spawn(stdscr, prev_positions, player)
         draw_enemies(stdscr, enemies, selected, prev_positions)
 
         stdscr.refresh()
-
-        if selected and selected.alive:
-            target_window.addstr(1, 1, f"   {selected.name}")
-            target_window.addstr(3, 1, f" HP:   {selected.hp} / {selected.max_hp}")
-            target_window.addstr(5, 1, f"STR:   {selected.st}")
-            target_window.addstr(7, 1, f"DEF:   {selected.df}")
-            dbg.addstr(1, 1, f"{selected.name}")
-            target_window.refresh()
-        else:
-            target_window.erase()
-            target_window.box()
-            target_window.refresh()
 
         player_window.addstr(1, 2, f"{player.name}  Level: {player.lvl}")
 
@@ -232,9 +224,7 @@ def gamestart(stdscr):
         elif key == curses.KEY_RESIZE:
             stdscr.clear()
             stdscr_y, stdscr_x = stdscr.getmaxyx()
-            resize_x = stdscr_x
-            target_window = curses.newwin(targetwin_h, targetwin_w, int((stdscr_y - 10) * 0.99), int((stdscr_x - 20) *
-                                                                                                     0.99))
+
             dbg = curses.newwin(dbg_h, dbg_w, int(stdscr_y * 0.03), int(stdscr_x * 0.99) - 30)
             player_window = curses.newwin(playerwin_h, playerwin_w, int((stdscr_y - 10) * 0.99), int(stdscr_x * 0.01))
 
