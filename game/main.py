@@ -6,6 +6,7 @@ from curses import wrapper
 from systems.combat import player_auto_attack_logic, enemy_auto_attack_logic
 from UI.inventory_screen import open_inventory_window
 from UI.enemy_window import draw_enemy_window, create_enemy_window
+from UI.player_window import create_player_window, draw_player_window
 from player_module import Player
 from monster_module import GiantAnt
 
@@ -161,8 +162,7 @@ def gamestart(stdscr):
     stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
     stdscr.refresh()
 
-    playerwin_h, playerwin_w = 10, 20
-    player_window = curses.newwin(playerwin_h, playerwin_w, int(y * 0.73), int(x * 0.01))
+    player_window = create_player_window(stdscr)
 
     enemy_window = create_enemy_window(stdscr)
 
@@ -185,29 +185,13 @@ def gamestart(stdscr):
         player_window.box()
         dbg.box()
 
+        draw_player_window(player_window, player)
         draw_enemy_window(enemy_window, selected)
 
         player.player_spawn(stdscr, prev_positions, player)
         draw_enemies(stdscr, enemies, selected, prev_positions)
 
         stdscr.refresh()
-
-        player_window.addstr(1, 2, f"{player.name}  Level: {player.lvl}")
-
-        if player.weapon:
-            player_window.addstr(3, 1, f"DMG: {player.weapon.min_dmg + player.st} - "
-                                        f"{player.weapon.max_dmg + player.st}")
-        else:
-            player_window.addstr(3, 1, f"DMG: {player.st} - {player.st}")
-
-        player_window.addstr(4, 1, f" HP:   {player.hp} / {player.max_hp}")
-        player_window.addstr(5, 1, f"STR:   {player.st}")
-        player_window.addstr(6, 1, f"DEF:   {player.df} (AC: {player.ac})")
-        player_window.addstr(7, 1, f" XP: {player.total_req_xp - player.req_xp} / {player.total_req_xp}")
-        player_window.addstr(8, 1, f"[")
-        player_window.addstr(8, 2, f"{player.xp_bar_text:<10}")
-        player_window.addstr(8, 12, f"]")
-        player_window.refresh()
 
         dbg.addstr(1, 1, f"{player.ability_slots.items()}")
         dbg.refresh()
