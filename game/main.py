@@ -7,6 +7,7 @@ from systems.combat import player_auto_attack_logic, enemy_auto_attack_logic
 from UI.inventory_screen import open_inventory_window
 from UI.enemy_window import draw_enemy_window, create_enemy_window
 from UI.player_window import create_player_window, draw_player_window
+from UI.combat_log import create_combat_log_windows, draw_log
 from player_module import Player
 from monster_module import GiantAnt
 
@@ -18,6 +19,7 @@ for enemy in range(3):
     e = GiantAnt()
     enemies.append(e)
 
+
 def mouse_actions(mx, my, bstate, player):
     if bstate & curses.BUTTON1_CLICKED:
         for enemy in enemies:
@@ -26,6 +28,7 @@ def mouse_actions(mx, my, bstate, player):
                 return True, enemy
         return True, None
     return False, None
+
 
 def draw_enemies(stdscr, enemies, selected, prev_positions):
     for enemy in enemies:
@@ -90,21 +93,11 @@ def world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_off
 
     player.move(py, px)
 
+
 def movement_area(win, y, x):
     h, w = win.getmaxyx()
     return 1 <= y <= h - 2 and 1 <= x <= w - 2
 
-def create_combat_log_windows(stdscr):
-    logwin_h, logwin_w, y, x = 10, 77, 29, 21
-    outer_log_window = curses.newwin(logwin_h, logwin_w, y, x)
-    outer_log_window.refresh()
-
-    inner_log_window = curses.newwin(logwin_h - 2, logwin_w - 2, y + 1, x + 1)
-    inner_log_window.scrollok(True)
-    inner_log_window.idlok(True)
-    inner_log_window.refresh()
-
-    return outer_log_window, inner_log_window, logwin_h, logwin_w
 
 def add_log_messages(combat_messages, message_pair):
     if len(combat_messages) > 200:
@@ -112,26 +105,6 @@ def add_log_messages(combat_messages, message_pair):
 
     combat_messages.append(message_pair)
 
-def draw_log(log_win, combat_messages, scroll_offset):
-    h, w = log_win.getmaxyx()
-    log_win.erase()
-
-    start = max(0, len(combat_messages) - h - scroll_offset)
-    visible = combat_messages[start:start + h]
-
-    for row, message_pair in enumerate(visible):
-        col = 0
-        for text, color_pair in message_pair:
-            text = str(text)
-
-            if color_pair == 0:
-                log_win.addstr(row, col, text[:w-col])
-            else:
-                log_win.addstr(row, col, text[:w-col], curses.color_pair(color_pair))
-
-            col += len(text)
-
-    log_win.refresh()
 
 def gamestart(stdscr):
     curses.cbreak()
@@ -210,7 +183,7 @@ def gamestart(stdscr):
             stdscr_y, stdscr_x = stdscr.getmaxyx()
 
             dbg = curses.newwin(dbg_h, dbg_w, int(stdscr_y * 0.03), int(stdscr_x * 0.99) - 30)
-            player_window = curses.newwin(playerwin_h, playerwin_w, int((stdscr_y - 10) * 0.99), int(stdscr_x * 0.01))
+            # player_window = curses.newwin(playerwin_h, playerwin_w, int((stdscr_y - 10) * 0.99), int(stdscr_x * 0.01))
 
             outer = curses.newwin(outer_h, outer_w, int((stdscr_y - 10) * 0.99), int((stdscr_x * 0.01) + 21))
             inner = curses.newwin(outer_h - 2, outer_w - 2, int((stdscr_y - 9) * 0.99), int((stdscr_x * 0.01) + 23))
@@ -259,5 +232,6 @@ def gamestart(stdscr):
             selected = None
 
         stdscr.refresh()
+
 
 wrapper(gamestart)
