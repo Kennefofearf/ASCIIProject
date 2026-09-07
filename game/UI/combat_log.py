@@ -34,3 +34,22 @@ def draw_log(log_win, combat_messages, scroll_offset):
             col += len(text)
 
     log_win.refresh()
+
+
+def handle_scroll_log(inner, mx, my, bstate, scroll_offset, combat_messages, log_height):
+    scroll_log_y, scroll_log_x = inner.getbegyx()
+    scroll_log_h, scroll_log_w = inner.getmaxyx()
+
+    if scroll_log_y <= my < scroll_log_y + scroll_log_h and scroll_log_x <= mx < scroll_log_x + scroll_log_w:
+
+        if bstate & curses.BUTTON4_PRESSED:
+            scroll_offset += 1
+        elif bstate & curses.BUTTON5_PRESSED:
+            scroll_offset = max(0, scroll_offset - 1)
+
+        max_scroll = max(0, len(combat_messages) - log_height)
+        scroll_offset = min(scroll_offset, max_scroll)
+
+    return scroll_offset
+
+

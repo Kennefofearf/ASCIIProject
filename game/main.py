@@ -7,7 +7,7 @@ from systems.combat import player_auto_attack_logic, enemy_auto_attack_logic
 from UI.inventory_screen import open_inventory_window
 from UI.enemy_window import draw_enemy_window, create_enemy_window
 from UI.player_window import create_player_window, draw_player_window
-from UI.combat_log import create_combat_log_windows, draw_log
+from UI.combat_log import create_combat_log_windows, draw_log, handle_scroll_log
 from player_module import Player
 from monster_module import GiantAnt
 
@@ -199,18 +199,7 @@ def gamestart(stdscr):
             selected = picked
             player.target = picked
 
-        scroll_log_y, scroll_log_x = inner.getbegyx()
-        scroll_log_h, scroll_log_w = inner.getmaxyx()
-
-        if scroll_log_y <= my < scroll_log_y + scroll_log_h and scroll_log_x <= mx < scroll_log_x + scroll_log_w:
-
-            if bstate & curses.BUTTON4_PRESSED:
-                scroll_offset += 1
-            elif bstate & curses.BUTTON5_PRESSED:
-                scroll_offset = max(0, scroll_offset - 1)
-
-            max_scroll = max(0, len(combat_messages) - log_height)
-            scroll_offset = min(scroll_offset, max_scroll)
+            scroll_offset = handle_scroll_log(inner, mx, my, bstate, scroll_offset, combat_messages, log_height)
 
         if key in ABILITY_KEYS:
             slot = ABILITY_KEYS[key]
