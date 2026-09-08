@@ -1,9 +1,7 @@
-import curses
 import random
 from systems.loot_generator import roll_item_drop
-from item_module import Item
+from modules.item_module import Item
 from UI.colors import get_rarity_color
-from data.weapon import Weapon
 import time
 
 def is_adjacent(p1, p2):

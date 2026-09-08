@@ -1,9 +1,9 @@
 import random
 import json
 
-from item_module import Item
+from modules.item_module import Item
 from data.weapon import Weapon
-from armor_module import Armor
+from modules.armor_module import Armor
 from data.equipment_data import EQUIPMENT
 from data.affix_data import GREEN_AFFIXES, BLUE_AFFIXES, YELLOW_AFFIXES, PURPLE_AFFIXES, ALL_AFFIXES
 from data.skill_node_data import CAPSTONE_NODES, NODE_POOLS

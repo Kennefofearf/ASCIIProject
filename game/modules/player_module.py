@@ -1,12 +1,11 @@
 import curses
-import monster_module
+import modules.monster_module
 import random
-from item_module import Item
+from modules.item_module import Item
 from data.skill_node_data import COMMON_NODES
 from data.affix_data import GREEN_AFFIXES
 from data.weapon import Weapon
 import time
-
 
 
 class Player:

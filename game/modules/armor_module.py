@@ -1,4 +1,4 @@
-from item_module import Item
+from modules.item_module import Item
 from data.affix_data import ALL_AFFIXES
 from systems.item_scaling import get_item_level_multiplier, get_base_ac_multiplier
 

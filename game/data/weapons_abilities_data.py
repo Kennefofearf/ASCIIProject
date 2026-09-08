@@ -1,5 +1,5 @@
-from ability_module import Ability
-from systems.effect_module import DamageEffect, DotEffect
+from modules.ability_module import Ability
+from modules.effect_module import DamageEffect, DotEffect
 
 
 COMMON_WEAPON_ABILITIES = {

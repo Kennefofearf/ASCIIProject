@@ -1,5 +1,5 @@
 from data.weapons_abilities_data import COMMON_WEAPON_ABILITIES
-from systems.effect_module import DamageEffect, ActiveDot, DotEffect
+from modules.effect_module import DamageEffect, DotEffect
 
 
 def rebuild_abilities(unit):

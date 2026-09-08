@@ -1,5 +1,5 @@
 import random
-from affix_module import Affix
+from modules.affix_module import Affix
 
 # "max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0
 
