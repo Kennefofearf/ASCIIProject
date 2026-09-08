@@ -4,9 +4,13 @@ import curses
 def create_player_window(stdscr):
     screen_y, screen_x = stdscr.getmaxyx()
 
-    playerwin_h, playerwin_w = 10, 20
+    playerwin_h = 10
+    playerwin_w = 20
 
-    player_window = curses.newwin(playerwin_h, playerwin_w, int(screen_y * 0.73), int(screen_x * 0.01))
+    y = (screen_y - playerwin_h) - 1
+    x = 1
+
+    player_window = curses.newwin(playerwin_h, playerwin_w, y, x)
 
     return player_window
 

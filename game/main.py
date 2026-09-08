@@ -139,9 +139,6 @@ def gamestart(stdscr):
 
     enemy_window = create_enemy_window(stdscr)
 
-    dbg_h, dbg_w = 15, 30
-    dbg = curses.newwin(dbg_h, dbg_w, y - (y - 1), x - (x - 89))
-
     prev_positions = []
 
     outer, inner, outer_h, outer_w = create_combat_log_windows(stdscr)
@@ -156,7 +153,6 @@ def gamestart(stdscr):
         prev_positions = []
 
         player_window.box()
-        dbg.box()
 
         draw_player_window(player_window, player)
         draw_enemy_window(enemy_window, selected)
@@ -166,32 +162,33 @@ def gamestart(stdscr):
 
         stdscr.refresh()
 
-        dbg.addstr(1, 1, f"{player.ability_slots.items()}")
-        dbg.refresh()
-
         key = stdscr.getch()
         my = 0
         mx = 0
 
         if key == ord("q"):
             break
+
         elif key == ord("i"):
             player_window.clear()
             open_inventory_window(stdscr, player)
+
         elif key == curses.KEY_RESIZE:
             stdscr.clear()
-            stdscr_y, stdscr_x = stdscr.getmaxyx()
 
-            dbg = curses.newwin(dbg_h, dbg_w, int(stdscr_y * 0.03), int(stdscr_x * 0.99) - 30)
+            enemy_window = create_enemy_window(stdscr)
+            outer, inner, outer_h, outer_w = create_combat_log_windows(stdscr)
+            player_window = create_player_window(stdscr)
+
+            log_height = inner.getmaxyx()[0]
             # player_window = curses.newwin(playerwin_h, playerwin_w, int((stdscr_y - 10) * 0.99), int(stdscr_x * 0.01))
 
-            outer = curses.newwin(outer_h, outer_w, int((stdscr_y - 10) * 0.99), int((stdscr_x * 0.01) + 21))
-            inner = curses.newwin(outer_h - 2, outer_w - 2, int((stdscr_y - 9) * 0.99), int((stdscr_x * 0.01) + 23))
-            outer.box()
-            outer.refresh()
-            inner.box()
-            inner.refresh()
+            # outer.box()
+            # outer.refresh()
+            # inner.box()
+            # inner.refresh()
             stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
+
         elif key == curses.KEY_MOUSE:
             _, mx, my, _, bstate, = curses.getmouse()
 

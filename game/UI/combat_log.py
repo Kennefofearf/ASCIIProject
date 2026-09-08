@@ -2,16 +2,25 @@ import curses
 
 
 def create_combat_log_windows(stdscr):
-    logwin_h, logwin_w, y, x = 10, 77, 29, 21
-    outer_log_window = curses.newwin(logwin_h, logwin_w, y, x)
+    screen_h, screen_w = stdscr.getmaxyx()
+
+    outer_h = 10
+    outer_w = max(30, int(screen_w * 0.55))
+
+    y = (screen_h - outer_h) - 1
+    x = 22
+    outer_log_window = curses.newwin(outer_h, outer_w, y, x)
     outer_log_window.refresh()
 
-    inner_log_window = curses.newwin(logwin_h - 2, logwin_w - 2, y + 1, x + 1)
+    inner_log_window = outer_log_window.derwin(outer_h - 2, outer_w - 2, 1, 1)
     inner_log_window.scrollok(True)
     inner_log_window.idlok(True)
+
+    outer_log_window.box()
+
     inner_log_window.refresh()
 
-    return outer_log_window, inner_log_window, logwin_h, logwin_w
+    return outer_log_window, inner_log_window, outer_h, outer_w
 
 
 def draw_log(log_win, combat_messages, scroll_offset):
