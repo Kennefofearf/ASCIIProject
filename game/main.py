@@ -6,7 +6,8 @@ from curses import wrapper
 from systems.combat import player_auto_attack_logic, enemy_auto_attack_logic
 from UI.inventory_screen import open_inventory_window
 from UI.enemy_window import draw_enemy_window, create_enemy_window
-from UI.player_window import create_player_window, draw_player_window
+from UI.player_window import \
+    create_player_window, draw_player_window, create_gear_progress_window, draw_gear_progress_window
 from UI.combat_log import create_combat_log_windows, draw_log, handle_scroll_log
 from modules.player_module import Player
 from modules.monster_module import GiantAnt
@@ -136,6 +137,7 @@ def gamestart(stdscr):
     stdscr.refresh()
 
     player_window = create_player_window(stdscr)
+    gear_progress_window = create_gear_progress_window(stdscr)
 
     enemy_window = create_enemy_window(stdscr)
 
@@ -152,9 +154,8 @@ def gamestart(stdscr):
 
         prev_positions = []
 
-        player_window.box()
-
         draw_player_window(player_window, player)
+        draw_gear_progress_window(gear_progress_window, player)
         draw_enemy_window(enemy_window, selected)
 
         player.player_spawn(stdscr, prev_positions, player)

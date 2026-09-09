@@ -1,4 +1,5 @@
 import curses
+import modules.item_module
 
 
 def create_player_window(stdscr):
@@ -14,8 +15,23 @@ def create_player_window(stdscr):
 
     return player_window
 
+def create_gear_progress_window(stdscr):
+    screen_y, screen_x = stdscr.getmaxyx()
+
+    playerwin_h = 10
+    playerwin_w = 20
+
+    y = (screen_y - playerwin_h) - 1
+    x = screen_x - playerwin_w
+
+    gear_progress_window = curses.newwin(playerwin_h, playerwin_w, y, x)
+
+    return gear_progress_window
 
 def draw_player_window(player_window, player):
+    player_window.erase()
+    player_window.box()
+
     player_window.addstr(1, 2, f"{player.name}  Level: {player.lvl}")
 
     if player.weapon:
@@ -32,3 +48,40 @@ def draw_player_window(player_window, player):
     player_window.addstr(8, 2, f"{player.xp_bar_text:<10}")
     player_window.addstr(8, 12, f"]")
     player_window.refresh()
+
+
+def draw_gear_progress_window(gear_progress_window, player):
+    gear_progress_window.erase()
+    gear_progress_window.box()
+
+    h, w = gear_progress_window.getmaxyx()
+
+    window_title = "Gear Progress"
+
+    gear_progress_window.addstr(1, (w // 2) - (len(window_title) // 2), window_title)
+    if player.head:
+        xp_percentage = player.head.get_xp_percentage()
+        gear_progress_window.addstr(3, 1, f"  Head: {xp_percentage}%")
+    else:
+        gear_progress_window.addstr(3, 1, f"  Head: None")
+
+    if player.chest:
+        xp_percentage = player.chest.get_xp_percentage()
+        gear_progress_window.addstr(4, 1, f" Chest: {xp_percentage}%")
+    else:
+        gear_progress_window.addstr(4, 1, f" Chest: None")
+
+    if player.feet:
+        xp_percentage = player.feet.get_xp_percentage()
+        gear_progress_window.addstr(5, 1, f"  Feet: {xp_percentage}%")
+    else:
+        gear_progress_window.addstr(5, 1, f"  Feet: None")
+
+    if player.weapon:
+        xp_percentage = player.weapon.get_xp_percentage()
+        gear_progress_window.addstr(6, 1, f"Weapon: {xp_percentage}%")
+    else:
+        gear_progress_window.addstr(6, 1, f"Weapon: None")
+
+    gear_progress_window.refresh()
+

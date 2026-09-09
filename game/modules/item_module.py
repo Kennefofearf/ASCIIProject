@@ -1,5 +1,6 @@
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, NODE_POOLS
 from data.affix_data import ALL_AFFIXES
+from UI.combat_log import draw_log
 from systems.item_scaling import get_item_level_multiplier
 
 
@@ -112,4 +113,10 @@ class Item:
 
         while item.xp >= item.max_xp:
             Item.level_up_item(item)
+
+
+    def get_xp_percentage(self):
+        percentage = round((self.xp / self.max_xp) * 100)
+
+        return percentage
 
