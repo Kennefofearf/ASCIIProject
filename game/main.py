@@ -1,6 +1,6 @@
 import curses
 import time
-
+from UI.title_screen import title_screen
 from systems.ability_logic import use_ability, update_active_effects
 from curses import wrapper
 from systems.combat import player_auto_attack_logic, enemy_auto_attack_logic
@@ -227,4 +227,11 @@ def gamestart(stdscr):
         stdscr.refresh()
 
 
-wrapper(gamestart)
+def main(stdscr):
+    choice = title_screen(stdscr)
+
+    if choice == "new_game":
+        gamestart(stdscr)
+
+
+wrapper(main)
