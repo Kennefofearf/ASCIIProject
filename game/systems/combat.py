@@ -4,6 +4,7 @@ from modules.item_module import Item
 from UI.colors import get_rarity_color
 import time
 
+
 def is_adjacent(p1, p2):
     y1, x1 = p1
     y2, x2 = p2

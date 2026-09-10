@@ -22,7 +22,7 @@ def create_gear_progress_window(stdscr):
     playerwin_w = 20
 
     y = (screen_y - playerwin_h) - 1
-    x = screen_x - playerwin_w
+    x = (screen_x - playerwin_w) - 1
 
     gear_progress_window = curses.newwin(playerwin_h, playerwin_w, y, x)
 

@@ -114,7 +114,6 @@ class Item:
         while item.xp >= item.max_xp:
             Item.level_up_item(item)
 
-
     def get_xp_percentage(self):
         percentage = round((self.xp / self.max_xp) * 100)
 
