@@ -8,6 +8,7 @@ from UI.inventory_screen import open_inventory_window
 from UI.enemy_window import draw_enemy_window, create_enemy_window
 from UI.player_window import \
     create_player_window, draw_player_window, create_gear_progress_window, draw_gear_progress_window
+from systems.character_creator import create_player_character
 from UI.combat_log import create_combat_log_windows, draw_log, handle_scroll_log
 from UI.action_bar import create_action_bar, draw_action_bar
 from modules.player_module import Player
@@ -108,7 +109,7 @@ def add_log_messages(combat_messages, message_pair):
     combat_messages.append(message_pair)
 
 
-def gamestart(stdscr):
+def gamestart(stdscr, player):
     curses.cbreak()
 
     curses.start_color()
@@ -129,7 +130,6 @@ def gamestart(stdscr):
     stdscr.clear()
 
     y, x = stdscr.getmaxyx()
-    player = Player("Koe", 50, 50, 3, 1, 5, 5, "", 5)
     player.position = [20, 55]
 
     # Window rendering
@@ -231,7 +231,9 @@ def main(stdscr):
     choice = title_screen(stdscr)
 
     if choice == "new_game":
-        gamestart(stdscr)
+        player_name = create_player_character(stdscr)
+        player = Player(player_name)
+        gamestart(stdscr, player)
 
 
 wrapper(main)

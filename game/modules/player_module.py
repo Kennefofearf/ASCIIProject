@@ -9,16 +9,13 @@ import time
 
 
 class Player:
-    def __init__(self, name, max_hp, hp, st, df, req_xp, total_req_xp, xp_bar_text, lvl):
+    def __init__(self, name):
         self.name = name
         self.icon = "@"
-        self._max_hp = max_hp
-        self._hp = hp
-        self._st = st
-        self._df = df
+        self._hp = 50
         self.base_max_hp = 50
-        self.base_st = 21
-        self.base_df = 3
+        self.base_st = 3
+        self.base_df = 1
         self.base_ac = 0
         self.base_mp = 0
         self.base_evasion = 3
@@ -26,28 +23,39 @@ class Player:
         self.base_crit_dmg = 50
         self.base_hp_rr = 10.0
         self.base_hp_ra = 5
+        self.inventory = []
+        self.position = [0, 0]
+
+        # combat
+
         self.attack_cooldown = 1.0
         self.weapon_dmg = [0, 0]
-        self.position = [0, 0]
-        self.req_xp = req_xp
-        self.total_req_xp = total_req_xp
-        self.xp_bar_text = xp_bar_text
-        self.lvl = lvl
+        self.damaged = False
+        self.active_effects = []
+        self.cooldowns = {}
+
+        # progression
+
+        self.req_xp = 8
+        self.total_req_xp = 8
+        self.xp_bar_text = ''
+        self.lvl = 1
+
+        # equipment
+
         self.weapon = None
         self.feet = None
         self.chest = None
         self.head = None
         self.target = None
+
+        # build
+
         self.skill_tree = {}
         self.ability_slots = {"1": None, "2": None, "3": None, "4": None}
         self.magic_slots = {}
-        self.damaged = False
-        self.active_effects = []
         self.last_attack_time = 0
         self.last_regen_time = 0
-        self.inventory = []
-        self.cooldowns = {}
-        self.active_effects = []
 
     @property
     def hp(self):
@@ -68,14 +76,14 @@ class Player:
                 continue
             bonus += Item.total_bonus(item, "max_hp")
 
-        return self._max_hp + bonus
+        return self.base_max_hp + bonus
 
-    @max_hp.setter
-    def max_hp(self, value):
-        self._max_hp = max(1, value)
-
-        if self._hp > self.max_hp:
-            self._hp = self.max_hp
+    # @max_hp.setter
+    # def max_hp(self, value):
+    #     self._max_hp = max(1, value)
+    #
+    #     if self._hp > self.max_hp:
+    #         self._hp = self.max_hp
 
     @property
     def st(self):
@@ -88,11 +96,11 @@ class Player:
                 continue
             bonus += Item.total_bonus(item, "st")
 
-        return self._st + bonus
+        return self.base_st + bonus
 
-    @st.setter
-    def st(self, value):
-        self._st = max(0, value)
+    # @st.setter
+    # def st(self, value):
+    #     self._st = max(0, value)
 
     @property
     def df(self):
@@ -106,11 +114,11 @@ class Player:
 
             bonus += Item.total_bonus(item, "df")
 
-        return self._df + bonus
+        return self.base_df + bonus
 
-    @df.setter
-    def df(self, value):
-        self._df = max(0, value)
+    # @df.setter
+    # def df(self, value):
+    #     self._df = max(0, value)
 
     @property
     def ac(self):
