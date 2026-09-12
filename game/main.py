@@ -13,6 +13,8 @@ from UI.combat_log import create_combat_log_windows, draw_log, handle_scroll_log
 from UI.action_bar import create_action_bar, draw_action_bar
 from modules.player_module import Player
 from modules.monster_module import GiantAnt
+from systems.save_character import player_to_dict
+from systems.player_dict_to_json import player_dict_to_json
 
 enemies = []
 
@@ -172,6 +174,10 @@ def gamestart(stdscr, player):
         mx = 0
 
         if key == ord("q"):
+
+            data = player_to_dict(player)
+            player_dict_to_json(data)
+
             break
 
         elif key == ord("i"):

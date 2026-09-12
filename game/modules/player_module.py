@@ -63,7 +63,7 @@ class Player:
 
     @hp.setter
     def hp(self, value):
-        self._hp = max(0, min(value, self.max_hp))
+        self._hp = max(0, min(value, self.base_max_hp))
 
     @property
     def max_hp(self):
@@ -282,7 +282,7 @@ class Player:
             xp_overflow = -self.req_xp
             self.lvl += 1
             hp_gain = random.choice([5, 7, 7, 7, 10, 20])
-            self.max_hp += hp_gain
+            self.base_max_hp += hp_gain
             self._hp += hp_gain
             self.total_req_xp += 5 + self.lvl * 5
             self.req_xp = self.total_req_xp - xp_overflow
