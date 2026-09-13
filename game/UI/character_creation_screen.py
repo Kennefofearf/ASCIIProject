@@ -1,5 +1,6 @@
 import curses
 
+
 def character_creation_screen(stdscr):
     screen_y, screen_x = stdscr.getmaxyx()
 

@@ -1,7 +1,7 @@
 import curses
 
 
-def title_screen(stdscr):
+def title_screen(stdscr, saved_characters):
     screen_y, screen_x = stdscr.getmaxyx()
 
     start_y, start_x = screen_y // 2, screen_x // 2
@@ -18,8 +18,18 @@ def title_screen(stdscr):
 
     row = start_y + 10
 
+    can_continue = bool(saved_characters)
+
     title_scr.addstr(row, start_x - (len(new_game_option) // 2), new_game_option)
-    row += 5
+    row += 2
+
+    if saved_characters:
+        title_scr.addstr(row, start_x - (len(new_game_option) // 2), continue_option)
+        can_continue = True
+        row += 2
+    else:
+        can_continue = False
+
     title_scr.addstr(row, start_x - (len(quit_option) // 2), quit_option)
 
     title_scr.refresh()
@@ -29,6 +39,12 @@ def title_screen(stdscr):
 
         if key == ord("a"):
             return "new_game"
+
+        elif key == ord("w"):
+            if can_continue:
+                return "continue"
+            else:
+                continue
 
         elif key == ord("q"):
             return "quit"

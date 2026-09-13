@@ -9,12 +9,16 @@ from UI.enemy_window import draw_enemy_window, create_enemy_window
 from UI.player_window import \
     create_player_window, draw_player_window, create_gear_progress_window, draw_gear_progress_window
 from systems.character_creator import create_player_character
+from UI.character_select_screen import character_select_screen
+from systems.load_charcter import load_character
+from systems.json_to_player import json_to_player
+from systems.get_saved_characters import get_saved_characters
 from UI.combat_log import create_combat_log_windows, draw_log, handle_scroll_log
 from UI.action_bar import create_action_bar, draw_action_bar
 from modules.player_module import Player
 from modules.monster_module import GiantAnt
 from systems.save_character import player_to_dict
-from systems.player_dict_to_json import player_dict_to_json
+from systems.player_to_json import player_dict_to_json
 
 enemies = []
 
@@ -234,11 +238,18 @@ def gamestart(stdscr, player):
 
 
 def main(stdscr):
-    choice = title_screen(stdscr)
+    saved_characters = get_saved_characters()
+    choice = title_screen(stdscr, saved_characters)
 
     if choice == "new_game":
         player_name = create_player_character(stdscr)
         player = Player(player_name)
+        gamestart(stdscr, player)
+
+    elif choice == "continue":
+        name = character_select_screen(stdscr, saved_characters)
+        data = load_character(name)
+        player = json_to_player(data)
         gamestart(stdscr, player)
 
 
