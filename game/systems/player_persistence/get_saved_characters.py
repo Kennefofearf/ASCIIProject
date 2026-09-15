@@ -2,7 +2,7 @@ from pathlib import Path
 
 
 def get_saved_characters():
-    save_dir = Path(__file__).resolve().parents[2] / "saves"
+    save_dir = Path(__file__).resolve().parents[3] / "saves"
 
     if not save_dir.exists():
         return []

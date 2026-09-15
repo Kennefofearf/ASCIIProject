@@ -1,5 +1,5 @@
 import random
-from systems.loot_generator import roll_item_drop
+from systems.items.loot_generator import roll_item_drop
 from modules.item_module import Item
 from UI.colors import get_rarity_color
 import time

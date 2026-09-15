@@ -7,7 +7,7 @@ from modules.armor_module import Armor
 from data.equipment_data import EQUIPMENT
 from data.affix_data import GREEN_AFFIXES, BLUE_AFFIXES, YELLOW_AFFIXES, PURPLE_AFFIXES, ALL_AFFIXES
 from data.skill_node_data import CAPSTONE_NODES, NODE_POOLS
-from systems.weapon_skill_tree import generate_rarity_layout
+from systems.items.weapon_skill_tree import generate_rarity_layout
 
 RARITY_MAX_LEVEL = {"white": 10, "green": 20, "blue": 30, "yellow": 40, "purple": 50}
 

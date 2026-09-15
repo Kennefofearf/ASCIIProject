@@ -1,24 +1,26 @@
 import curses
 import time
 from UI.title_screen import title_screen
-from systems.ability_logic import use_ability, update_active_effects
+from systems.combat.ability_logic import use_ability, update_active_effects
 from curses import wrapper
-from systems.combat import player_auto_attack_logic, enemy_auto_attack_logic
+from systems.combat.combat import player_auto_attack_logic, enemy_auto_attack_logic
 from UI.inventory_screen import open_inventory_window
 from UI.enemy_window import draw_enemy_window, create_enemy_window
 from UI.player_window import \
     create_player_window, draw_player_window, create_gear_progress_window, draw_gear_progress_window
-from systems.character_creator import create_player_character
+from systems.player_persistence.character_creator import create_player_character
 from UI.character_select_screen import character_select_screen
-from systems.load_charcter import load_character
-from systems.json_to_player import json_to_player
-from systems.get_saved_characters import get_saved_characters
+from systems.player_persistence.load_charcter import load_character
+from systems.player_persistence.json_to_player import json_to_player
+from systems.player_persistence.get_saved_characters import get_saved_characters
+from systems.item_persistence.item_to_dict import item_to_dict
+from systems.item_persistence.item_dict_to_json import item_dict_to_json
 from UI.combat_log import create_combat_log_windows, draw_log, handle_scroll_log
 from UI.action_bar import create_action_bar, draw_action_bar
 from modules.player_module import Player
 from modules.monster_module import GiantAnt
-from systems.save_character import player_to_dict
-from systems.player_to_json import player_dict_to_json
+from systems.player_persistence.save_character import player_to_dict
+from systems.player_persistence.player_to_json import player_dict_to_json
 
 enemies = []
 
@@ -181,6 +183,12 @@ def gamestart(stdscr, player):
 
             data = player_to_dict(player)
             player_dict_to_json(data)
+
+            if player.weapon is not None:
+                item_data = item_to_dict(player.weapon)
+                item_dict_to_json(item_data)
+            else:
+                break
 
             break
 

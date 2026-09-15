@@ -1,6 +1,6 @@
 from data.affix_data import ALL_AFFIXES
 from modules.item_module import Item
-from systems.item_scaling import get_item_level_multiplier, get_base_dmg_multiplier
+from systems.items.item_scaling import get_item_level_multiplier, get_base_dmg_multiplier
 
 
 class Weapon(Item):

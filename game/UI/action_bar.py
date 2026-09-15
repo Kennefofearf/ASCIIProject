@@ -1,7 +1,6 @@
 import curses
 import time
 from data.weapons_abilities_data import COMMON_WEAPON_ABILITIES
-from systems.ability_logic import use_ability
 
 
 def create_action_bar(stdscr):

@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 def player_dict_to_json(data):
-    save_dir = Path(__file__).resolve().parents[2] / "saves"
+    save_dir = Path(__file__).resolve().parents[3] / "saves"
 
     save_dir.mkdir(exist_ok=True)
 

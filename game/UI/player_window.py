@@ -32,7 +32,7 @@ def draw_player_window(player_window, player):
     player_window.erase()
     player_window.box()
 
-    player_window.addstr(1, 2, f"{player.name}  Level: {player.lvl}")
+    player_window.addstr(1, 2, f"{player.name}  Lvl: {player.lvl}")
 
     if player.weapon:
         player_window.addstr(3, 1, f"DMG: {player.weapon.min_dmg + player.st} - "

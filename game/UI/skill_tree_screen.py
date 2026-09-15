@@ -1,8 +1,6 @@
 import curses
-import random
 import textwrap
-from systems.weapon_skill_tree import generate_rarity_layout
-from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, STAT_NAMES, NODE_POOLS
+from data.skill_node_data import CAPSTONE_NODES, STAT_NAMES, NODE_POOLS
 from UI.colors import get_rarity_color, get_color_from_rarity
 import json
 

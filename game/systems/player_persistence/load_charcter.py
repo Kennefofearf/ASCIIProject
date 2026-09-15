@@ -3,7 +3,7 @@ from pathlib import Path
 
 
 def load_character(name):
-    load_dir = Path(__file__).resolve().parents[2] / "saves"
+    load_dir = Path(__file__).resolve().parents[3] / "saves"
 
     load_file = load_dir / f"{name}.json"
 

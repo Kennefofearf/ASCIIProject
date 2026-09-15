@@ -1,7 +1,6 @@
 from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, NODE_POOLS
 from data.affix_data import ALL_AFFIXES
-from UI.combat_log import draw_log
-from systems.item_scaling import get_item_level_multiplier
+from systems.items.item_scaling import get_item_level_multiplier
 
 
 class Item:
