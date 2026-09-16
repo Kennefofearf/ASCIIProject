@@ -15,6 +15,7 @@ def create_player_window(stdscr):
 
     return player_window
 
+
 def create_gear_progress_window(stdscr):
     screen_y, screen_x = stdscr.getmaxyx()
 
@@ -27,6 +28,7 @@ def create_gear_progress_window(stdscr):
     gear_progress_window = curses.newwin(playerwin_h, playerwin_w, y, x)
 
     return gear_progress_window
+
 
 def draw_player_window(player_window, player):
     player_window.erase()

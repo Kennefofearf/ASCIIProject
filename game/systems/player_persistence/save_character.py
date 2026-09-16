@@ -1,3 +1,6 @@
+from systems.item_persistence.save_item import item_to_dict
+
+
 def player_to_dict(player):
     saved_char = {
         "name": player.name,
@@ -15,7 +18,17 @@ def player_to_dict(player):
         "req_xp": player.req_xp,
         "total_req_xp": player.total_req_xp,
         "lvl": player.lvl,
-        "position": player.position
+        "position": player.position,
+        "inventory": []
     }
+
+    for item in player.inventory:
+        item_data = item_to_dict(item)
+        saved_char["inventory"].append(item_data)
+
+    if player.weapon is not None:
+        saved_char["weapon"] = player.weapon.id
+    else:
+        saved_char["weapon"] = None
 
     return saved_char

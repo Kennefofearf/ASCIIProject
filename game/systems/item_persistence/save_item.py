@@ -12,12 +12,13 @@ def item_to_dict(item):
         "max_lvl": item.max_lvl,
         "skill_points": item.skill_points,
         "skill_tags": item.skill_tags,
-        "affixes": []
+        "affixes": item.affixes,
+        "skill_tree": item.skill_tree
     }
 
     if item.type == "weapon":
-        data["min_dmg"] = item.min_dmg
-        data["max_dmg"] = item.max_dmg
+        data["base_min_dmg"] = item.base_min_dmg
+        data["base_max_dmg"] = item.base_max_dmg
         data["attack_cooldown"] = item.attack_cooldown
 
     return data

@@ -13,8 +13,9 @@ from UI.character_select_screen import character_select_screen
 from systems.player_persistence.load_charcter import load_character
 from systems.player_persistence.json_to_player import json_to_player
 from systems.player_persistence.get_saved_characters import get_saved_characters
-from systems.item_persistence.item_to_dict import item_to_dict
+from systems.item_persistence.save_item import item_to_dict
 from systems.item_persistence.item_dict_to_json import item_dict_to_json
+from systems.item_persistence.item_dict_to_item import item_dict_to_item
 from UI.combat_log import create_combat_log_windows, draw_log, handle_scroll_log
 from UI.action_bar import create_action_bar, draw_action_bar
 from modules.player_module import Player
@@ -206,12 +207,7 @@ def gamestart(stdscr, player):
             action_bar = create_action_bar(stdscr)
 
             log_height = inner.getmaxyx()[0]
-            # player_window = curses.newwin(playerwin_h, playerwin_w, int((stdscr_y - 10) * 0.99), int(stdscr_x * 0.01))
 
-            # outer.box()
-            # outer.refresh()
-            # inner.box()
-            # inner.refresh()
             stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
 
         elif key == curses.KEY_MOUSE:

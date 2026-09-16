@@ -1,4 +1,5 @@
 from modules.player_module import Player
+from systems.item_persistence.item_dict_to_item import item_dict_to_item
 
 
 def json_to_player(data):
@@ -20,5 +21,16 @@ def json_to_player(data):
     player.total_req_xp = data["total_req_xp"]
     player.lvl = data["lvl"]
     player.position = data["position"]
+    player.inventory = []
+    player.weapon = None
+
+    for item_data in data["inventory"]:
+        item = item_dict_to_item(item_data)
+        player.inventory.append(item)
+
+    for item in player.inventory:
+        if item.id == data["weapon"]:
+            player.weapon = item
+            break
 
     return player

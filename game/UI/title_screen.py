@@ -24,7 +24,7 @@ def title_screen(stdscr, saved_characters):
     row += 2
 
     if saved_characters:
-        title_scr.addstr(row, start_x - (len(new_game_option) // 2), continue_option)
+        title_scr.addstr(row, start_x - (len(continue_option) // 2), continue_option)
         can_continue = True
         row += 2
     else:
