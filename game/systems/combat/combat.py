@@ -96,7 +96,7 @@ def enemy_auto_attack_logic(enemies, player, add_log_messages, combat_messages):
                     enemy.last_attack_time = now
                     continue
 
-                dmg = enemy.st - player_def_total
+                dmg = enemy.st - player_def_total + round(player.ac // 2)
 
                 if dmg <= 0:
                     dmg = 0
