@@ -23,6 +23,9 @@ def json_to_player(data):
     player.position = data["position"]
     player.inventory = []
     player.weapon = None
+    player.head = None
+    player.chest = None
+    player.feet = None
 
     for item_data in data["inventory"]:
         item = item_dict_to_item(item_data)
@@ -31,6 +34,14 @@ def json_to_player(data):
     for item in player.inventory:
         if item.id == data["weapon"]:
             player.weapon = item
-            break
+
+        if item.id == data["head"]:
+            player.head = item
+
+        if item.id == data["chest"]:
+            player.chest = item
+
+        if item.id == data["feet"]:
+            player.feet = item
 
     return player

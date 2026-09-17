@@ -1,5 +1,7 @@
 from data.weapon import Weapon
+from modules.armor_module import Armor
 from systems.item_persistence.skill_tree_from_dict import skill_tree_from_dict
+
 
 def item_dict_to_item(data):
     if data["type"] == "weapon":
@@ -7,6 +9,11 @@ def item_dict_to_item(data):
         item.base_min_dmg = data["base_min_dmg"]
         item.base_max_dmg = data["base_max_dmg"]
         item.attack_cooldown = data["attack_cooldown"]
+
+    elif data["type"] == "armor":
+        item = Armor()
+        item.base_ac = data["base_ac"]
+        item.slot = data["slot"]
 
     item.id = data["id"]
     item.name = data["name"]

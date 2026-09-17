@@ -31,4 +31,21 @@ def player_to_dict(player):
     else:
         saved_char["weapon"] = None
 
+    if player.head is not None:
+        saved_char["head"] = player.head.id
+    else:
+        saved_char["head"] = None
+
+    if player.chest is not None:
+        saved_char["chest"] = player.chest.id
+    else:
+        saved_char["chest"] = None
+
+    if player.feet is not None:
+        saved_char["feet"] = player.feet.id
+    else:
+        saved_char["feet"] = None
+
     return saved_char
+
+

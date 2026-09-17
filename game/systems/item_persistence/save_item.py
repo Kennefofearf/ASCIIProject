@@ -21,4 +21,8 @@ def item_to_dict(item):
         data["base_max_dmg"] = item.base_max_dmg
         data["attack_cooldown"] = item.attack_cooldown
 
+    if item.type == "armor":
+        data["base_ac"] = item.base_ac
+        data["slot"] = item.slot
+
     return data
