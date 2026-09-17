@@ -6,10 +6,10 @@ import pdb
 
 class Monster:
 
-    def __init__(self, name, icon, level, max_hp, hp, st, df, xp, respawn_delay, attack_cooldown, drop_chance):
+    def __init__(self, name, icon, lvl, max_hp, hp, st, df, xp, respawn_delay, attack_cooldown, drop_chance):
         self.name = name
         self.icon = icon
-        self.level = level
+        self.lvl = lvl
         self.max_hp = max_hp
         self.hp = hp
         self.st = st
@@ -77,6 +77,6 @@ class Monster:
 
 
 class GiantAnt(Monster):
-    def __init__(self, name="Giant Ant", icon="A", level=5, max_hp=60, hp=60, st=5, df=1, xp=2):
-        super().__init__(name, icon, level, max_hp, hp, st, df, xp, respawn_delay=None, attack_cooldown=2.0,
+    def __init__(self, name="Giant Ant", icon="A", lvl=5, max_hp=60, hp=60, st=5, df=1, xp=2):
+        super().__init__(name, icon, lvl, max_hp, hp, st, df, xp, respawn_delay=None, attack_cooldown=2.0,
                          drop_chance=1.0)
