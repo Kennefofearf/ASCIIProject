@@ -1,11 +1,5 @@
-import curses
-import modules.monster_module
 import random
 from modules.item_module import Item
-from data.skill_node_data import COMMON_NODES
-from data.affix_data import GREEN_AFFIXES
-from data.weapon import Weapon
-import time
 
 
 class Player:
@@ -211,6 +205,10 @@ class Player:
             bonus += Item.total_bonus(item, "hp_ra")
 
         return self.base_hp_ra + bonus
+
+    @property
+    def player_death(self):
+        return self._hp <= 0
 
     def has_equipped_ability(self, ability_id):
 

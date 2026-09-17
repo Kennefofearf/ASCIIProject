@@ -20,7 +20,7 @@ def character_select_screen(stdscr, saved_characters):
             else:
                 char_select_window.addstr(row, 1, character_name)
 
-        row += 1
+            row += 1
 
         char_select_window.refresh()
 

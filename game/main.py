@@ -72,6 +72,10 @@ def world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_off
     if player_hit or enemy_hit:
         draw_log(inner, combat_messages, scroll_offset)
 
+    if player.player_death:
+        add_log_messages(combat_messages, [(f"RIP...", 1)])
+        return True
+
     for e in enemies:
 
         update_active_effects(e, now, combat_messages)
@@ -102,6 +106,8 @@ def world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_off
         e.move(ey, ex)
 
     player.move(py, px)
+
+    return False
 
 
 def movement_area(win, y, x):
@@ -219,7 +225,10 @@ def gamestart(stdscr, player):
 
         py, px = player.input_action(key)
 
-        world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_offset)
+        player_died = world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_offset)
+
+        if player_died:
+            return
 
         if selected and not selected.alive:
             selected = None
@@ -228,20 +237,23 @@ def gamestart(stdscr, player):
 
 
 def main(stdscr):
-    print(curses.COLORS)
-    saved_characters = get_saved_characters()
-    choice = title_screen(stdscr, saved_characters)
+    while True:
+        saved_characters = get_saved_characters()
+        choice = title_screen(stdscr, saved_characters)
 
-    if choice == "new_game":
-        player_name = create_player_character(stdscr)
-        player = Player(player_name)
-        gamestart(stdscr, player)
+        if choice == "new_game":
+            player_name = create_player_character(stdscr)
+            player = Player(player_name)
+            gamestart(stdscr, player)
 
-    elif choice == "continue":
-        name = character_select_screen(stdscr, saved_characters)
-        data = load_character(name)
-        player = json_to_player(data)
-        gamestart(stdscr, player)
+        elif choice == "continue":
+            name = character_select_screen(stdscr, saved_characters)
+            data = load_character(name)
+            player = json_to_player(data)
+            gamestart(stdscr, player)
+
+        elif choice == "quit":
+            return 
 
 
 wrapper(main)
