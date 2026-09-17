@@ -13,7 +13,8 @@ def item_to_dict(item):
         "skill_points": item.skill_points,
         "skill_tags": item.skill_tags,
         "affixes": item.affixes,
-        "skill_tree": item.skill_tree
+        "skill_tree": item.skill_tree,
+        "unlocked_abilities": item.unlocked_abilities
     }
 
     if item.type == "weapon":

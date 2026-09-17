@@ -22,6 +22,7 @@ def json_to_player(data):
     player.lvl = data["lvl"]
     player.position = data["position"]
     player.inventory = []
+    player.ability_slots = data["ability_slots"]
     player.weapon = None
     player.head = None
     player.chest = None

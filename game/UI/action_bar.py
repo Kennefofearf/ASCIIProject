@@ -1,6 +1,7 @@
 import curses
 import time
 from data.weapons_abilities_data import COMMON_WEAPON_ABILITIES
+from UI.colors import UNAVAILABLE
 
 
 def create_action_bar(stdscr):
@@ -24,21 +25,21 @@ def draw_action_bar(action_bar, player):
     h, w = action_bar.getmaxyx()
     col = 2
 
-    #action_bar.addstr(1, 1, f"{player.ability_slots}")
     for slot, ability_id in player.ability_slots.items():
         if ability_id is not None:
             ability = COMMON_WEAPON_ABILITIES[ability_id]
 
-            action_bar.addstr(1, col, f"{slot}: {ability.name}")
-
-            cooldown_end = player.cooldowns.get(ability_id, 0)
-            remaining = cooldown_end - time.time()
-
-            if remaining > 0:
-                action_bar.addstr(1, col, f"{slot}: {remaining:.1f}")
-
+            if not player.weapon or ability_id not in player.weapon.unlocked_abilities:
+                action_bar.addstr(1, col, f"{slot}: {ability.name}", curses.color_pair(UNAVAILABLE))
             else:
-                action_bar.addstr(1, col, f"{slot}: {ability.name}")
+                cooldown_end = player.cooldowns.get(ability_id, 0)
+                remaining = cooldown_end - time.time()
+
+                if remaining > 0:
+                    action_bar.addstr(1, col, f"{slot}: {remaining:.1f}")
+
+                else:
+                    action_bar.addstr(1, col, f"{slot}: {ability.name}")
         else:
             action_bar.addstr(1, col, f"{slot}: None")
 

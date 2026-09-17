@@ -19,7 +19,8 @@ def player_to_dict(player):
         "total_req_xp": player.total_req_xp,
         "lvl": player.lvl,
         "position": player.position,
-        "inventory": []
+        "inventory": [],
+        "ability_slots": player.ability_slots
     }
 
     for item in player.inventory:

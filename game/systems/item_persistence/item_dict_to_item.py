@@ -29,5 +29,6 @@ def item_dict_to_item(data):
     item.skill_tags = data["skill_tags"]
     item.affixes = data["affixes"]
     item.skill_tree = skill_tree_from_dict(data["skill_tree"])
+    item.unlocked_abilities = data["unlocked_abilities"]
 
     return item

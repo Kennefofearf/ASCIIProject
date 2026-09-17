@@ -19,6 +19,9 @@ def can_use_ability(user, ability_id, now):
     if not user.weapon:
         return False, "Required weapon not equipped..."
 
+    if ability_id not in user.weapon.unlocked_abilities:
+            return False, "Required weapon not equipped..."
+
     if ability_id not in user.ability_slots.values():
         return False, "Ability not equipped..."
 

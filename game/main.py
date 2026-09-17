@@ -13,8 +13,7 @@ from UI.character_select_screen import character_select_screen
 from systems.player_persistence.load_charcter import load_character
 from systems.player_persistence.json_to_player import json_to_player
 from systems.player_persistence.get_saved_characters import get_saved_characters
-from systems.item_persistence.save_item import item_to_dict
-from systems.item_persistence.item_dict_to_item import item_dict_to_item
+from UI.colors import init_colors
 from UI.combat_log import create_combat_log_windows, draw_log, handle_scroll_log
 from UI.action_bar import create_action_bar, draw_action_bar
 from modules.player_module import Player
@@ -119,13 +118,7 @@ def add_log_messages(combat_messages, message_pair):
 
 def gamestart(stdscr, player):
     curses.cbreak()
-
-    curses.start_color()
-    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
-    curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK)
-    curses.init_pair(3, curses.COLOR_GREEN, curses.COLOR_BLACK)
-    curses.init_pair(4, curses.COLOR_BLUE, curses.COLOR_BLACK)
-    curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
+    init_colors()
 
     curses.noecho()
     curses.curs_set(0)
@@ -235,6 +228,7 @@ def gamestart(stdscr, player):
 
 
 def main(stdscr):
+    print(curses.COLORS)
     saved_characters = get_saved_characters()
     choice = title_screen(stdscr, saved_characters)
 
