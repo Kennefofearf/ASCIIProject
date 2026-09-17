@@ -253,7 +253,7 @@ def main(stdscr):
             gamestart(stdscr, player)
 
         elif choice == "quit":
-            return 
+            return
 
 
 wrapper(main)
