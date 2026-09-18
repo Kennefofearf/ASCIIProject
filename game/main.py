@@ -16,6 +16,7 @@ from systems.player_persistence.get_saved_characters import get_saved_characters
 from UI.colors import init_colors
 from UI.combat_log import create_combat_log_windows, draw_log, handle_scroll_log
 from UI.action_bar import create_action_bar, draw_action_bar
+from UI.create_game_windows import create_game_windows
 from modules.player_module import Player
 from modules.monster_module import GiantAnt
 from systems.player_persistence.save_character import player_to_dict
@@ -24,6 +25,9 @@ from systems.player_persistence.player_to_json import player_dict_to_json
 enemies = []
 
 ABILITY_KEYS = {ord("1"): "1", ord("2"): "2", ord("3"): "3", ord("4"): "4"}
+
+MIN_HEIGHT = 30
+MIN_WIDTH = 120
 
 for enemy in range(3):
     e = GiantAnt()
@@ -136,7 +140,6 @@ def gamestart(stdscr, player):
 
     stdscr.clear()
 
-    y, x = stdscr.getmaxyx()
     player.position = [20, 55]
 
     # Window rendering
@@ -156,8 +159,25 @@ def gamestart(stdscr, player):
     combat_messages = []
     log_height = inner.getmaxyx()[0]
     scroll_offset = 0
+    window_too_small = False
 
     while True:
+        y_max, x_max = stdscr.getmaxyx()
+
+        if y_max < MIN_HEIGHT or x_max < MIN_WIDTH:
+            window_too_small = True
+
+            stdscr.clear()
+            stdscr.addstr(0, 0, "Expand window to continue")
+            stdscr.refresh()
+            stdscr.getch()
+            continue
+
+        if window_too_small:
+            create_game_windows(stdscr)
+
+            window_too_small = False
+
         for y, x in prev_positions:
             stdscr.addch(y, x, ord(" "))
 
@@ -190,17 +210,18 @@ def gamestart(stdscr, player):
             open_inventory_window(stdscr, player)
 
         elif key == curses.KEY_RESIZE:
-            stdscr.clear()
-
-            enemy_window = create_enemy_window(stdscr)
-            outer, inner, outer_h, outer_w = create_combat_log_windows(stdscr)
-            player_window = create_player_window(stdscr)
-            gear_progress_window = create_gear_progress_window(stdscr)
-            action_bar = create_action_bar(stdscr)
-
-            log_height = inner.getmaxyx()[0]
-
-            stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
+            create_game_windows(stdscr)
+            # stdscr.clear()
+            #
+            # enemy_window = create_enemy_window(stdscr)
+            # outer, inner, outer_h, outer_w = create_combat_log_windows(stdscr)
+            # player_window = create_player_window(stdscr)
+            # gear_progress_window = create_gear_progress_window(stdscr)
+            # action_bar = create_action_bar(stdscr)
+            #
+            # log_height = inner.getmaxyx()[0]
+            #
+            # stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
 
         elif key == curses.KEY_MOUSE:
             _, mx, my, _, bstate, = curses.getmouse()

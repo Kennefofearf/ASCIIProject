@@ -72,7 +72,8 @@ class Monster:
             self.alive = True
             self.hp = self.max_hp
             self.respawn_delay = None
-            if self.position == player.position:
+            self.position = [random.randint(2, 19), random.randint(2, 99)]
+            while self.position == player.position:
                 self.position = [random.randint(2, 19), random.randint(2, 99)]
 
 
