@@ -83,12 +83,13 @@ def open_inventory_window(stdscr, player):
             item_color = get_rarity_color(item)
             row = 3 + index
 
+            # if len(display_name) >= inventory_width:
+            #     row = add_wrapped_text(inventory_window, row, 2, display_name, len(display_name) - 2,
+            #                            curses.color_pair(item_color))
+
             inventory_window.addstr(row, 2, display_name, curses.color_pair(item_color))
 
             item_rows[start_y + row] = item
-
-            # if drop_item:
-            #     inventory.remove(item)
 
         if selected_item:
 
