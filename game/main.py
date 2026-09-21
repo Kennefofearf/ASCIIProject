@@ -13,7 +13,7 @@ from UI.character_select_screen import character_select_screen
 from systems.player_persistence.load_charcter import load_character
 from systems.player_persistence.json_to_player import json_to_player
 from systems.player_persistence.get_saved_characters import get_saved_characters
-from UI.colors import init_colors
+from UI.colors import init_colors, RED_BG
 from UI.combat_log import create_combat_log_windows, draw_log, handle_scroll_log
 from UI.action_bar import create_action_bar, draw_action_bar
 from UI.create_game_windows import create_game_windows
@@ -78,6 +78,10 @@ def world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_off
 
     if player.player_death:
         add_log_messages(combat_messages, [(f"RIP...", 1)])
+        draw_log(inner, combat_messages, scroll_offset)
+        stdscr.addstr(player.position[0], player.position[1], player.icon, curses.color_pair(RED_BG))
+        stdscr.refresh()
+        time.sleep(3)
         return True
 
     for e in enemies:
