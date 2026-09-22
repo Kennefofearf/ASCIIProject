@@ -17,6 +17,7 @@ from UI.colors import init_colors, RED_BG
 from UI.combat_log import create_combat_log_windows, draw_log, handle_scroll_log
 from UI.action_bar import create_action_bar, draw_action_bar
 from UI.create_game_windows import create_game_windows
+from UI.character_sheet import show_character_sheet
 from modules.player_module import Player
 from modules.monster_module import GiantAnt
 from systems.player_persistence.save_character import player_to_dict
@@ -212,6 +213,10 @@ def gamestart(stdscr, player):
         elif key == ord("i"):
             player_window.clear()
             open_inventory_window(stdscr, player)
+
+        elif key == ord("c"):
+            player_window.clear()
+            show_character_sheet(stdscr, player)
 
         elif key == curses.KEY_RESIZE:
             create_game_windows(stdscr)
