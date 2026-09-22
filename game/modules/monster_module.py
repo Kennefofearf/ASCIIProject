@@ -7,7 +7,7 @@ import pdb
 class Monster:
 
     def __init__(self, name, icon, lvl, max_hp, hp, st, df, ac, mp, evasion, crit_rate,
-                 crit_dmg, hp_rr, hp_ra, xp, respawn_delay, attack_cooldown, drop_chance):
+                 crit_dmg, hp_rr, hp_ra, species, xp, respawn_delay, attack_cooldown, drop_chance):
         self.name = name
         self.icon = icon
         self.lvl = lvl
@@ -22,6 +22,7 @@ class Monster:
         self.crit_dmg = crit_dmg
         self.hp_rr = hp_rr
         self.hp_ra = hp_ra
+        self.species = species
         self.position = [random.randint(2, 19), random.randint(2, 99)]
         self.alive = True
         self.xp = xp
@@ -87,8 +88,9 @@ class Monster:
 
 class GiantAnt(Monster):
     def __init__(self, name="Giant Ant", icon="A", lvl=5, max_hp=60, hp=60, st=5, df=1, ac=0, mp=0, evasion=1,
-                 crit_rate=0, crit_dmg=0, hp_rr=5, hp_ra=1,
+                 crit_rate=0, crit_dmg=0, hp_rr=5, hp_ra=1, species="insect",
                  xp=2):
-        super().__init__(name, icon, lvl, max_hp, hp, st, df, ac, mp, evasion, crit_rate, crit_dmg, hp_rr, hp_ra, xp,
+        super().__init__(name, icon, lvl, max_hp, hp, st, df, ac, mp, evasion, crit_rate, crit_dmg, hp_rr, hp_ra,
+                         species, xp,
                          respawn_delay=None, attack_cooldown=2.0,
                          drop_chance=1.0)

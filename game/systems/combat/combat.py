@@ -31,6 +31,15 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
             else:
                 dmg = player.st - target.df
 
+            if player.weapon:
+                species_bonus = player.get_species_damage_bonus(target.species)
+
+                dmg *= 1 + species_bonus
+
+            if player.weapon and player.weapon.has_node("parry") and player.can_parry:
+                dmg += 20
+                player.parry_ready = False
+
             crit_roll = random.randint(1, 100)
             is_crit = player.crit_rate >= crit_roll
 
@@ -85,6 +94,7 @@ def enemy_auto_attack_logic(enemies, player, add_log_messages, combat_messages):
                 player_def_total = player.df + player.ac
 
                 if player_evasion_total >= evasion_roll:
+                    player.parry_ready = True
 
                     if player.feet:
                         Item.gain_item_xp(player.feet, 5)

@@ -1,5 +1,6 @@
 import random
 from modules.item_module import Item
+from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, NODE_POOLS
 
 
 class Player:
@@ -27,6 +28,7 @@ class Player:
         self.damaged = False
         self.active_effects = []
         self.cooldowns = {}
+        self.parry_ready = False
 
         # progression
 
@@ -209,6 +211,24 @@ class Player:
     @property
     def player_death(self):
         return self._hp <= 0
+
+    def get_species_damage_bonus(self, species):
+        bonus_dmg = 0
+
+        for item in [self.weapon, self.head, self.chest, self.feet]:
+            if not item:
+                continue
+
+            for node in self.skill_tree["nodes"].values():
+                if node["points"] > 0:
+
+                    node_pool = NODE_POOLS[node["node_rarity"]]
+                    node_data = node_pool[node["node_id"]]
+
+                    if species in node_data.damage_modifiers:
+                        bonus_dmg += node_data.damage_modifiers[species] * node["points"]
+
+        return bonus_dmg
 
     def has_equipped_ability(self, ability_id):
 

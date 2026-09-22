@@ -143,6 +143,117 @@ COMMON_NODES = {
                 unlocks=[],
                 skill_tags=["weapon", "armor"]
             ),
+            "first aid training": Node(
+                name="First Aid Training",
+                tooltip="You quickly tend to your wounds.",
+                points=0,
+                max_points=3,
+                stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0.3, "hp_ra": 0},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            ),
+            "quick reflexes": Node(
+                name="Quick Reflexes",
+                tooltip="Your reaction time gets better with practice.",
+                points=0,
+                max_points=3,
+                stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 1, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+                requires=[],
+                unlocks=[],
+                skill_tags=["armor"]
+            ),
+            "meditation": Node(
+                name="Meditation",
+                tooltip="Clear your mind when relaxing.",
+                points=0,
+                max_points=3,
+                stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 1},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            ),
+            "study": Node(
+                name="Study",
+                tooltip="Knowledge is power.",
+                points=0,
+                max_points=3,
+                stats={"max_hp": 0, "st": 0, "df": 0, "mp": 1, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            ),
+            "called shot": Node(
+                name="Called Shot",
+                tooltip="You aim for their weak point.",
+                points=0,
+                max_points=3,
+                stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 1, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            ),
+            "parry": Node(
+                name="Parry",
+                tooltip="You retaliate after dodging, doing +20 damage on the next auto attack.",
+                points=0,
+                max_points=1,
+                stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon"]
+            ),
+            "exterminator": Node(
+                name="Exterminator",
+                tooltip="Damage against insects increases by 5%.",
+                points=0,
+                max_points=3,
+                stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon"],
+                damage_modifiers={"insect": 0.05}
+            ),
+            "nsuns": Node(
+                name="nSuns",
+                tooltip="High-volume progression lifting.",
+                points=0,
+                max_points=1,
+                stats={"max_hp": 5, "st": 3, "df": 1, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            ),
+            "trained nerve endings": Node(
+                name="Trained Nerve Endings",
+                tooltip="You train your nerve endings to anticipate damage.",
+                points=0,
+                max_points=1,
+                stats={"max_hp": 0, "st": 0, "df": 4, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            ),
+            "cardio": Node(
+                name="Cardio",
+                tooltip="You run 1 mile per rank every morning.",
+                points=0,
+                max_points=3,
+                stats={"max_hp": 3, "st": 0, "df": 0, "mp": 0, "ev": 1, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+                requires=[],
+                unlocks=[],
+                skill_tags=["armor"]
+            ),
+            "accidental damage": Node(
+                name="Accidental Damage",
+                tooltip="You don't know your own strength.",
+                points=0,
+                max_points=3,
+                stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 3, "hp_rr": 0, "hp_ra": 0},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            ),
             "bash": Node(
                 name="Bash",
                 tooltip="Unlocks Bash",
