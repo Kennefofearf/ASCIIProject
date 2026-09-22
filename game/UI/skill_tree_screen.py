@@ -4,11 +4,14 @@ from data.skill_node_data import CAPSTONE_NODES, STAT_NAMES, NODE_POOLS
 from UI.colors import get_rarity_color, get_color_from_rarity
 import json
 
+ASSIGN_HOTKEY = {ord("1"): "1", ord("2"): "2", ord("3"): "3", ord("4"): "4"}
+
 
 def dbg(data):
     with open("debug.txt", "a") as f:
         f.write(json.dumps(data, indent=4))
         f.write("\n\n")
+
 
 def get_node_tier_rarity(slot_index):
     if slot_index <= 8:
@@ -54,9 +57,6 @@ def draw_node(window, y, x, label, node, is_selected, border_color):
     else:
 
         label_attr = curses.A_NORMAL
-
-
-
 
     rank = f"{node['points']}/{node['max_points']}"
     window.addstr(y + 4, x + 1, rank, label_attr)
@@ -117,8 +117,6 @@ def unlock_adjacent_nodes(selected_item, selected_slot):
         elif second_slot == selected_slot:
             if first_slot in nodes:
                 nodes[first_slot]["available"] = True
-
-
 
 
 def open_skill_tree(stdscr, selected_item, player):
@@ -269,6 +267,12 @@ def open_skill_tree_node_window(stdscr, selected_item, selected_slot, player):
             elif not node["available"]:
                 row += 1
                 node_description_window.addstr(row, 2, f"Node is not yet unlocked.")
+
+        elif key in ASSIGN_HOTKEY:
+            if node_rank > 0 and selected_item == player.weapon:
+                slot = ASSIGN_HOTKEY[key]
+                ability_id = node_data.unlocks
+                player.equip_ability(ability_id, slot)
 
             node_description_window.refresh()
 

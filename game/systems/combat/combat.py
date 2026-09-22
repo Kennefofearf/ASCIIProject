@@ -62,11 +62,9 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
                     add_log_messages(combat_messages, [(f"Inventory is full.", 1)])
                 else:
                     player.inventory.append(dropped_item)
-
-                item_color = get_rarity_color(dropped_item)
-
-                add_log_messages(combat_messages, [(f"Picked up: ", 0),
-                                                   (f"{dropped_item.name}", item_color)])
+                    item_color = get_rarity_color(dropped_item)
+                    add_log_messages(combat_messages, [(f"Picked up: ", 0),
+                                                       (f"{dropped_item.name}", item_color)])
 
             player.target = None
 

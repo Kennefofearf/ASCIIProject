@@ -8,6 +8,7 @@ from data.affix_data import ALL_AFFIXES
 from UI.colors import get_rarity_color
 from UI.skill_tree_screen import open_skill_tree
 
+
 def dbg(data):
     with open("debug.txt", "a") as f:
         f.write(json.dumps(data, indent=4))
@@ -70,7 +71,9 @@ def open_inventory_window(stdscr, player):
 
         item_rows = {}
 
-        for index, item in enumerate(inventory):
+        row = 3
+
+        for item in inventory:
 
             display_name = item.name
 
@@ -81,15 +84,15 @@ def open_inventory_window(stdscr, player):
                     display_name = "* " + display_name
 
             item_color = get_rarity_color(item)
-            row = 3 + index
 
-            # if len(display_name) >= inventory_width:
-            #     row = add_wrapped_text(inventory_window, row, 2, display_name, len(display_name) - 2,
-            #                            curses.color_pair(item_color))
+            item_start_row = row
 
-            inventory_window.addstr(row, 2, display_name, curses.color_pair(item_color))
+            row = add_wrapped_text(inventory_window, row, 2, display_name, inventory_width - 4,
+                                   curses.color_pair(item_color))
 
-            item_rows[start_y + row] = item
+            for clickable_row in range(item_start_row, row):
+
+                item_rows[start_y + clickable_row] = item
 
         if selected_item:
 

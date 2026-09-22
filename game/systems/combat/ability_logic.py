@@ -44,7 +44,7 @@ def update_active_effects(unit, now, combat_messages=None):
             if now >= effect.next_tick:
                 dmg = effect.damage
                 unit.take_dmg(dmg)
-                if combat_messages is not None:
+                if combat_messages is not None and unit.alive:
                     combat_messages.append([(f"{unit.name} ", 1), (f"{effect.verb} ", 0), (f"{effect.damage} ", 2),
                                             ("damage.", 0)])
                 effect.next_tick += effect.interval
