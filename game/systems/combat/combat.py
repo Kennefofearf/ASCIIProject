@@ -31,14 +31,12 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
             else:
                 dmg = player.st - target.df
 
-            if player.weapon:
-                species_bonus = player.get_species_damage_bonus(target.species)
-
-                dmg *= 1 + species_bonus
-
             if player.weapon and player.weapon.has_node("parry") and player.can_parry:
                 dmg += 20
                 player.parry_ready = False
+
+            species_bonus = player.get_species_damage_bonus(target.species)
+            dmg *= 1 + species_bonus
 
             crit_roll = random.randint(1, 100)
             is_crit = player.crit_rate >= crit_roll
@@ -67,7 +65,7 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
             dropped_item = roll_item_drop(target)
 
             if dropped_item:
-                if len(player.inventory) >= 25:
+                if len(player.inventory) >= 20:
                     add_log_messages(combat_messages, [(f"Inventory is full.", 1)])
                 else:
                     player.inventory.append(dropped_item)

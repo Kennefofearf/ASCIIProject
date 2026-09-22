@@ -219,11 +219,15 @@ class Player:
             if not item:
                 continue
 
-            for node in self.skill_tree["nodes"].values():
+            for node in item.skill_tree["nodes"].values():
                 if node["points"] > 0:
 
-                    node_pool = NODE_POOLS[node["node_rarity"]]
-                    node_data = node_pool[node["node_id"]]
+                    if node["node_type"] == "capstone":
+                        node_pool = CAPSTONE_NODES[node["capstone_rarity"]]
+                        node_data = node_pool[node["node_id"]]
+                    else:
+                        node_pool = NODE_POOLS[node["node_rarity"]]
+                        node_data = node_pool[node["node_id"]]
 
                     if species in node_data.damage_modifiers:
                         bonus_dmg += node_data.damage_modifiers[species] * node["points"]

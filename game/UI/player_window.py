@@ -63,25 +63,25 @@ def draw_gear_progress_window(gear_progress_window, player):
     gear_progress_window.addstr(1, (w // 2) - (len(window_title) // 2), window_title)
     if player.head:
         xp_percentage = player.head.get_xp_percentage()
-        gear_progress_window.addstr(3, 1, f"  Head: {xp_percentage}%")
+        gear_progress_window.addstr(3, 1, f"  Head: {xp_percentage}% [{player.head.skill_points}]")
     else:
         gear_progress_window.addstr(3, 1, f"  Head: None")
 
     if player.chest:
         xp_percentage = player.chest.get_xp_percentage()
-        gear_progress_window.addstr(4, 1, f" Chest: {xp_percentage}%")
+        gear_progress_window.addstr(4, 1, f" Chest: {xp_percentage}% [{player.chest.skill_points}]")
     else:
         gear_progress_window.addstr(4, 1, f" Chest: None")
 
     if player.feet:
         xp_percentage = player.feet.get_xp_percentage()
-        gear_progress_window.addstr(5, 1, f"  Feet: {xp_percentage}%")
+        gear_progress_window.addstr(5, 1, f"  Feet: {xp_percentage}% [{player.feet.skill_points}]")
     else:
         gear_progress_window.addstr(5, 1, f"  Feet: None")
 
     if player.weapon:
         xp_percentage = player.weapon.get_xp_percentage()
-        gear_progress_window.addstr(6, 1, f"Weapon: {xp_percentage}%")
+        gear_progress_window.addstr(6, 1, f"Weapon: {xp_percentage}% [{player.weapon.skill_points}]")
     else:
         gear_progress_window.addstr(6, 1, f"Weapon: None")
 

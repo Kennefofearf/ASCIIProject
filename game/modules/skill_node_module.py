@@ -9,4 +9,4 @@ class Node:
         self.requires = requires
         self.unlocks = unlocks
         self.skill_tags = skill_tags
-        self.damage_modifiers = {}
+        self.damage_modifiers = damage_modifiers or {}
