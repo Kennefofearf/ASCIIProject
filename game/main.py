@@ -19,7 +19,7 @@ from UI.action_bar import create_action_bar, draw_action_bar
 from UI.create_game_windows import create_game_windows
 from UI.character_sheet import show_character_sheet
 from modules.player_module import Player
-from modules.monster_module import GiantAnt
+from modules.monster_module import GiantAnt, Kobold, Bear, AntQueen
 from systems.player_persistence.save_character import player_to_dict
 from systems.player_persistence.player_to_json import player_dict_to_json
 
@@ -30,9 +30,15 @@ ABILITY_KEYS = {ord("1"): "1", ord("2"): "2", ord("3"): "3", ord("4"): "4"}
 MIN_HEIGHT = 30
 MIN_WIDTH = 120
 
-for enemy in range(3):
-    e = GiantAnt()
-    enemies.append(e)
+for enemy in [GiantAnt, Kobold, Bear]:
+    for _ in range(3):
+        e = enemy()
+        enemies.append(e)
+
+for elite in [AntQueen]:
+    for _ in range(1):
+        e = elite()
+        enemies.append(e)
 
 
 def mouse_actions(mx, my, bstate, player):
@@ -220,17 +226,6 @@ def gamestart(stdscr, player):
 
         elif key == curses.KEY_RESIZE:
             create_game_windows(stdscr)
-            # stdscr.clear()
-            #
-            # enemy_window = create_enemy_window(stdscr)
-            # outer, inner, outer_h, outer_w = create_combat_log_windows(stdscr)
-            # player_window = create_player_window(stdscr)
-            # gear_progress_window = create_gear_progress_window(stdscr)
-            # action_bar = create_action_bar(stdscr)
-            #
-            # log_height = inner.getmaxyx()[0]
-            #
-            # stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
 
         elif key == curses.KEY_MOUSE:
             _, mx, my, _, bstate, = curses.getmouse()

@@ -51,6 +51,10 @@ class Item:
             stat_value = node_data.stats.get(stat, 0)
             total += stat_value * node["points"]
 
+        if stat == "max_hp" and item.has_node("blessing of health"):
+            for node in item.skill_tree["nodes"].values():
+                total += 2 * node["points"]
+
         return total
 
     @staticmethod

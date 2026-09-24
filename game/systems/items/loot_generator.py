@@ -229,7 +229,7 @@ def generate_item_skill_tree(base, layout):
             for node_id, node_data in base_pool.items():
                 node_tags = node_data.skill_tags
 
-                if (any(tag in item_tags for tag in node_tags) and node_id not in used_node_ids):
+                if any(tag in item_tags for tag in node_tags) and node_id not in used_node_ids:
                     possible_nodes[node_id] = node_data
 
             node_pool = possible_nodes
@@ -293,6 +293,9 @@ def generate_item(base_id, item_level):
     item.max_xp = base.get("max_xp", 100)
     item.skill_tags = base.get("skill_tags", [])
     item.abilities = base.get("abilities", [])
+
+    if item.type == "weapon":
+        item.max_xp = item.calculate_item_xp_requirement()
 
     item.affixes, available_affixes = choose_affixes(item_level=item_level, item_type=item.type)
 

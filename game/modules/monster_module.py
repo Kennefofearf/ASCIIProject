@@ -87,10 +87,40 @@ class Monster:
 
 
 class GiantAnt(Monster):
-    def __init__(self, name="Giant Ant", icon="A", lvl=5, max_hp=60, hp=60, st=5, df=1, ac=0, mp=0, evasion=1,
+    def __init__(self, name="Giant Ant", icon="a", lvl=2, max_hp=60, hp=60, st=5, df=1, ac=0, mp=0, evasion=1,
                  crit_rate=0, crit_dmg=0, hp_rr=5, hp_ra=1, species="insect",
                  xp=2):
         super().__init__(name, icon, lvl, max_hp, hp, st, df, ac, mp, evasion, crit_rate, crit_dmg, hp_rr, hp_ra,
                          species, xp,
                          respawn_delay=None, attack_cooldown=2.0,
+                         drop_chance=1.0)
+
+
+class Kobold(Monster):
+    def __init__(self, name="Kobold", icon="k", lvl=3, max_hp=200, hp=200, st=15, df=5, ac=0, mp=0, evasion=1,
+                 crit_rate=0, crit_dmg=0, hp_rr=5, hp_ra=1, species="humanoid",
+                 xp=8):
+        super().__init__(name, icon, lvl, max_hp, hp, st, df, ac, mp, evasion, crit_rate, crit_dmg, hp_rr, hp_ra,
+                         species, xp,
+                         respawn_delay=None, attack_cooldown=1.0,
+                         drop_chance=1.0)
+
+
+class Bear(Monster):
+    def __init__(self, name="Bear", icon="b", lvl=4, max_hp=350, hp=350, st=20, df=8, ac=0, mp=0, evasion=1,
+                 crit_rate=0, crit_dmg=0, hp_rr=5, hp_ra=1, species="beast",
+                 xp=12):
+        super().__init__(name, icon, lvl, max_hp, hp, st, df, ac, mp, evasion, crit_rate, crit_dmg, hp_rr, hp_ra,
+                         species, xp,
+                         respawn_delay=None, attack_cooldown=2.0,
+                         drop_chance=1.0)
+
+
+class AntQueen(Monster):
+    def __init__(self, name="Ant Queen", icon="A", lvl=7, max_hp=1000, hp=1000, st=32, df=15, ac=0, mp=0, evasion=5,
+                 crit_rate=0, crit_dmg=0, hp_rr=10, hp_ra=7, species="humanoid",
+                 xp=50):
+        super().__init__(name, icon, lvl, max_hp, hp, st, df, ac, mp, evasion, crit_rate, crit_dmg, hp_rr, hp_ra,
+                         species, xp,
+                         respawn_delay=None, attack_cooldown=1.5,
                          drop_chance=1.0)

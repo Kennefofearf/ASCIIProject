@@ -45,7 +45,7 @@ class Weapon(Item):
 
         weapon_speed = self.attack_cooldown
 
-        xp_requirement = (average_attack_cooldown / weapon_speed) * 100
+        xp_requirement = 100 - ((weapon_speed - average_attack_cooldown) * 50)
 
         return round(xp_requirement)
 

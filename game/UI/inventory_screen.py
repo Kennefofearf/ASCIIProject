@@ -44,6 +44,8 @@ def get_item_stat_bonus(item, stat):
         affix_data = ALL_AFFIXES[affix_id]
         total += affix_data.affix_stats.get(stat, 0)
 
+    total += item.skill_tree_bonus(item, stat)
+
     return total
 
 

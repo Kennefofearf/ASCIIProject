@@ -1,7 +1,7 @@
 import curses
 import textwrap
 from data.skill_node_data import CAPSTONE_NODES, STAT_NAMES, NODE_POOLS
-from UI.colors import get_rarity_color, get_color_from_rarity
+from UI.colors import get_rarity_color, get_color_from_rarity, GREEN
 import json
 
 ASSIGN_HOTKEY = {ord("1"): "1", ord("2"): "2", ord("3"): "3", ord("4"): "4"}
@@ -229,6 +229,11 @@ def open_skill_tree_node_window(stdscr, selected_item, selected_slot, player):
 
         row += 3
 
+        if selected_item.has_node("blessing of health") and node["points"] > 0:
+            node_description_window.addstr(row, 2, f"Blessing of Health (HP: {2 * node['points']})",
+                                           curses.color_pair(GREEN))
+            row += 2
+
         node_description_window.addstr(row, 2, f"Rank: {node_rank}/{max_node_rank}")
         row += 1
         node_description_window.addstr(row, 2, f"Available Points: {available_skill_points}")
@@ -244,6 +249,11 @@ def open_skill_tree_node_window(stdscr, selected_item, selected_slot, player):
             if node_rank < max_node_rank and available_skill_points > 0 and node["available"]:
                 node["points"] += 1
                 selected_item.skill_points -= 1
+
+                if 0 < node["points"] < 2:
+                    print(f"TRUE")
+                    player.get_boh_bonus()
+                    print(player.get_boh_bonus())
 
                 for ability_id in node_data.unlocks:
                     selected_item.unlock_ability(ability_id)

@@ -347,17 +347,17 @@ CAPSTONE_NODES = {
                 unlocks=[],
                 skill_tags=["weapon", "armor"]
             ),
-            # "blessing of health": Node(
-            #     name="Blessing of Health",
-            #     tooltip="You're blessed with good health. Every active node on this piece of equipment gains +2 HP "
-            #             "in addition to its other bonuses.",
-            #     points=0,
-            #     max_points=1,
-            #     stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
-            #     requires=[],
-            #     unlocks=[],
-            #     skill_tags=["weapon", "armor"]
-            # ),
+            "blessing of health": Node(
+                name="Blessing of Health",
+                tooltip="You're blessed with good health. Every invested skill point on this piece of equipment "
+                        "gains +2 HP in addition to its other bonuses.",
+                points=0,
+                max_points=1,
+                stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            ),
             # "apprentice": Node(
             #     name="Apprentice",
             #     tooltip="Equipment in your other slots gain +1 xp.",

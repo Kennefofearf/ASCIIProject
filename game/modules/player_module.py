@@ -75,6 +75,8 @@ class Player:
                 continue
             bonus += Item.total_bonus(item, "max_hp")
 
+        bonus += self.get_boh_bonus()
+
         return self.base_max_hp + bonus
 
     # @max_hp.setter
@@ -227,6 +229,20 @@ class Player:
                 bonus_dmg += percent_bonus
 
         return bonus_dmg
+
+    def get_boh_bonus(self):
+        bonus = 0
+
+        for item in [self.weapon, self.head, self.chest, self.feet]:
+            if not item:
+                continue
+
+            if item.has_node("blessing of health"):
+                for node in item.skill_tree["nodes"].values():
+
+                    bonus += 2 * node["points"]
+
+        return bonus
 
     def get_species_damage_bonus(self, species):
         bonus_dmg = 0
