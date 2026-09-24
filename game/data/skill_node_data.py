@@ -254,9 +254,19 @@ COMMON_NODES = {
                 unlocks=[],
                 skill_tags=["weapon", "armor"]
             ),
+            # "luck-pricon": Node(
+            #     name="Luck-pricon",
+            #     tooltip="You feel lucky. Chances of finding a green item increase by 2%.",
+            #     points=0,
+            #     max_points=3,
+            #     stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 3, "hp_rr": 0, "hp_ra": 0},
+            #     requires=[],
+            #     unlocks=[],
+            #     skill_tags=["weapon", "armor"]
+            # ),
             "bash": Node(
                 name="Bash",
-                tooltip="Unlocks Bash",
+                tooltip="Bash the target with the hilt of your weapon for base 10 damage.",
                 points=0,
                 max_points=1,
                 stats={},
@@ -326,7 +336,38 @@ CAPSTONE_NODES = {
                 requires=[],
                 unlocks=[],
                 skill_tags=["weapon", "armor"]
-            )
+            ),
+            # "blessing of health": Node(
+            #     name="Blessing of Health",
+            #     tooltip="You're blessed with good health. Every active node on this piece of equipment gains +2 HP "
+            #             "in addition to its other bonuses.",
+            #     points=0,
+            #     max_points=1,
+            #     stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+            #     requires=[],
+            #     unlocks=[],
+            #     skill_tags=["weapon", "armor"]
+            # ),
+            # "apprentice": Node(
+            #     name="Apprentice",
+            #     tooltip="Equipment in your other slots gain +1 xp.",
+            #     points=0,
+            #     max_points=1,
+            #     stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+            #     requires=[],
+            #     unlocks=[],
+            #     skill_tags=["weapon", "armor"]
+            # ),
+            # "raw numbers": Node(
+            #     name="Raw Numbers",
+            #     tooltip="Increases your minimum damage by 3 and maximum damage by 5.",
+            #     points=0,
+            #     max_points=1,
+            #     stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+            #     requires=[],
+            #     unlocks=[],
+            #     skill_tags=["weapon"]
+            # )
     },
     "green": {
             "level up": Node(
@@ -335,6 +376,27 @@ CAPSTONE_NODES = {
                 points=0,
                 max_points=1,
                 stats={"max_hp": 10, "st": 5, "df": 5, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            ),
+            # "procrastination devastation": Node(
+            #     name="Procrastination Devastation",
+            #     tooltip="Waiting until the last second will always bring efficiency. "
+            #             "Damage increases by 1% for every unspent skill point on this piece of equipment.",
+            #     points=0,
+            #     max_points=1,
+            #     stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+            #     requires=[],
+            #     unlocks=[],
+            #     skill_tags=["weapon", "armor"]
+            # ),
+            "surge of strength": Node(
+                name="Surge of Strength",
+                tooltip="Your equipment suddenly feels much lighter.",
+                points=0,
+                max_points=1,
+                stats={"max_hp": 0, "st": 15, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
                 requires=[],
                 unlocks=[],
                 skill_tags=["weapon", "armor"]

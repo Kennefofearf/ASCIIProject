@@ -29,6 +29,7 @@ class Player:
         self.active_effects = []
         self.cooldowns = {}
         self.parry_ready = False
+        self.pro_dev_on = False
 
         # progression
 

@@ -212,6 +212,7 @@ def generate_item_skill_tree(base, layout):
     item_tags = base.get("skill_tags", [])
 
     nodes = {}
+    used_node_ids = set()
 
     for slot_index in valid_slot_indexes:
         capstone_rarity = layout["capstones"].get(slot_index)
@@ -228,13 +229,16 @@ def generate_item_skill_tree(base, layout):
             for node_id, node_data in base_pool.items():
                 node_tags = node_data.skill_tags
 
-                if any(tag in item_tags for tag in node_tags):
+                if (any(tag in item_tags for tag in node_tags) and node_id not in used_node_ids):
                     possible_nodes[node_id] = node_data
 
             node_pool = possible_nodes
             node_type = "common"
 
         node_id = random.choice(list(node_pool.keys()))
+
+        if node_type == "common":
+            used_node_ids.add(node_id)
 
         entry_slots = layout.get("entry_slots", [])
 
