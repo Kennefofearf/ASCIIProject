@@ -276,12 +276,22 @@ COMMON_NODES = {
             ),
             "gash": Node(
                 name="Gash",
-                tooltip="Give the target a deep cut. Dealing 10 damage over 5 seconds",
+                tooltip="Give the target a deep cut. Dealing 10 damage over 5 seconds.",
                 points=0,
                 max_points=1,
                 stats={},
                 requires=[],
                 unlocks=["gash"],
+                skill_tags=["weapon"]
+            ),
+            "quick hit": Node(
+                name="Quick Hit",
+                tooltip="Hit the target quickly for 5 damage. Fast cooldown.",
+                points=0,
+                max_points=1,
+                stats={},
+                requires=[],
+                unlocks=["quick hit"],
                 skill_tags=["weapon"]
             )
         }
