@@ -12,6 +12,8 @@ def is_adjacent(p1, p2):
 
 
 def player_auto_attack_logic(player, add_log_messages, combat_messages):
+    equipment = [player.weapon, player.head, player.chest, player.feet]
+
     target = player.target
 
     if target is None:
@@ -31,12 +33,15 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
             else:
                 dmg = player.st - target.df
 
-            if player.weapon and player.weapon.has_node("parry") and player.can_parry:
+            if player.weapon and player.weapon.has_node("parry") and player.parry_ready:
                 dmg += 20
                 player.parry_ready = False
 
             species_bonus = player.get_species_damage_bonus(target.species)
             dmg *= 1 + species_bonus
+
+            procrastination_bonus = player.get_pro_dev_bonus()
+            dmg *= 1 + procrastination_bonus
 
             crit_roll = random.randint(1, 100)
             is_crit = player.crit_rate >= crit_roll

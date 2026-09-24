@@ -2,6 +2,7 @@ from data.skill_node_data import COMMON_NODES, CAPSTONE_NODES, NODE_POOLS
 from data.affix_data import ALL_AFFIXES
 from systems.items.item_scaling import get_item_level_multiplier
 
+
 class Item:
     def __init__(self):
 
@@ -20,20 +21,6 @@ class Item:
         self.unlocked_abilities = []
         self.affixes = []
         self.skill_tags = []
-
-    # def get_species_damage_bonus(self, species):
-    #     bonus_dmg = 0
-    #
-    #     for node in self.skill_tree["nodes"].values():
-    #         if node["points"] > 0:
-    #
-    #             node_pool = NODE_POOLS[node["node_rarity"]]
-    #             node_data = node_pool[node["node_id"]]
-    #
-    #             if species in node_data.damage_modifiers:
-    #                 bonus_dmg += node_data.damage_modifiers[species] * node["points"]
-    #
-    #     return bonus_dmg
 
     def has_node(self, node_id):
         for node in self.skill_tree["nodes"].values():

@@ -28,8 +28,10 @@ class Player:
         self.damaged = False
         self.active_effects = []
         self.cooldowns = {}
+
+        # combat passives
+
         self.parry_ready = False
-        self.pro_dev_on = False
 
         # progression
 
@@ -212,6 +214,19 @@ class Player:
     @property
     def player_death(self):
         return self._hp <= 0
+
+    def get_pro_dev_bonus(self):
+        bonus_dmg = 0
+
+        for item in [self.weapon, self.head, self.chest, self.feet]:
+            if not item:
+                continue
+
+            if item.has_node("procrastination devastation"):
+                percent_bonus = (0.01 * item.skill_points)
+                bonus_dmg += percent_bonus
+
+        return bonus_dmg
 
     def get_species_damage_bonus(self, species):
         bonus_dmg = 0

@@ -390,17 +390,17 @@ CAPSTONE_NODES = {
                 unlocks=[],
                 skill_tags=["weapon", "armor"]
             ),
-            # "procrastination devastation": Node(
-            #     name="Procrastination Devastation",
-            #     tooltip="Waiting until the last second will always bring efficiency. "
-            #             "Damage increases by 1% for every unspent skill point on this piece of equipment.",
-            #     points=0,
-            #     max_points=1,
-            #     stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
-            #     requires=[],
-            #     unlocks=[],
-            #     skill_tags=["weapon", "armor"]
-            # ),
+            "procrastination devastation": Node(
+                name="Procrastination Devastation",
+                tooltip="Waiting until the last second will always bring efficiency. "
+                        "Damage increases by 1% for every unspent skill point on this piece of equipment.",
+                points=0,
+                max_points=1,
+                stats={"max_hp": 0, "st": 0, "df": 0, "mp": 0, "ev": 0, "cr": 0, "cd": 0, "hp_rr": 0, "hp_ra": 0},
+                requires=[],
+                unlocks=[],
+                skill_tags=["weapon", "armor"]
+            ),
             "surge of strength": Node(
                 name="Surge of Strength",
                 tooltip="Your equipment suddenly feels much lighter.",
