@@ -23,14 +23,15 @@ This is a terminal-based role-playing game developed with Python's `curses` libr
 
 Keyboard and mouse are currently required.
 
-| Input | Action |
-| --- | --- |
-| W, A, S, D | Move |
-| Q | Return to the previous menu; save and quit when outside menus |
-| I | Open inventory |
-| Left click an enemy | Target it; the target turns red. You must target an enemy before attacking it. |
-| Left click an inventory item | View its description; additional controls appear in that window. |
-| Left click a skill tree node | View its details; additional controls appear there. |
+| Input                         | Action                                                                         |
+|-------------------------------|--------------------------------------------------------------------------------|
+| W, A, S, D                    | Move                                                                           |
+| Q                             | Return to the previous menu; save and quit when outside menus                  |
+| I                             | Open inventory                                                                 |
+| Left click an enemy           | Target it; the target turns red. You must target an enemy before attacking it. |
+| Left click an inventory item  | View its description; additional controls appear in that window.               |
+| Right click an inventory item | Remove the item from your inventory.                                           |
+| Left click a skill tree node  | View its details; additional controls appear there.                            |
 
 ## Installation
 
