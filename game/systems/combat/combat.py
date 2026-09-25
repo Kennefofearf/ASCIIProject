@@ -62,7 +62,7 @@ def player_auto_attack_logic(player, add_log_messages, combat_messages):
                                                    ("!", 0)])
 
             if player.weapon:
-                Item.gain_item_xp(player.weapon, 20)
+                Item.gain_item_xp(player.weapon, 3)
 
         if not target.alive:
             player.xp_gain(target.xp)
@@ -100,10 +100,10 @@ def enemy_auto_attack_logic(enemies, player, add_log_messages, combat_messages):
                     player.parry_ready = True
 
                     if player.feet:
-                        Item.gain_item_xp(player.feet, 5)
+                        Item.gain_item_xp(player.feet, 10)
 
                     if player.head:
-                        Item.gain_item_xp(player.head, 1)
+                        Item.gain_item_xp(player.head, 3)
 
                     add_log_messages(combat_messages,
                                      [(f"{player.name} ", 2), ("evades the attack!", 0)])
@@ -118,10 +118,10 @@ def enemy_auto_attack_logic(enemies, player, add_log_messages, combat_messages):
                 player.take_dmg(max(0, dmg))
 
                 if player.chest:
-                    Item.gain_item_xp(player.chest, 1)
+                    Item.gain_item_xp(player.chest, 3)
 
                 if player.head:
-                    Item.gain_item_xp(player.head, 1)
+                    Item.gain_item_xp(player.head, 3)
 
                 enemy.last_attack_time = now
                 add_log_messages(combat_messages,

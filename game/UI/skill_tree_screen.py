@@ -251,9 +251,7 @@ def open_skill_tree_node_window(stdscr, selected_item, selected_slot, player):
                 selected_item.skill_points -= 1
 
                 if 0 < node["points"] < 2:
-                    print(f"TRUE")
                     player.get_boh_bonus()
-                    print(player.get_boh_bonus())
 
                 for ability_id in node_data.unlocks:
                     selected_item.unlock_ability(ability_id)
@@ -281,8 +279,8 @@ def open_skill_tree_node_window(stdscr, selected_item, selected_slot, player):
         elif key in ASSIGN_HOTKEY:
             if node_rank > 0 and selected_item == player.weapon:
                 slot = ASSIGN_HOTKEY[key]
-                ability_id = node_data.unlocks
-                player.equip_ability(ability_id, slot)
+                for ability_id in node_data.unlocks:
+                    player.equip_ability(ability_id, slot)
 
             node_description_window.refresh()
 

@@ -16,3 +16,15 @@ def create_game_windows(stdscr):
     log_height = inner.getmaxyx()[0]
 
     stdscr.border(ord("#"), ord("#"), ord("#"), ord("#"), ord("O"), ord("O"), ord("O"), ord("O"))
+
+    return (
+        enemy_window,
+        outer,
+        inner,
+        outer_h,
+        outer_w,
+        player_window,
+        gear_progress_window,
+        action_bar,
+        log_height
+    )

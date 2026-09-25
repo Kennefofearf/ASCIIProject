@@ -67,8 +67,11 @@ def draw_enemies(stdscr, enemies, selected, prev_positions):
         prev_positions.append((y, x))
 
 
-def world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_offset):
+def world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_offset, enemy_window):
     now = time.time()
+
+    win_y, win_x = enemy_window.getbegyx()
+    win_h, win_w = enemy_window.getmaxyx()
 
     player.regenerate_hp(now)
     update_active_effects(player, now, combat_messages)
@@ -96,13 +99,17 @@ def world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_off
         update_active_effects(e, now, combat_messages)
 
         e.respawn_timer(player)
-        if e.alive == False:
+        if not e.alive:
             continue
 
         ey, ex = e.enemy_random_movement()
         ney, nex = e.future_position(ey, ex)
 
         if not movement_area(stdscr, ney, nex):
+            ey = 0
+            ex = 0
+
+        elif win_y <= ney < win_y + win_h and win_x <= nex < win_x + win_w:
             ey = 0
             ex = 0
 
@@ -172,6 +179,8 @@ def gamestart(stdscr, player):
     scroll_offset = 0
     window_too_small = False
 
+    last_y, last_x = stdscr.getmaxyx()
+
     while True:
         y_max, x_max = stdscr.getmaxyx()
 
@@ -184,8 +193,34 @@ def gamestart(stdscr, player):
             stdscr.getch()
             continue
 
+        if (y_max, x_max) != (last_y, last_x) or window_too_small:
+            (
+                enemy_window,
+                outer,
+                inner,
+                outer_h,
+                outer_w,
+                player_window,
+                gear_progress_window,
+                action_bar,
+                log_height
+            ) = create_game_windows(stdscr)
+
+            last_y, last_x = y_max, x_max
+            window_too_small = False
+
         if window_too_small:
-            create_game_windows(stdscr)
+            (
+                enemy_window,
+                outer,
+                inner,
+                outer_h,
+                outer_w,
+                player_window,
+                gear_progress_window,
+                action_bar,
+                log_height
+            ) = create_game_windows(stdscr)
 
             window_too_small = False
 
@@ -224,8 +259,8 @@ def gamestart(stdscr, player):
             player_window.clear()
             show_character_sheet(stdscr, player)
 
-        elif key == curses.KEY_RESIZE:
-            create_game_windows(stdscr)
+        # elif key == curses.KEY_RESIZE:
+        #     create_game_windows(stdscr)
 
         elif key == curses.KEY_MOUSE:
             _, mx, my, _, bstate, = curses.getmouse()
@@ -250,7 +285,7 @@ def gamestart(stdscr, player):
 
         py, px = player.input_action(key)
 
-        player_died = world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_offset)
+        player_died = world_event_logic(player, py, px, stdscr, combat_messages, inner, scroll_offset, enemy_window)
 
         if player_died:
             return

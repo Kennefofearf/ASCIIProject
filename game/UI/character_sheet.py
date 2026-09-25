@@ -30,15 +30,22 @@ def show_character_sheet(stdscr, player):
         character_sheet_window.addstr(12, 1, f"HRA: {player.hp_ra}")
 
         character_sheet_window.addstr(14, sheet_x - (len("EQUIPMENT") // 2), f"EQUIPMENT")
-        character_sheet_window.addstr(16, 1,
-                                      f" Head: {player.head.name} | Lvl: {player.head.lvl} / {player.head.max_lvl}")
-        character_sheet_window.addstr(17, 1,
-                                      f"Chest: {player.chest.name} | Lvl: {player.chest.lvl} / {player.chest.max_lvl}")
-        character_sheet_window.addstr(18, 1,
-                                      f" Feet: {player.feet.name} | Lvl: {player.feet.lvl} / {player.feet.max_lvl}")
-        character_sheet_window.addstr(
-            19, 1, f"  Wpn: {player.weapon.name} | Lvl: {player.weapon.lvl} / {player.weapon.max_lvl}"
-        )
+        if player.head:
+            character_sheet_window.addstr(16, 1,
+                                          f" Head: {player.head.name} | Lvl: {player.head.lvl} / {player.head.max_lvl}")
+
+        if player.chest:
+            character_sheet_window.addstr(17, 1,
+                                          f"Chest: {player.chest.name} | Lvl: {player.chest.lvl} / {player.chest.max_lvl}")
+
+        if player.feet:
+            character_sheet_window.addstr(18, 1,
+                                          f" Feet: {player.feet.name} | Lvl: {player.feet.lvl} / {player.feet.max_lvl}")
+
+        if player.weapon:
+            character_sheet_window.addstr(
+                    19, 1, f"  Wpn: {player.weapon.name} | Lvl: {player.weapon.lvl} / {player.weapon.max_lvl}"
+                )
 
         character_sheet_window.refresh()
 
