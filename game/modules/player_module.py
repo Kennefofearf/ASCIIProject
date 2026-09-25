@@ -97,7 +97,7 @@ class Player:
                 continue
             bonus += Item.total_bonus(item, "st")
 
-        return min(0, max(3, self.base_st + bonus))
+        return self.base_st + bonus
 
     # @st.setter
     # def st(self, value):
@@ -115,7 +115,7 @@ class Player:
 
             bonus += Item.total_bonus(item, "df")
 
-        return min(0, max(1, self.base_df + bonus))
+        return self.base_df + bonus
 
     # @df.setter
     # def df(self, value):
